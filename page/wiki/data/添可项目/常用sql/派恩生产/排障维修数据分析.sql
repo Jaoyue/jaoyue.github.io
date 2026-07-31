@@ -1,0 +1,28 @@
+-- 添可维修
+select time,count(time) from (
+select LEFT(create_time,13) time from pn_obm_mro_process where create_time >= '2025-06-05 00:00:00' and create_time < '2025-06-06 00:00:00' and source_sys = 'CSS' and type = 'MRO')t group by time
+select time,count(time) from (
+select FROM_UNIXTIME(end_time/1000,'%Y-%m-%d %H') time from pn_obm_mro_process where create_time >= '2025-06-05 00:00:00' and create_time < '2025-06-06 00:00:00' and source_sys = 'CSS' and type = 'MRO')t group by time
+select time,avg(ec_time) from (
+select FROM_UNIXTIME(end_time/1000,'%Y-%m-%d %H') time,(end_time-start_time)/1000 ec_time from pn_obm_mro_process where create_time >= '2025-06-05 00:00:00' and create_time < '2025-06-06 00:00:00' and source_sys = 'CSS' and type = 'MRO')t group by time
+-- 添可排障
+select time,count(time) from (
+select LEFT(create_time,13) time from pn_obm_mro_process where create_time >= '2025-06-05 00:00:00' and create_time < '2025-06-06 00:00:00' and source_sys = 'CSS' and type = 'OBM')t group by time HAVING time is not null
+select time,count(time) from (
+select FROM_UNIXTIME(end_time/1000,'%Y-%m-%d %H') time from pn_obm_mro_process where create_time >= '2025-06-05 00:00:00' and create_time < '2025-06-06 00:00:00' and source_sys = 'CSS' and type = 'OBM')t group by time HAVING time is not null
+select time,avg(ec_time) from (
+select FROM_UNIXTIME(end_time/1000,'%Y-%m-%d %H') time,(end_time-start_time)/1000 ec_time from pn_obm_mro_process where create_time >= '2025-06-05 00:00:00' and create_time < '2025-06-06 00:00:00' and source_sys = 'CSS' and type = 'OBM')t group by time HAVING time is not null
+-- 科沃斯维修
+select time,count(time) from (
+select LEFT(create_time,13) time from pn_obm_mro_process where create_time >= '2025-06-05 00:00:00' and create_time < '2025-06-06 00:00:00' and source_sys = 'doscs' and type = 'MRO')t group by time HAVING time is not null
+select time,count(time) from (
+select FROM_UNIXTIME(end_time/1000,'%Y-%m-%d %H') time from pn_obm_mro_process where create_time >= '2025-06-05 00:00:00' and create_time < '2025-06-06 00:00:00' and source_sys = 'doscs' and type = 'MRO')t group by time HAVING time is not null
+select time,avg(ec_time) from (
+select FROM_UNIXTIME(end_time/1000,'%Y-%m-%d %H') time,(end_time-start_time)/1000 ec_time from pn_obm_mro_process where create_time >= '2025-06-05 00:00:00' and create_time < '2025-06-06 00:00:00' and source_sys = 'doscs' and type = 'MRO')t group by time HAVING time is not null
+-- 科沃斯排障
+select time,count(time) from (
+select LEFT(create_time,13) time from pn_obm_mro_process where create_time >= '2025-06-05 00:00:00' and create_time < '2025-06-06 00:00:00' and source_sys = 'doscs' and type = 'OBM')t group by time HAVING time is not null
+select time,count(time) from (
+select FROM_UNIXTIME(end_time/1000,'%Y-%m-%d %H') time from pn_obm_mro_process where create_time >= '2025-06-05 00:00:00' and create_time < '2025-06-06 00:00:00' and source_sys = 'doscs' and type = 'OBM')t group by time HAVING time is not null
+select time,avg(ec_time) from (
+select FROM_UNIXTIME(end_time/1000,'%Y-%m-%d %H') time,(end_time-start_time)/1000 ec_time from pn_obm_mro_process where create_time >= '2025-06-05 00:00:00' and create_time < '2025-06-06 00:00:00' and source_sys = 'doscs' and type = 'OBM')t group by time HAVING time is not null

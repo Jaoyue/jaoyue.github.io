@@ -4,17 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "0b268092bff28f26",
+        "id": "8c4c2413d0fd1fca",
         "type": "tabs",
         "children": [
           {
-            "id": "d97cc9df9c640189",
+            "id": "698390df396ee00f",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "data/添可项目/营销中台/2026年/0731TOB促销前置价格申请单新增“寄售”类型并优化价目表生效逻辑.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "新标签页"
+              "title": "0731TOB促销前置价格申请单新增“寄售”类型并优化价目表生效逻辑"
             }
           }
         ]
@@ -37,7 +41,7 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical",
-                "autoReveal": false,
+                "autoReveal": true,
                 "showSearch": false,
                 "searchQuery": ""
               },
@@ -95,6 +99,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "data/添可项目/营销中台/2026年/0731TOB促销前置价格申请单新增“寄售”类型并优化价目表生效逻辑.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -113,6 +118,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "data/添可项目/营销中台/2026年/0731TOB促销前置价格申请单新增“寄售”类型并优化价目表生效逻辑.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
@@ -155,6 +161,7 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "data/添可项目/营销中台/2026年/0731TOB促销前置价格申请单新增“寄售”类型并优化价目表生效逻辑.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -162,19 +169,9 @@
               "icon": "lucide-list",
               "title": "大纲"
             }
-          },
-          {
-            "id": "61e492ab57078d10",
-            "type": "leaf",
-            "state": {
-              "type": "git-view",
-              "state": {},
-              "icon": "git-pull-request",
-              "title": "Source Control"
-            }
           }
         ],
-        "currentTab": 5
+        "currentTab": 4
       }
     ],
     "direction": "horizontal",
@@ -189,56 +186,57 @@
       "templates:插入模板": false,
       "command-palette:打开命令面板": false,
       "bases:新建数据库": false,
-      "obsidian-git:Open Git source control": false
+      "obsidian-git:Open Git source control": false,
+      "webpage-html-export:导出为HTML": false,
+      "notes-to-html-pages:导出当前笔记为 HTML 页面": false
     }
   },
-  "active": "f280f8a3d144d7d9",
+  "active": "698390df396ee00f",
   "lastOpenFiles": [
-    "data/后端应用/md-img/百度云OCR识别,人脸比对1_1/image-20260415161825989.png",
-    "data/后端应用/多数据源配置/自定义注解.md",
-    "data/后端应用/多数据源配置/派恩多数据源实战.md",
-    "data/后端应用/多数据源配置/mybatis-plus @DS注解.md",
-    "data/后端应用/md-img/百度云OCR识别,人脸比对1_1",
-    "data/后端应用/多数据源配置/springboot多数据源使用.md",
-    "data/后端应用/百度云OCR识别,人脸比对1_1.md",
-    "data/后端应用/百度地图.md",
-    "data/后端应用/抽象类.md",
-    "data/后端应用/极光推送.md",
-    "data/后端应用/多数据源配置",
-    "data/后端应用/springboot获取Bean.md",
-    "data/后端应用/多线程执行任务.md",
-    "data/后端应用/md-img",
-    "data/后端应用/AbstractProcessor注解处理器.md",
-    "data/后端应用/HttpServlet.md",
-    "data/后端应用/Java过滤器.md",
-    "data/后端应用/Java实现负载均衡.md",
-    "data/后端应用",
-    "data/工作模块/分销渠道/常用sql/老中台监控SQL.md",
-    "data/工作模块/分销渠道/常用sql/盘点单查询.md",
-    "data/工作模块/分销渠道/常用sql/分销库存清理.md",
-    "data/工作模块/分销渠道/常用sql/分销商导出.md",
-    "data/工作模块/分销渠道/常用sql/22年订单_退单.md",
-    "data/工作模块/线下门店/常用sql/门店日销计算.md",
-    "data/工作模块/线下门店/常用sql/门店监控SQL.md",
-    "data/工作模块/线下门店/常用sql/门店开业时间.md",
-    "data/工作模块/线下门店/常用sql/门店人员关联查询.md",
-    "data/工作模块/线下门店/常用sql/订单导出查询.md",
-    "data/工作模块/线下门店/常用sql/薛定谔的sql.md",
-    "data/工作模块/线下门店/业务逻辑/门店销退.jpg",
-    "data/工作模块/线下门店/业务逻辑/门店销售.jpg",
-    "data/工作模块/分销渠道/常用sql",
-    "data/工作模块/线下门店/常用sql",
-    "data/工作模块/线下门店/tips",
-    "data/工作模块/线下门店/业务逻辑",
-    "data/工作模块/线下门店",
-    "data/工作模块/分销渠道",
-    "data/工具/md-img/压测工具-Jmeter/1731052659302-d045bea4-2bb9-48ec-b691-8ed0172fb640.png",
-    "data/工具/md-img/压测工具-Jmeter/1731052637653-1656c81b-9bf1-457a-a514-149daa254ecb.png",
-    "data/工具/md-img/压测工具-Jmeter/1731052611357-a22737c0-2db2-47d1-a670-841f825d5408.png",
-    "data/工具/md-img/压测工具-Jmeter/1731052520237-5d31f504-9648-43e9-8cab-0a116fb2ce4b.png",
-    "data/工具/md-img/压测工具-Jmeter/1731052477538-b532ff5e-14bc-4b14-8da1-f1b8bb8e87a0.png",
-    "data/工具/md-img/压测工具-Jmeter/1731052547340-b60e55eb-83de-40ae-bbf9-45d8c5fdf5cb.png",
-    "data/工具/md-img/V-2-Ray for Windows 使用教程/1764223984031-eae0e519-2256-4a6c-b04c-2b45507bb811.png",
-    "data/工具/md-img/V-2-Ray for Windows 使用教程/1764223960909-326f2fe9-291c-412a-bd9c-078ce226104f.png"
+    "data/智能体-codeAgent/赛意课件/MCP.md",
+    "data/添可项目/营销中台/2026年/0731TOB促销前置价格申请单新增“寄售”类型并优化价目表生效逻辑.md",
+    "data/分享/C#开发exe程序.md",
+    "page/wiki/data/分享/C#开发exe程序.html",
+    "page/wiki/data/分享/C.md",
+    "page/wiki/data/分享/珊瑚MCP、插件、SKILL使用.html",
+    "page/wiki/build-menu.vbs",
+    "page/wiki/build-menu.bat",
+    "page/wiki/build-menu.py",
+    "page/wiki/menu.js",
+    "page/wiki/menu.json",
+    "util/_verify.py",
+    "util/_run_bat_test.py",
+    "util/gen_out.txt",
+    "data/智能体-codeAgent/赛意课件/小作文模版.md",
+    "page/wiki/data/智能体-codeAgent/灵码规则/测试.html.md",
+    "data/智能体-codeAgent/灵码规则/测试.md",
+    "data/智能体-codeAgent/灵码规则/ali_java_rule.md",
+    "page/wiki/data/后端应用/md-img/百度云OCR识别,人脸比对1_1/image-20260415161825989.png",
+    "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 32.png",
+    "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 33.png",
+    "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 30.png",
+    "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 31.png",
+    "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 29.png",
+    "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 25.png",
+    "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 28.png",
+    "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 27.png",
+    "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 26.png",
+    "data/添可项目/派恩/需求/可维修性评估A2A对接香农).md",
+    "data/添可项目/派恩/需求/添可排障戴明改善问题优化.md",
+    "data/添可项目/派恩/需求/排障迁移珊瑚.md",
+    "data/添可项目/派恩/需求/国际化.md",
+    "data/添可项目/派恩/需求/一键获取戴明dfmea.md",
+    "data/添可项目/派恩/需求/舆情.md",
+    "data/添可项目/派恩/需求/假故障sop_维修sop.md",
+    "data/添可项目/派恩/需求/530可维修性评估调整.md",
+    "data/添可项目/派恩/发版计划/5.29发版计划.md",
+    "data/添可项目/派恩/发版计划/6月发版计划.md",
+    "data/添可项目/派恩/发版计划/619发版计划.md",
+    "data/添可项目/派恩/发版计划/630发版计划.md",
+    "data/添可项目/派恩/发版计划/730发版计划.md",
+    "data/添可项目/派恩/发版计划/930发版计划.md",
+    "data/添可项目/派恩/dify平台/需求/维修排障-730优化.md",
+    "data/添可项目/派恩/dify平台/工作流/工具-md文档转Excel.md",
+    "data/添可项目/派恩/dify平台/工作流/卡耐基-质检.md"
   ]
 }

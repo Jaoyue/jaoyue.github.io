@@ -1,0 +1,15 @@
+{
+  "interfaceLanguage": "zh",
+  "exportFolder": "page\\wiki",
+  "stylePreset": "clean",
+  "customFontFamily": "",
+  "fontScale": "default",
+  "preserveFolderStructure": true,
+  "addTitleFromFilename": true,
+  "linkWikilinksToHtml": true,
+  "embedLocalImages": true,
+  "openHtmlInObsidian": true,
+  "createLauncherNote": false,
+  "insertLinkInSource": true,
+  "syncAnnotationsToSource": true
+}

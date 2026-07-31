@@ -1,0 +1,1 @@
+select * from sync_ims_product_price_store_promotion_price;

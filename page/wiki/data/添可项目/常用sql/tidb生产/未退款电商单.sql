@@ -1,0 +1,186 @@
+select sales_order_no,out_sales_order_no,creation_date from ims_ec_sales_order_ext where account_lock_flag = 2 and account_unlock_flag = 2 order by creation_date
+
+select distinct status from ims_ec_sales_order limit 1
+select refund_flag from ims_ec_sales_order where sales_order_no = '121746933649135430002'
+select * from ims_ec_sales_order where sales_order_no = '121759902466081337005'
+
+select e.sales_order_no,o.creation_date from ims_ec_sales_order_ext e join ims_ec_sales_order o on e.sales_order_no = o.sales_order_no  where e.account_lock_flag = 2 and e.account_unlock_flag = 2 and o.refund_flag = 0
+
+select * from ims_ec_sales_order_ext where sales_order_no = '121749189614739512006' and id = 1930867309781639169;
+update ims_ec_sales_order_ext set account_lock_flag = 3,account_unlock_flag = 0 where sales_order_no = '121749189614739512006' and id = 1930867309781639169;
+
+select * from ims_ec_sales_order_ext where out_sales_order_no in ('317232756022','317333506366','321561589483','321541833514')
+
+update ims_ec_sales_order_ext set account_lock_flag = 0,account_unlock_flag = 0 where out_sales_order_no in ('317232756022','317333506366','321561589483','321541833514');
+
+select * from ims_ec_sales_order_ext where sales_order_no = '121737609117013281008' and id = '1944585726191276033';
+update ims_ec_sales_order_ext set account_lock_flag = 3 where sales_order_no = '121737609117013281008' and id = '1944585726191276033';
+
+select distinct a.sales_order_no
+        from ims_ec_sales_order a
+        join ims_ec_sales_order_item b on a.id = b.ec_sales_order_id
+        join ims_ec_sales_order_ext c on a.sales_order_no = c.sales_order_no
+        where c.account_lock_flag = 1
+          and a.delete_flag = 0 and a.order_status = 'WAIT_SHIPPING'
+          and a.order_type = 'PRODUCT'
+          and a.creation_date >= DATE_ADD(NOW(), INTERVAL -1 WEEK);
+
+select * from ims_ec_sales_order_ext e join ims_ec_sales_order o on e.sales_order_no = o.sales_order_no where e.account_lock_flag = 3 and e.creation_date > '2025-10-01 00:00:00' and o.order_status <> 'CANCEL'
+update ims_ec_sales_order_ext set account_lock_flag = 2,account_lock_msg = null,account_unlock_flag = 0 where sales_order_no = '121759903017498708000' and id = '1975802577849102338';
+update ims_ec_sales_order set warn_msg = null where sales_order_no = '121759903017498708000' and id = '1975800263553789953';
+update ims_ec_sales_order_ext set account_lock_flag = 1 where account_lock_flag = 3 and creation_date > '2025-10-01 00:00:00';
+select * from ims_ec_sales_order_ext where account_unlock_flag = 3 and account_unlock_msg = '原单释放失败，未查询到可释放的占用单据或单据已被释放！'
+update ims_ec_sales_order_ext set account_unlock_flag = 2,account_unlock_msg = null where account_unlock_flag = 3 and account_unlock_msg = '原单释放失败，未查询到可释放的占用单据或单据已被释放！';
+select * from ims_ec_sales_order_ext where account_lock_flag = 3 and sales_order_no in ('121758589446703046005','121758071347785232009','121757905765795879006','121750085011767489000')
+select * from ims_ec_sales_order_ext  where out_sales_order_no = '6945139949243537349' and account_lock_no = '121754889317910264004' and id = '1954773598049005569';
+update ims_ec_sales_order_ext set account_lock_flag = 2,account_lock_msg = null where out_sales_order_no = '6945139949243537349' and account_lock_no = '121754889317910264004' and id = '1954773598049005569';
+
+select * from ims_ec_sales_order_ext where account_unlock_flag = 3 and sales_order_no in ('121751099148089712006')
+select * from ims_ec_sales_order_ext where account_unlock_flag = 3 and account_unlock_msg = '原单释放失败，未查询到可释放的占用单据或单据已被释放！'
+;
+update ims_ec_sales_order_ext set account_unlock_flag = 2 where account_unlock_flag = 3 and sales_order_no in ('121760975397848143000');
+update ims_ec_sales_order_ext set account_unlock_flag = 2 where account_unlock_flag = 3 and account_unlock_msg = '原单释放失败，未查询到可释放的占用单据或单据已被释放！';
+-- 121773380435002188005 121767098283656897008
+select customer_code,order_type,deleted_flag,order_source,consign_type from ims_ec_sales_order where sales_order_no = '121764408072888322003' and customer_code = '3008857'
+select sales_order_no,order_type,deleted_flag,order_source,consign_type,creation_date from ims_ec_sales_order where customer_code = '3008857' and order_type = 'PRODUCT' and deleted_flag = 0 and order_source = 'TIKTOK' and consign_type = 1 and order_status = 'WAIT_SHIPPING'
+select sales_order_no,customer_code,order_type,deleted_flag,order_source,consign_type from ims_ec_sales_order where sales_order_no in ('121773380435002188005','121767098283656897008')
+;
+select * from ims_ec_sales_order_ext where sales_order_no in (
+'121760929657575394009',
+'121757905765795879006',
+'121780371825723453004',
+'121780372429377860005',
+'121780374237882779008',
+'121780377253150624006',
+'121780377858052935005',
+'121780377858226937004',
+'121780379669550671004',
+'121780380272854036004',
+'121780381479616690004',
+'121780382082732020000',
+'121780382687453339004',
+'121780382687745342002',
+'121780383290758641006',
+'121780384496064283005',
+'121774500540279916008',
+'121780313385068714000',
+'121780314591502306005',
+'121780317603662834008',
+'121780318809498499006',
+'121780318809645502000',
+'121780319412180798007',
+'121780320014973116004',
+'121780320015111118000',
+'121780320617437487009',
+'121780321219744827004',
+'121780321822099170007',
+'121780321822300174000',
+'121780321822379176001',
+'121780323027705005005',
+'121780326038923331004',
+'121780326642291752003',
+'121780327855342414003',
+'121780329663633272008',
+'121780331470309081001',
+'121780355546294637006',
+'121780357353677083003',
+'121780359763558815005',
+'121780362778567058003',
+'121780363381588342006',
+'121780367005011445006',
+'121780367607434749000',
+'121780242861456985005',
+'121780244670839963006',
+'121780263316589401004',
+'121780270536528228006',
+'121780272342942663008',
+'121780272343052665000',
+'121780274149680265005',
+'121780274752197486007',
+'121780274752327488008',
+'121780274752410490000',
+'121780274752498492002',
+'121780275959633034009',
+'121780276563762294005',
+'121780278975617548007',
+'121780278975740550007',
+'121780279580504939008',
+'121780280184987312009',
+'121780281391033048001',
+'121780281391223051002',
+'121780281391451054000',
+'121780281995088433006',
+'121780282597805803000',
+'121780282598354811005',
+'121780285615286040009',
+'121780288028875276008',
+'121780288632591627009',
+'121780289235969026007',
+'121780291046298155007',
+'121780291649744469002',
+'121780291649890472009',
+'121780292859310207007',
+'121780292859698218000',
+'121780294673402151003',
+'121780294673639155002',
+'121780294673694156007',
+'121780295881055811006',
+'121780298303061235005',
+'121780298303161237002',
+'121780300719870834002',
+'121780303737310629009',
+'121780303737624633002',
+'121780304340751964001',
+'121780304340872966007',
+'121780305546501694000',
+'121780306149451064004',
+'121780308561162511009',
+'121780309163785765006',
+'121780309766785020003',
+'121780309766939022004',
+'121780310972231580001',
+'121780311575332853005',
+'121780311575609857004',
+'121780312179086170005',
+'121780312179224172004',
+'121780385703251945009',
+'121780386909346617008',
+'121780387513375952005',
+'121780388116762221001',
+'121780388719186579004',
+'121780388719361583007',
+'121780388719471585001',
+'121780390527670478005',
+'121780391733274109002',
+'121780391733365111007',
+'121780391733477113004',
+'121780394145572051008',
+'121780395351791526006',
+'121780396557185022008',
+'121780397762521537004',
+'121780398967377070008',
+'121780398967471071004',
+'121780404389620935000',
+'121780404389803939004',
+'121780404993163272002',
+'121780404993338275003',
+'121780404993609280004',
+'121780406199030018009',
+'121780406801098311007',
+'121780406801214313001',
+'121780406801275314002',
+'121780406801338316008',
+'121780407404143573006',
+'121780407404385578004',
+'121780408007606956007',
+'121780408007754959007',
+'121780409815935191002',
+'121780409816043194003',
+'121780409816173197007',
+'121780409816499205007',
+'121780411021102933005',
+'121780412225563568009',
+'121780413429750317002',
+'121780415235690175001',
+'121780417642805039006'
+    ) order by id ;

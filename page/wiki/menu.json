@@ -1,0 +1,1372 @@
+{
+  "title": "我的 Wiki",
+  "menu": [
+    {
+      "title": "Linux",
+      "children": [
+        {
+          "title": "redis监控(Prometheus + Grafana)",
+          "src": "data/Linux/redis监控(Prometheus + Grafana).html"
+        },
+        {
+          "title": "常用命令",
+          "src": "data/Linux/常用命令.html"
+        }
+      ]
+    },
+    {
+      "title": "业务问题",
+      "children": [
+        {
+          "title": "TOB业务",
+          "children": [
+            {
+              "title": "资料汇总",
+              "src": "data/业务问题/TOB业务/资料汇总.html"
+            }
+          ]
+        },
+        {
+          "title": "TOC业务",
+          "children": [
+            {
+              "title": "电商",
+              "children": [
+                {
+                  "title": "抖音直播秒退拉单慢",
+                  "src": "data/业务问题/TOC业务/电商/抖音直播秒退拉单慢.html"
+                },
+                {
+                  "title": "直销切换供销(京东)",
+                  "src": "data/业务问题/TOC业务/电商/直销切换供销(京东).html"
+                },
+                {
+                  "title": "直销切换供销(淘宝)",
+                  "src": "data/业务问题/TOC业务/电商/直销切换供销(淘宝).html"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "加密解密",
+          "children": [
+            {
+              "title": "加密后数据模糊查询",
+              "src": "data/业务问题/加密解密/加密后数据模糊查询.html"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "分享",
+      "children": [
+        {
+          "title": "C#开发exe程序",
+          "src": "data/分享/C#开发exe程序.html"
+        },
+        {
+          "title": "Dbeaver_SQL查询",
+          "src": "data/分享/Dbeaver_SQL查询.html"
+        },
+        {
+          "title": "珊瑚MCP、插件、SKILL使用",
+          "src": "data/分享/珊瑚MCP、插件、SKILL使用.html"
+        }
+      ]
+    },
+    {
+      "title": "后端应用",
+      "children": [
+        {
+          "title": "多数据源配置",
+          "children": [
+            {
+              "title": "mybatis-plus @DS注解",
+              "src": "data/后端应用/多数据源配置/mybatis-plus @DS注解.html"
+            },
+            {
+              "title": "springboot多数据源使用",
+              "src": "data/后端应用/多数据源配置/springboot多数据源使用.html"
+            },
+            {
+              "title": "派恩多数据源实战",
+              "src": "data/后端应用/多数据源配置/派恩多数据源实战.html"
+            },
+            {
+              "title": "自定义注解",
+              "src": "data/后端应用/多数据源配置/自定义注解.html"
+            }
+          ]
+        },
+        {
+          "title": "AbstractProcessor注解处理器",
+          "src": "data/后端应用/AbstractProcessor注解处理器.html"
+        },
+        {
+          "title": "HttpServlet",
+          "src": "data/后端应用/HttpServlet.html"
+        },
+        {
+          "title": "Java实现负载均衡",
+          "src": "data/后端应用/Java实现负载均衡.html"
+        },
+        {
+          "title": "Java过滤器",
+          "src": "data/后端应用/Java过滤器.html"
+        },
+        {
+          "title": "springboot获取Bean",
+          "src": "data/后端应用/springboot获取Bean.html"
+        },
+        {
+          "title": "多线程执行任务",
+          "src": "data/后端应用/多线程执行任务.html"
+        },
+        {
+          "title": "抽象类",
+          "src": "data/后端应用/抽象类.html"
+        },
+        {
+          "title": "极光推送",
+          "src": "data/后端应用/极光推送.html"
+        },
+        {
+          "title": "百度云OCR识别,人脸比对1_1",
+          "src": "data/后端应用/百度云OCR识别,人脸比对1_1.html"
+        },
+        {
+          "title": "百度地图",
+          "src": "data/后端应用/百度地图.html"
+        }
+      ]
+    },
+    {
+      "title": "工作模块",
+      "children": [
+        {
+          "title": "分销渠道",
+          "children": [
+            {
+              "title": "常用sql",
+              "children": [
+                {
+                  "title": "22年订单_退单",
+                  "src": "data/工作模块/分销渠道/常用sql/22年订单_退单.html"
+                },
+                {
+                  "title": "分销商导出",
+                  "src": "data/工作模块/分销渠道/常用sql/分销商导出.html"
+                },
+                {
+                  "title": "分销库存清理",
+                  "src": "data/工作模块/分销渠道/常用sql/分销库存清理.html"
+                },
+                {
+                  "title": "盘点单查询",
+                  "src": "data/工作模块/分销渠道/常用sql/盘点单查询.html"
+                },
+                {
+                  "title": "老中台监控SQL",
+                  "src": "data/工作模块/分销渠道/常用sql/老中台监控SQL.html"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "线下门店",
+          "children": [
+            {
+              "title": "tips",
+              "children": [
+                {
+                  "title": "url转义",
+                  "src": "data/工作模块/线下门店/tips/url转义.html"
+                }
+              ]
+            },
+            {
+              "title": "业务逻辑",
+              "children": [
+                {
+                  "title": "SN溯源",
+                  "src": "data/工作模块/线下门店/业务逻辑/SN溯源.html"
+                },
+                {
+                  "title": "定时任务",
+                  "src": "data/工作模块/线下门店/业务逻辑/定时任务.html"
+                },
+                {
+                  "title": "门店销售",
+                  "src": "data/工作模块/线下门店/业务逻辑/门店销售.html"
+                },
+                {
+                  "title": "门店销退",
+                  "src": "data/工作模块/线下门店/业务逻辑/门店销退.html"
+                }
+              ]
+            },
+            {
+              "title": "常用sql",
+              "children": [
+                {
+                  "title": "1-2月线下门店产品销售数量",
+                  "src": "data/工作模块/线下门店/常用sql/1-2月线下门店产品销售数量.html"
+                },
+                {
+                  "title": "22年订单退货单",
+                  "src": "data/工作模块/线下门店/常用sql/22年订单退货单.html"
+                },
+                {
+                  "title": "@符号使用",
+                  "src": "data/工作模块/线下门店/常用sql/@符号使用.html"
+                },
+                {
+                  "title": "GROUP_CONCAT查询试题",
+                  "src": "data/工作模块/线下门店/常用sql/GROUP_CONCAT查询试题.html"
+                },
+                {
+                  "title": "in查询排序",
+                  "src": "data/工作模块/线下门店/常用sql/in查询排序.html"
+                },
+                {
+                  "title": "json解析",
+                  "src": "data/工作模块/线下门店/常用sql/json解析.html"
+                },
+                {
+                  "title": "分部修改sql",
+                  "src": "data/工作模块/线下门店/常用sql/分部修改sql.html"
+                },
+                {
+                  "title": "创建或修改视图(用户视图)",
+                  "src": "data/工作模块/线下门店/常用sql/创建或修改视图(用户视图).html"
+                },
+                {
+                  "title": "向上递归",
+                  "src": "data/工作模块/线下门店/常用sql/向上递归.html"
+                },
+                {
+                  "title": "向下递归",
+                  "src": "data/工作模块/线下门店/常用sql/向下递归.html"
+                },
+                {
+                  "title": "小区顾客查询",
+                  "src": "data/工作模块/线下门店/常用sql/小区顾客查询.html"
+                },
+                {
+                  "title": "巡店计划导入数据生成",
+                  "src": "data/工作模块/线下门店/常用sql/巡店计划导入数据生成.html"
+                },
+                {
+                  "title": "市占价格报表",
+                  "src": "data/工作模块/线下门店/常用sql/市占价格报表.html"
+                },
+                {
+                  "title": "查询top15城市销售额",
+                  "src": "data/工作模块/线下门店/常用sql/查询top15城市销售额.html"
+                },
+                {
+                  "title": "查询考试人员_考试分数",
+                  "src": "data/工作模块/线下门店/常用sql/查询考试人员_考试分数.html"
+                },
+                {
+                  "title": "查询表名注释",
+                  "src": "data/工作模块/线下门店/常用sql/查询表名注释.html"
+                },
+                {
+                  "title": "查询订单审核人",
+                  "src": "data/工作模块/线下门店/常用sql/查询订单审核人.html"
+                },
+                {
+                  "title": "查询订单小票路径",
+                  "src": "data/工作模块/线下门店/常用sql/查询订单小票路径.html"
+                },
+                {
+                  "title": "物料年月销量统计",
+                  "src": "data/工作模块/线下门店/常用sql/物料年月销量统计.html"
+                },
+                {
+                  "title": "笛卡尔积(行转列)",
+                  "src": "data/工作模块/线下门店/常用sql/笛卡尔积(行转列).html"
+                },
+                {
+                  "title": "薛定谔的sql",
+                  "src": "data/工作模块/线下门店/常用sql/薛定谔的sql.html"
+                },
+                {
+                  "title": "计算经纬度距离",
+                  "src": "data/工作模块/线下门店/常用sql/计算经纬度距离.html"
+                },
+                {
+                  "title": "订单均价计算",
+                  "src": "data/工作模块/线下门店/常用sql/订单均价计算.html"
+                },
+                {
+                  "title": "订单导出查询",
+                  "src": "data/工作模块/线下门店/常用sql/订单导出查询.html"
+                },
+                {
+                  "title": "门店人员关联查询",
+                  "src": "data/工作模块/线下门店/常用sql/门店人员关联查询.html"
+                },
+                {
+                  "title": "门店开业时间",
+                  "src": "data/工作模块/线下门店/常用sql/门店开业时间.html"
+                },
+                {
+                  "title": "门店日销计算",
+                  "src": "data/工作模块/线下门店/常用sql/门店日销计算.html"
+                },
+                {
+                  "title": "门店监控SQL",
+                  "src": "data/工作模块/线下门店/常用sql/门店监控SQL.html"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "工具",
+      "children": [
+        {
+          "title": "Java",
+          "children": [
+            {
+              "title": "spring多数据源配置",
+              "children": [
+                {
+                  "title": "mybatis-plus @DS注解",
+                  "src": "data/工具/Java/spring多数据源配置/mybatis-plus @DS注解.html"
+                },
+                {
+                  "title": "springboot多数据源使用",
+                  "src": "data/工具/Java/spring多数据源配置/springboot多数据源使用.html"
+                },
+                {
+                  "title": "自定义注解",
+                  "src": "data/工具/Java/spring多数据源配置/自定义注解.html"
+                }
+              ]
+            },
+            {
+              "title": "代码生成工具",
+              "children": [
+                {
+                  "title": "JDBC生成",
+                  "src": "data/工具/Java/代码生成工具/JDBC生成.html"
+                },
+                {
+                  "title": "基于mybatis(高斯框架)",
+                  "src": "data/工具/Java/代码生成工具/基于mybatis(高斯框架).html"
+                }
+              ]
+            },
+            {
+              "title": "第三方API",
+              "children": [
+                {
+                  "title": "极光推送",
+                  "src": "data/工具/Java/第三方API/极光推送.html"
+                },
+                {
+                  "title": "百度OCR识别,人脸比对",
+                  "src": "data/工具/Java/第三方API/百度OCR识别,人脸比对.html"
+                },
+                {
+                  "title": "百度地图",
+                  "src": "data/工具/Java/第三方API/百度地图.html"
+                }
+              ]
+            },
+            {
+              "title": "AbstractProcessor注解处理器",
+              "src": "data/工具/Java/AbstractProcessor注解处理器.html"
+            },
+            {
+              "title": "HttpServlet",
+              "src": "data/工具/Java/HttpServlet.html"
+            },
+            {
+              "title": "Java过滤器",
+              "src": "data/工具/Java/Java过滤器.html"
+            },
+            {
+              "title": "springboot获取Bean",
+              "src": "data/工具/Java/springboot获取Bean.html"
+            },
+            {
+              "title": "抽象类",
+              "src": "data/工具/Java/抽象类.html"
+            },
+            {
+              "title": "时间工具类",
+              "src": "data/工具/Java/时间工具类.html"
+            }
+          ]
+        },
+        {
+          "title": "html工具页",
+          "children": [
+            {
+              "title": "HTML在线运行",
+              "src": "data/工具/html工具页/HTML在线运行.html"
+            },
+            {
+              "title": "base64转excel",
+              "src": "data/工具/html工具页/base64转excel.html"
+            },
+            {
+              "title": "json数组转excel",
+              "src": "data/工具/html工具页/json数组转excel.html"
+            },
+            {
+              "title": "下载流测试工具",
+              "src": "data/工具/html工具页/下载流测试工具.html"
+            },
+            {
+              "title": "世界戳转换",
+              "src": "data/工具/html工具页/世界戳转换.html"
+            },
+            {
+              "title": "批量文件下载",
+              "src": "data/工具/html工具页/批量文件下载.html"
+            },
+            {
+              "title": "接口压测",
+              "src": "data/工具/html工具页/接口压测.html"
+            },
+            {
+              "title": "数字转换",
+              "src": "data/工具/html工具页/数字转换.html"
+            },
+            {
+              "title": "文件转base64",
+              "src": "data/工具/html工具页/文件转base64.html"
+            },
+            {
+              "title": "首页",
+              "src": "data/工具/html工具页/首页.html"
+            }
+          ]
+        },
+        {
+          "title": "小玩意",
+          "children": [
+            {
+              "title": "代码生成工具-基于mybatis(高斯框架)",
+              "src": "data/工具/小玩意/代码生成工具-基于mybatis(高斯框架).html"
+            },
+            {
+              "title": "时间工具类",
+              "src": "data/工具/小玩意/时间工具类.html"
+            },
+            {
+              "title": "自定义代码生成工具",
+              "src": "data/工具/小玩意/自定义代码生成工具.html"
+            }
+          ]
+        },
+        {
+          "title": "Infinity笔记",
+          "src": "data/工具/Infinity笔记.html"
+        },
+        {
+          "title": "Jenkins定时任务监控重启方案",
+          "src": "data/工具/Jenkins定时任务监控重启方案.html"
+        },
+        {
+          "title": "Navicat",
+          "src": "data/工具/Navicat.html"
+        },
+        {
+          "title": "Outlook使用技巧",
+          "src": "data/工具/Outlook使用技巧.html"
+        },
+        {
+          "title": "TIDB",
+          "src": "data/工具/TIDB.html"
+        },
+        {
+          "title": "V-2-Ray for Windows 使用教程",
+          "src": "data/工具/V-2-Ray for Windows 使用教程.html"
+        },
+        {
+          "title": "elasticsearch",
+          "src": "data/工具/elasticsearch.html"
+        },
+        {
+          "title": "ffmpeg压缩视频",
+          "src": "data/工具/ffmpeg压缩视频.html"
+        },
+        {
+          "title": "ffmpeg压缩视频图片",
+          "src": "data/工具/ffmpeg压缩视频图片.html"
+        },
+        {
+          "title": "git常用命令",
+          "src": "data/工具/git常用命令.html"
+        },
+        {
+          "title": "jenkins部署服务宕机重启",
+          "src": "data/工具/jenkins部署服务宕机重启.html"
+        },
+        {
+          "title": "piston 代码执行工具",
+          "src": "data/工具/piston 代码执行工具.html"
+        },
+        {
+          "title": "proton v-pn",
+          "src": "data/工具/proton v-pn.html"
+        },
+        {
+          "title": "压测工具-Jmeter",
+          "src": "data/工具/压测工具-Jmeter.html"
+        }
+      ]
+    },
+    {
+      "title": "接口卡",
+      "children": [
+        {
+          "title": "外部接口",
+          "children": [
+            {
+              "title": "同步促销活动到OA",
+              "src": "data/接口卡/外部接口/同步促销活动到OA.html"
+            }
+          ]
+        },
+        {
+          "title": "门店",
+          "children": [
+            {
+              "title": "OA_HR修改店员_店员调店",
+              "src": "data/接口卡/门店/OA_HR修改店员_店员调店.html"
+            },
+            {
+              "title": "OA_HR同步店员",
+              "src": "data/接口卡/门店/OA_HR同步店员.html"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "文档",
+      "children": [
+        {
+          "title": "C端交接",
+          "children": [
+            {
+              "title": "GOMS电商订单模块功能架构",
+              "children": [
+                {
+                  "title": "图片和附件",
+                  "children": [
+                    {
+                      "title": "image 1",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 1.html"
+                    },
+                    {
+                      "title": "image 10",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 10.html"
+                    },
+                    {
+                      "title": "image 11",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 11.html"
+                    },
+                    {
+                      "title": "image 12",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 12.html"
+                    },
+                    {
+                      "title": "image 13",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 13.html"
+                    },
+                    {
+                      "title": "image 14",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 14.html"
+                    },
+                    {
+                      "title": "image 15",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 15.html"
+                    },
+                    {
+                      "title": "image 16",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 16.html"
+                    },
+                    {
+                      "title": "image 17",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 17.html"
+                    },
+                    {
+                      "title": "image 18",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 18.html"
+                    },
+                    {
+                      "title": "image 19",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 19.html"
+                    },
+                    {
+                      "title": "image 2",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 2.html"
+                    },
+                    {
+                      "title": "image 20",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 20.html"
+                    },
+                    {
+                      "title": "image 21",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 21.html"
+                    },
+                    {
+                      "title": "image 22",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 22.html"
+                    },
+                    {
+                      "title": "image 23",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 23.html"
+                    },
+                    {
+                      "title": "image 24",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 24.html"
+                    },
+                    {
+                      "title": "image 25",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 25.html"
+                    },
+                    {
+                      "title": "image 26",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 26.html"
+                    },
+                    {
+                      "title": "image 27",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 27.html"
+                    },
+                    {
+                      "title": "image 28",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 28.html"
+                    },
+                    {
+                      "title": "image 29",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 29.html"
+                    },
+                    {
+                      "title": "image 3",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 3.html"
+                    },
+                    {
+                      "title": "image 30",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 30.html"
+                    },
+                    {
+                      "title": "image 31",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 31.html"
+                    },
+                    {
+                      "title": "image 32",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 32.html"
+                    },
+                    {
+                      "title": "image 33",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 33.html"
+                    },
+                    {
+                      "title": "image 34",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 34.html"
+                    },
+                    {
+                      "title": "image 35",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 35.html"
+                    },
+                    {
+                      "title": "image 36",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 36.html"
+                    },
+                    {
+                      "title": "image 37",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 37.html"
+                    },
+                    {
+                      "title": "image 38",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 38.html"
+                    },
+                    {
+                      "title": "image 39",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 39.html"
+                    },
+                    {
+                      "title": "image 4",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 4.html"
+                    },
+                    {
+                      "title": "image 40",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 40.html"
+                    },
+                    {
+                      "title": "image 41",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 41.html"
+                    },
+                    {
+                      "title": "image 42",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 42.html"
+                    },
+                    {
+                      "title": "image 43",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 43.html"
+                    },
+                    {
+                      "title": "image 44",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 44.html"
+                    },
+                    {
+                      "title": "image 45",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 45.html"
+                    },
+                    {
+                      "title": "image 46",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 46.html"
+                    },
+                    {
+                      "title": "image 47",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 47.html"
+                    },
+                    {
+                      "title": "image 48",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 48.html"
+                    },
+                    {
+                      "title": "image 49",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 49.html"
+                    },
+                    {
+                      "title": "image 5",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 5.html"
+                    },
+                    {
+                      "title": "image 50",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 50.html"
+                    },
+                    {
+                      "title": "image 51",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 51.html"
+                    },
+                    {
+                      "title": "image 52",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 52.html"
+                    },
+                    {
+                      "title": "image 53",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 53.html"
+                    },
+                    {
+                      "title": "image 54",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 54.html"
+                    },
+                    {
+                      "title": "image 55",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 55.html"
+                    },
+                    {
+                      "title": "image 56",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 56.html"
+                    },
+                    {
+                      "title": "image 57",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 57.html"
+                    },
+                    {
+                      "title": "image 58",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 58.html"
+                    },
+                    {
+                      "title": "image 59",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 59.html"
+                    },
+                    {
+                      "title": "image 6",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 6.html"
+                    },
+                    {
+                      "title": "image 60",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 60.html"
+                    },
+                    {
+                      "title": "image 61",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 61.html"
+                    },
+                    {
+                      "title": "image 62",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 62.html"
+                    },
+                    {
+                      "title": "image 63",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 63.html"
+                    },
+                    {
+                      "title": "image 64",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 64.html"
+                    },
+                    {
+                      "title": "image 65",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 65.html"
+                    },
+                    {
+                      "title": "image 7",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 7.html"
+                    },
+                    {
+                      "title": "image 8",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 8.html"
+                    },
+                    {
+                      "title": "image 9",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 9.html"
+                    },
+                    {
+                      "title": "image",
+                      "src": "data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image.html"
+                    }
+                  ]
+                },
+                {
+                  "title": "GOMS电商订单模块功能架构",
+                  "src": "data/文档/C端交接/GOMS电商订单模块功能架构/GOMS电商订单模块功能架构.html"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "小组周报",
+          "children": [
+            {
+              "title": "20260604",
+              "src": "data/文档/小组周报/20260604.html"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "智能体-codeAgent",
+      "children": [
+        {
+          "title": "会议纪要",
+          "children": [
+            {
+              "title": "AI生成代码构建项目框架_20260113",
+              "src": "data/智能体-codeAgent/会议纪要/AI生成代码构建项目框架_20260113.html"
+            },
+            {
+              "title": "AI编码与业务逻辑注释规范_20251230",
+              "src": "data/智能体-codeAgent/会议纪要/AI编码与业务逻辑注释规范_20251230.html"
+            },
+            {
+              "title": "AI编码效率质量提升与实践_20260109",
+              "src": "data/智能体-codeAgent/会议纪要/AI编码效率质量提升与实践_20260109.html"
+            },
+            {
+              "title": "Ai辅助开发规则库知识库建设_20260105",
+              "src": "data/智能体-codeAgent/会议纪要/Ai辅助开发规则库知识库建设_20260105.html"
+            },
+            {
+              "title": "Ai辅助软件开发流程优化_20260105",
+              "src": "data/智能体-codeAgent/会议纪要/Ai辅助软件开发流程优化_20260105.html"
+            },
+            {
+              "title": "Java后端中心规范作业提交_20260106",
+              "src": "data/智能体-codeAgent/会议纪要/Java后端中心规范作业提交_20260106.html"
+            },
+            {
+              "title": "MCP与AI项目开发应用探讨_20260106",
+              "src": "data/智能体-codeAgent/会议纪要/MCP与AI项目开发应用探讨_20260106.html"
+            },
+            {
+              "title": "业务文档整理与代码生成练习_20260107",
+              "src": "data/智能体-codeAgent/会议纪要/业务文档整理与代码生成练习_20260107.html"
+            },
+            {
+              "title": "代码生成与优化技巧_20260112",
+              "src": "data/智能体-codeAgent/会议纪要/代码生成与优化技巧_20260112.html"
+            },
+            {
+              "title": "开发规则平台与实验项目开发_20260114",
+              "src": "data/智能体-codeAgent/会议纪要/开发规则平台与实验项目开发_20260114.html"
+            }
+          ]
+        },
+        {
+          "title": "灵码规则",
+          "children": [
+            {
+              "title": "ali_java_rule",
+              "src": "data/智能体-codeAgent/灵码规则/ali_java_rule.html"
+            },
+            {
+              "title": "center_rule",
+              "src": "data/智能体-codeAgent/灵码规则/center_rule.html"
+            }
+          ]
+        },
+        {
+          "title": "赛意课件",
+          "children": [
+            {
+              "title": "MCP",
+              "src": "data/智能体-codeAgent/赛意课件/MCP.html"
+            },
+            {
+              "title": "小作文模版",
+              "src": "data/智能体-codeAgent/赛意课件/小作文模版.html"
+            },
+            {
+              "title": "通义灵码使用说明手册v2",
+              "src": "data/智能体-codeAgent/赛意课件/通义灵码使用说明手册v2.html"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "添可项目",
+      "children": [
+        {
+          "title": "CSS",
+          "children": [
+            {
+              "title": "css派恩缝合320",
+              "src": "data/添可项目/CSS/css派恩缝合320.html"
+            },
+            {
+              "title": "投诉单舆情方案守门",
+              "src": "data/添可项目/CSS/投诉单舆情方案守门.html"
+            }
+          ]
+        },
+        {
+          "title": "官网商城",
+          "children": [
+            {
+              "title": "2026年",
+              "children": [
+                {
+                  "title": "20260622SN绑定审核功能",
+                  "children": [
+                    {
+                      "title": "0622SN绑定审核功能开发设计文档",
+                      "src": "data/添可项目/官网商城/2026年/20260622SN绑定审核功能/0622SN绑定审核功能开发设计文档.html"
+                    },
+                    {
+                      "title": "上线文档",
+                      "src": "data/添可项目/官网商城/2026年/20260622SN绑定审核功能/上线文档.html"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "派恩",
+          "children": [
+            {
+              "title": "2026年",
+              "children": [
+                {
+                  "title": "709派恩对接甘特任务id",
+                  "src": "data/添可项目/派恩/2026年/709派恩对接甘特任务id.html"
+                }
+              ]
+            },
+            {
+              "title": "dify平台",
+              "children": [
+                {
+                  "title": "工作流",
+                  "children": [
+                    {
+                      "title": "卡耐基-质检",
+                      "src": "data/添可项目/派恩/dify平台/工作流/卡耐基-质检.html"
+                    },
+                    {
+                      "title": "卡耐基-陪练",
+                      "src": "data/添可项目/派恩/dify平台/工作流/卡耐基-陪练.html"
+                    },
+                    {
+                      "title": "工具-md文档转Excel",
+                      "src": "data/添可项目/派恩/dify平台/工作流/工具-md文档转Excel.html"
+                    },
+                    {
+                      "title": "派恩-可维修性评估",
+                      "src": "data/添可项目/派恩/dify平台/工作流/派恩-可维修性评估.html"
+                    },
+                    {
+                      "title": "派恩-备件BOM",
+                      "src": "data/添可项目/派恩/dify平台/工作流/派恩-备件BOM.html"
+                    },
+                    {
+                      "title": "派恩-维修排障",
+                      "src": "data/添可项目/派恩/dify平台/工作流/派恩-维修排障.html"
+                    }
+                  ]
+                },
+                {
+                  "title": "接口对接",
+                  "children": [
+                    {
+                      "title": "es_kibanna",
+                      "src": "data/添可项目/派恩/dify平台/接口对接/es_kibanna.html"
+                    },
+                    {
+                      "title": "es_接口",
+                      "src": "data/添可项目/派恩/dify平台/接口对接/es_接口.html"
+                    },
+                    {
+                      "title": "大模型",
+                      "src": "data/添可项目/派恩/dify平台/接口对接/大模型.html"
+                    },
+                    {
+                      "title": "知识库",
+                      "src": "data/添可项目/派恩/dify平台/接口对接/知识库.html"
+                    }
+                  ]
+                },
+                {
+                  "title": "需求",
+                  "children": [
+                    {
+                      "title": "维修排障-730优化",
+                      "src": "data/添可项目/派恩/dify平台/需求/维修排障-730优化.html"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "发版计划",
+              "children": [
+                {
+                  "title": "5.29发版计划",
+                  "src": "data/添可项目/派恩/发版计划/5.29发版计划.html"
+                },
+                {
+                  "title": "619发版计划",
+                  "src": "data/添可项目/派恩/发版计划/619发版计划.html"
+                },
+                {
+                  "title": "630发版计划",
+                  "src": "data/添可项目/派恩/发版计划/630发版计划.html"
+                },
+                {
+                  "title": "6月发版计划",
+                  "src": "data/添可项目/派恩/发版计划/6月发版计划.html"
+                },
+                {
+                  "title": "730发版计划",
+                  "src": "data/添可项目/派恩/发版计划/730发版计划.html"
+                },
+                {
+                  "title": "930发版计划",
+                  "src": "data/添可项目/派恩/发版计划/930发版计划.html"
+                }
+              ]
+            },
+            {
+              "title": "辛顿经分体sql配置",
+              "children": [
+                {
+                  "title": "接口文档",
+                  "src": "data/添可项目/派恩/辛顿经分体sql配置/接口文档.html"
+                },
+                {
+                  "title": "测试用例",
+                  "src": "data/添可项目/派恩/辛顿经分体sql配置/测试用例.html"
+                },
+                {
+                  "title": "设计文档",
+                  "src": "data/添可项目/派恩/辛顿经分体sql配置/设计文档.html"
+                }
+              ]
+            },
+            {
+              "title": "需求",
+              "children": [
+                {
+                  "title": "530可维修性评估调整",
+                  "src": "data/添可项目/派恩/需求/530可维修性评估调整.html"
+                },
+                {
+                  "title": "一键获取戴明dfmea",
+                  "src": "data/添可项目/派恩/需求/一键获取戴明dfmea.html"
+                },
+                {
+                  "title": "假故障sop_维修sop",
+                  "src": "data/添可项目/派恩/需求/假故障sop_维修sop.html"
+                },
+                {
+                  "title": "可维修性评估A2A对接香农)",
+                  "src": "data/添可项目/派恩/需求/可维修性评估A2A对接香农).html"
+                },
+                {
+                  "title": "国际化",
+                  "src": "data/添可项目/派恩/需求/国际化.html"
+                },
+                {
+                  "title": "排障迁移珊瑚",
+                  "src": "data/添可项目/派恩/需求/排障迁移珊瑚.html"
+                },
+                {
+                  "title": "推送甘特",
+                  "src": "data/添可项目/派恩/需求/推送甘特.html"
+                },
+                {
+                  "title": "推送甘特接口文档",
+                  "src": "data/添可项目/派恩/需求/推送甘特接口文档.html"
+                },
+                {
+                  "title": "添可排障戴明改善问题优化",
+                  "src": "data/添可项目/派恩/需求/添可排障戴明改善问题优化.html"
+                },
+                {
+                  "title": "舆情",
+                  "src": "data/添可项目/派恩/需求/舆情.html"
+                }
+              ]
+            },
+            {
+              "title": "智能体code梳理",
+              "src": "data/添可项目/派恩/智能体code梳理.html"
+            },
+            {
+              "title": "派恩Agent资料梳理",
+              "src": "data/添可项目/派恩/派恩Agent资料梳理.html"
+            }
+          ]
+        },
+        {
+          "title": "老中台",
+          "children": [
+            {
+              "title": "2026年",
+              "children": [
+                {
+                  "title": "20260706梅西小票检核功能迭代",
+                  "children": [
+                    {
+                      "title": "上线文档",
+                      "src": "data/添可项目/老中台/2026年/20260706梅西小票检核功能迭代/上线文档.html"
+                    },
+                    {
+                      "title": "门店列表接口_印章校验字段_开发设计文档",
+                      "src": "data/添可项目/老中台/2026年/20260706梅西小票检核功能迭代/门店列表接口_印章校验字段_开发设计文档.html"
+                    },
+                    {
+                      "title": "门店商品价格段申请功能-开发设计文档",
+                      "src": "data/添可项目/老中台/2026年/20260706梅西小票检核功能迭代/门店商品价格段申请功能-开发设计文档.html"
+                    },
+                    {
+                      "title": "门店商品名称配置查询接口_开发设计文档",
+                      "src": "data/添可项目/老中台/2026年/20260706梅西小票检核功能迭代/门店商品名称配置查询接口_开发设计文档.html"
+                    }
+                  ]
+                },
+                {
+                  "title": "20260722百度地图迁移腾讯地图",
+                  "children": [
+                    {
+                      "title": "门店APP坐标转换方案",
+                      "src": "data/添可项目/老中台/2026年/20260722百度地图迁移腾讯地图/门店APP坐标转换方案.html"
+                    }
+                  ]
+                },
+                {
+                  "title": "20260228APP库存管理迭代",
+                  "src": "data/添可项目/老中台/2026年/20260228APP库存管理迭代.html"
+                },
+                {
+                  "title": "20260413客户管理报表",
+                  "src": "data/添可项目/老中台/2026年/20260413客户管理报表.html"
+                },
+                {
+                  "title": "20260424南京合肥分部合并",
+                  "src": "data/添可项目/老中台/2026年/20260424南京合肥分部合并.html"
+                }
+              ]
+            },
+            {
+              "title": "22-25年",
+              "children": [
+                {
+                  "title": "2025老中台漏洞扫描结果",
+                  "src": "data/添可项目/老中台/22-25年/2025老中台漏洞扫描结果.html"
+                },
+                {
+                  "title": "424门店需求",
+                  "src": "data/添可项目/老中台/22-25年/424门店需求.html"
+                },
+                {
+                  "title": "525门店需求",
+                  "src": "data/添可项目/老中台/22-25年/525门店需求.html"
+                },
+                {
+                  "title": "617门店需求",
+                  "src": "data/添可项目/老中台/22-25年/617门店需求.html"
+                },
+                {
+                  "title": "APP陪练",
+                  "src": "data/添可项目/老中台/22-25年/APP陪练.html"
+                },
+                {
+                  "title": "O2O大淘订单同步",
+                  "src": "data/添可项目/老中台/22-25年/O2O大淘订单同步.html"
+                },
+                {
+                  "title": "WMS改造上线",
+                  "src": "data/添可项目/老中台/22-25年/WMS改造上线.html"
+                },
+                {
+                  "title": "app隐私政策",
+                  "src": "data/添可项目/老中台/22-25年/app隐私政策.html"
+                },
+                {
+                  "title": "优秀分享加精",
+                  "src": "data/添可项目/老中台/22-25年/优秀分享加精.html"
+                },
+                {
+                  "title": "分销库存",
+                  "src": "data/添可项目/老中台/22-25年/分销库存.html"
+                },
+                {
+                  "title": "国内APP报表架构调整",
+                  "src": "data/添可项目/老中台/22-25年/国内APP报表架构调整.html"
+                },
+                {
+                  "title": "工作流报表app接口",
+                  "src": "data/添可项目/老中台/22-25年/工作流报表app接口.html"
+                },
+                {
+                  "title": "库存报表调整",
+                  "src": "data/添可项目/老中台/22-25年/库存报表调整.html"
+                },
+                {
+                  "title": "开发流程",
+                  "src": "data/添可项目/老中台/22-25年/开发流程.html"
+                },
+                {
+                  "title": "排班",
+                  "src": "data/添可项目/老中台/22-25年/排班.html"
+                },
+                {
+                  "title": "新品类分享改优秀分享",
+                  "src": "data/添可项目/老中台/22-25年/新品类分享改优秀分享.html"
+                },
+                {
+                  "title": "日清三期",
+                  "src": "data/添可项目/老中台/22-25年/日清三期.html"
+                },
+                {
+                  "title": "津冀大区调整",
+                  "src": "data/添可项目/老中台/22-25年/津冀大区调整.html"
+                },
+                {
+                  "title": "电商渠道增加渠道店铺",
+                  "src": "data/添可项目/老中台/22-25年/电商渠道增加渠道店铺.html"
+                },
+                {
+                  "title": "零售业态改造(区域家电)",
+                  "src": "data/添可项目/老中台/22-25年/零售业态改造(区域家电).html"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "营销中台",
+          "children": [
+            {
+              "title": "2026年",
+              "children": [
+                {
+                  "title": "0520数据泵功能开发设计方案",
+                  "src": "data/添可项目/营销中台/2026年/0520数据泵功能开发设计方案.html"
+                },
+                {
+                  "title": "0520经销商费用结算报表开发设计文档",
+                  "src": "data/添可项目/营销中台/2026年/0520经销商费用结算报表开发设计文档.html"
+                }
+              ]
+            },
+            {
+              "title": "政策",
+              "children": [
+                {
+                  "title": "529促销政策加字段_物料行id",
+                  "src": "data/添可项目/营销中台/政策/529促销政策加字段_物料行id.html"
+                },
+                {
+                  "title": "促销政策",
+                  "src": "data/添可项目/营销中台/政策/促销政策.html"
+                },
+                {
+                  "title": "政策兑现申请_流程",
+                  "src": "data/添可项目/营销中台/政策/政策兑现申请_流程.html"
+                }
+              ]
+            },
+            {
+              "title": "EHR上线准备",
+              "src": "data/添可项目/营销中台/EHR上线准备.html"
+            },
+            {
+              "title": "促销政策",
+              "src": "data/添可项目/营销中台/促销政策.html"
+            },
+            {
+              "title": "厂发额度占用",
+              "src": "data/添可项目/营销中台/厂发额度占用.html"
+            },
+            {
+              "title": "同步数据SQL",
+              "src": "data/添可项目/营销中台/同步数据SQL.html"
+            },
+            {
+              "title": "商城权益需求二期",
+              "src": "data/添可项目/营销中台/商城权益需求二期.html"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "组件",
+      "children": [
+        {
+          "title": "Navicat",
+          "src": "data/组件/Navicat.html"
+        },
+        {
+          "title": "elasticsearch",
+          "src": "data/组件/elasticsearch.html"
+        },
+        {
+          "title": "git常用命令",
+          "src": "data/组件/git常用命令.html"
+        }
+      ]
+    },
+    {
+      "title": "配置文档pyne",
+      "children": [
+        {
+          "title": "README",
+          "src": "data/配置文档pyne/README.html"
+        }
+      ]
+    }
+  ]
+}

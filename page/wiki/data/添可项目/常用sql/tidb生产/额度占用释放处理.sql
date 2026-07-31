@@ -1,0 +1,239 @@
+select * from ims_ec_sales_order_ext
+# update ims_ec_sales_order_ext set acco6922275512002117275unt_unlock_flag = 2
+where  account_lock_flag = 3 and creation_date >= '2025-11-29 00:00:00';
+
+update ims_ec_sales_order_ext
+set account_lock_flag = 2
+where out_sales_order_no in ('6922319469737704586')
+  and account_lock_flag = 3;
+
+
+
+select *,customer_code,order_created from ims_ec_sales_order where sales_order_no = '121768005664107766001';
+select * from ims_ec_sales_order_ext
+
+where out_sales_order_no in ('6947893103550141713',
+'6947923897096869744',
+'6922310278421183581',
+'6922307903361482576')
+  and account_lock_flag = 3;
+
+update ims_ec_sales_order set warn_msg = null where sales_order_no in ('121762792380681573000',
+'121762792617651069009',
+'121762829029667396004',
+'121762829705310427004');
+
+update ims_ec_sales_order_ext
+set account_unlock_flag = 2
+where account_unlock_flag = 3
+  and out_sales_order_no in (
+                             '6947870098908976938',
+'6947852757377816046',
+'6947865342205629511',
+'6947852676613412725',
+'6922291115625905428',
+'6947863294627944324',
+'6922293085791813013',
+'6922284249928990275',
+'6922284195888135195',
+'6922277727941328803',
+'6947872050235315600',
+'6922286546322816177',
+'6922282252811796234',
+'6922282149885214040',
+'6922277698425617896',
+'6947863139438827368',
+'6947850073808639035',
+'6922290972338519541',
+'6922284140232145996',
+'6947856729189913987',
+'6947847777514821595',
+'6947852619539617312',
+'6922293044105674467',
+'6947850030613271563',
+'6947861420790715917',
+'6947863205476308089',
+'6947854671542162915',
+'6947854740873942038',
+'6947847819681469869',
+'6947852595974248027',
+'6922284216087510819',
+'6922293028078713961',
+'6947841245150581895',
+'6947856619954836578',
+'6947854628063745640',
+'6947841201359361439',
+'6947854646747469438',
+'6947863083432023278',
+'6947861465188603031',
+'6947861422722258255',
+'6947854653929363123',
+'6947854650644501930',
+'6947852568554182284',
+'6922275470181695231',
+'6922286479463775682',
+'6947854713059350421',
+'6922273346318663273',
+'6947856709238134245',
+'6947838800757594018',
+'6922282157856030045',
+'6922279962680524556',
+'6947847746763036516',
+'6947856652669752451',
+'6947858913619023767',
+'6947858825499317625',
+'6922273317203509218',
+'6947843206576674294',
+'6947865321779369948',
+'6922293087250709735',
+'6947845777803777518',
+'6922288767877218032',
+'6947843249098724585',
+'6922284196156964754',
+'6947843190226752682',
+'6922275457505918306',
+'6922277665663975051',
+'6947861408348640577',
+'6922282122997300856',
+'6947863298159416730',
+'6947845623353971893',
+'6922286549088698241',
+'6947838838679409957',
+'6947850063922206667',
+'6947850116918613636',
+'6947856592490600151',
+'6947841247112140681',
+'6947852539558237264',
+'6947861395271914644',
+'6947869879087207733',
+'6947865313294948288',
+'6947843091082712843',
+'6947850076364805203',
+'6947867514578737106',
+'6947856624824227231',
+'6922290972538076589',
+'6922288711026376026',
+'6922282105557581124',
+'6947845763378058985',
+'6947869812474648118',
+'6922286448725752971',
+'6922282133948694002',
+'6922273325900398487',
+'6947867500814734402',
+'6947858620809746361',
+'6922290990218706058',
+'6947867571499570541',
+'6947847774085911969',
+'6947852549995960048',
+'6947856534835893598',
+'6947865289661683493',
+'6947858775480407807',
+'6947845699212874852',
+'6947850000801076894',
+'6947861435322275761',
+'6947867530199438482',
+'6947845709439440561',
+'6947852599439071161',
+'6922277621435760519',
+'6922277613907836772',
+'6947838774215316984',
+'6947861321834632983',
+'6922288727212129874',
+'6922284146278301604',
+'6947852528887338329',
+'6947863138702595681',
+'6947852397835130026',
+'6947856526310249589',
+'6947867537697150857',
+'6922275341237714585',
+'6947863114847819498',
+'6922279908667915796',
+'6947843156218943044',
+'6947867430170989986',
+'6922277599843679422',
+'6922279901393681835',
+'6947845657621697728',
+'6947845681655912386',
+'6947847704444933825',
+'6947858843480495239',
+'6922290935828151849',
+'6947843140444690279',
+'6947852468441388091'
+    );
+select *
+from ims_ec_sales_order_ext
+where sales_order_no in (
+'121743069900789703009',
+'121744561800771738006',
+'121745165700871883008',
+'121745584080992916005',
+'121745589660787734004',
+'121748232660878753005'
+                        );
+update ims_ec_sales_order_ext set account_unlock_flag = 2,account_unlock_msg = null where sales_order_no in (
+'121743069900789703009',
+'121744561800771738006',
+'121745165700871883008',
+'121745584080992916005',
+'121745589660787734004',
+'121748232660878753005'
+                        );
+select *
+from ims_ec_sales_order_ext
+where sales_order_no in (select sales_order_no
+                         from ims_ec_sales_order
+                         where customer_code = '1001569'
+                           and order_created > 1761062423000
+                           and order_created < 1761148763000
+                         and order_type = 'PRODUCT' and delete_flag = 0
+                         and order_source is not null and order_source <> 'ASM'
+                         and consign_type = 1 order by ims_ec_sales_order.creation_date
+                         )
+and account_lock_flag = 0;
+select distinct a.sales_order_no doc_number, b.id doc_line_id,
+                        b.count quantity,b.product_material_no sap_id,
+                        b.product_name sap_name,a.order_created trading_date,
+                        a.company_no company_code,a.company_name company_name,
+                        a.customer_code customer_code,b.id release_ori_line_id,
+                        a.sales_order_no release_ori_order_no,c.account_lock_no account_lock_no
+        from ims_ec_sales_order_item b
+        join ims_ec_sales_order a on a.id = b.ec_sales_order_id
+        join ims_ec_sales_order_ext c on a.sales_order_no = c.sales_order_no
+        where
+         a.sales_order_no = '121748232660878753005';
+update ims_ec_sales_order_ext set account_lock_flag = 2 and account_lock_no = '121761143482745901004' where sales_order_no = '121761143482745901004';
+select a.* from ims_ec_sales_order_item b
+        join ims_ec_sales_order a on a.id = b.ec_sales_order_id join ims_ec_sales_order_ext c on a.sales_order_no = c.sales_order_no where b.product_material_no = '109-23762502' and a.customer_code = '1001569'
+                           and a.order_created > 1761062423000
+                           and a.order_created < 1761148763000 and c.account_lock_flag = 2;
+select *
+from ims_ec_sales_order
+where sales_order_no in ('121761143482745901004');
+select order_type,
+       order_status,
+       delete_flag,
+       order_source,
+       consign_type,
+       customer_code
+from ims_ec_sales_order
+where sales_order_no = '121761143482745901004';
+select order_type,
+       delete_flag,
+       order_source,
+       consign_type,
+       customer_code
+from ims_ec_sales_order
+where sales_order_no = '121761141958110960000';
+select push_shipping_flag,order_status,ec_shipping_type,mark_key,refund_flag,delete_flag,delay_push_flag
+from ims_ec_sales_order
+where sales_order_no = '121761143482745901004';
+select *
+from ims_ec_sales_order_ext
+where sales_order_no = '121761143482745901004';
+2025-10-22 22:31:23
+2025-10-22 22:31:23
+select sales_order_no
+from ims_ec_sales_order
+where customer_code = '1001569'
+  and order_created > 1761141636000
+  and order_created < 1761145236000;

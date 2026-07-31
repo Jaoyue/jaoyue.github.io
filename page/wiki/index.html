@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>我的 Wiki</title>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHJlY3Qgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiByeD0iNiIgZmlsbD0iI2ZmN2EwMCIvPjx0ZXh0IHg9IjEyIiB5PSIxNyIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5KPC90ZXh0Pjwvc3ZnPg==" type="image/svg+xml">
+<style>*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+body{background:#f0f2f5;height:100vh;overflow:hidden;display:flex}
+main{display:flex;flex:1;width:100%;overflow:hidden}
+#sidebar{background:#fff;box-shadow:0 0 15px rgba(0,0,0,.05);height:100vh;position:fixed;z-index:20;overflow:hidden;display:flex;flex-direction:column;transition:width .3s ease}
+.sidebar-expanded{width:300px}.sidebar-collapsed{width:40px}
+.sidebar-header{padding:16px;border-bottom:1px solid #eee;display:flex;align-items:center;justify-content:space-between}
+#sidebarTitle{font-size:18px;font-weight:600;color:#1d2129}
+#toggleSidebarWidth{background:none;border:none;color:#86909c;cursor:pointer;font-size:18px}
+#toggleSidebarWidth:hover{color:#165dff}.brand-left{display:flex;align-items:center;gap:10px}
+.home-btn{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;color:#86909c;background:none;border:none;cursor:pointer}
+.home-btn:hover{color:#165dff;background:rgba(22,93,255,.08)}.home-btn svg{width:18px;height:18px}
+.wiki-search-wrap{padding:12px 16px 4px}
+.search-row{display:flex;align-items:center;gap:8px}
+#wikiSearch{flex:1;width:100%;padding:8px 12px;border:1px solid #e5e6eb;border-radius:6px;font-size:13px;color:#1d2129;outline:none}
+#collapseAll{flex:0 0 auto;width:34px;height:34px;font-size:15px}
+#wikiSearch:focus{border-color:#165dff}
+.menu-container{padding:8px 0;height:calc(100% - 110px);overflow-y:auto}
+#tree{list-style:none;padding:0 8px}#tree ul{list-style:none;padding-left:14px}
+.folder-label{display:flex;align-items:center;gap:6px;padding:8px 12px;color:#1d2129;cursor:pointer;border-radius:6px;font-weight:600;font-size:14px;user-select:none}
+.folder-label:hover{background:#f2f3f5}
+.caret{display:inline-block;font-size:11px;color:#86909c;transition:transform .15s ease}
+.folder:not(.expanded)>.folder-label>.caret{transform:rotate(-90deg)}
+.folder.expanded>.folder-label>.caret{transform:rotate(0)}
+.subtree{display:none}.folder.expanded>.subtree{display:block}
+.file>a{display:block;padding:7px 12px 7px 28px;margin-left:2px;color:#4e5969;text-decoration:none;border-radius:6px;font-size:13px;transition:all .2s ease;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.file>a:hover{background:#f2f3f5;color:#1d2129}
+.file>a.menu-active{background:rgba(22,93,255,.1);color:#165dff!important;border-left:3px solid #165dff;font-weight:600}
+.content-area{flex:1;overflow:hidden;position:relative}#contentIframe{width:100%;height:100%;border:none;background:#fff}
+#toggleMobileSidebar{position:absolute;top:16px;left:16px;background:#fff;border:none;width:40px;height:40px;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.15);color:#4e5969;cursor:pointer;z-index:10;display:none;font-size:18px}
+#toggleMobileSidebar:hover{color:#165dff}
+#sidebarOverlay{position:absolute;inset:0;background:rgba(0,0,0,.5);z-index:10;display:none}
+#closeSidebar{position:absolute;top:16px;right:16px;background:#fff;border:none;width:32px;height:32px;border-radius:50%;color:#86909c;cursor:pointer;z-index:10;display:none;font-size:18px}
+#closeSidebar:hover{color:#165dff}
+.empty-tip{list-style:none;padding:16px;color:#86909c;font-size:13px;line-height:1.7}
+.empty-tip code{background:#f2f3f5;padding:1px 6px;border-radius:4px;color:#165dff}
+@media(max-width:1023px){#toggleMobileSidebar{display:block}.sidebar-expanded{transform:translateX(0)}.sidebar-collapsed{transform:translateX(-100%)}}
+@media(min-width:1024px){#sidebar{position:static}}</style>
+</head><body><main>
+<aside id="sidebar" class="sidebar-expanded">
+<div class="sidebar-header"><div class="brand-left">
+<a href="../../index.html" id="homeBtn" class="home-btn" title="返回首页">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></a>
+<h2 id="sidebarTitle">我的 Wiki</h2></div>
+<button id="toggleSidebarWidth"><span id="toggleIcon">&#9664;</span></button></div>
+<div class="wiki-search-wrap"><div class="search-row"><input id="wikiSearch" type="text" placeholder="搜索文档…" autocomplete="off"><button id="collapseAll" class="home-btn" title="合上所有菜单" aria-label="合上所有菜单">&#8863;</button></div></div>
+<nav class="menu-container"><ul id="tree" class="tree">
+  <li class="empty-tip">菜单加载中…</li>
+</ul></nav>
+</aside>
+<div class="content-area">
+<button id="toggleMobileSidebar" title="菜单">&#9776;</button>
+<button id="closeSidebar" title="关闭菜单">&times;</button>
+<div id="sidebarOverlay"></div>
+<iframe id="contentIframe" title="内容" src=""></iframe>
+</div>
+</main>
+
+<!-- 配置化菜单：优先读取 menu.json（服务器 / GitHub Pages / 本地服务器可用）；
+     若以 file:// 直接双击打开导致 fetch 被浏览器拦截，则自动回退到 menu.js（同一份数据）。
+     新增页面时：把 html 放到 data/ 下，然后编辑 menu.json（必要时同步 menu.js）即可。 -->
+<script src="menu.js"></script>
+<script>
+var T=document.getElementById('tree'),F=document.getElementById('contentIframe'),S=document.getElementById('wikiSearch'),DATA=null;
+
+/* ---------- 首页（默认入口，不自动打开第一个文档） ---------- */
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+function countLeaves(n){ if(n.src) return 1; if(n.children) return n.children.reduce(function(s,c){return s+countLeaves(c);},0); return 0; }
+function firstSrc(n){ if(n.src) return n.src; if(n.children) for(var i=0;i<n.children.length;i++){ var r=firstSrc(n.children[i]); if(r) return r; } return null; }
+function iconFor(t){ var m={'Linux':'🐧','业务问题':'💼','分享':'📤','后端应用':'⚙️','工作模块':'🗂️','工具':'🛠️','接口卡':'🔌','文档':'📄','智能体-codeAgent':'🤖','添可项目':'🏷️','组件':'🧩','配置文档pyne':'⚙️'}; return m[t]||'📁'; }
+function expandAncestors(a){ var li=a.closest('li.file'); while(li){ var p=li.parentElement&&li.parentElement.closest('li.folder'); if(!p) break; p.classList.add('expanded'); li=p; } }
+window.selectSrc=function(src){ if(!src) return; var a=findLinkBySrc(src); if(a){ sel(a); expandAncestors(a); } else { F.removeAttribute('srcdoc'); F.src=safeSrc(src); } };
+function showHome(){
+  var title=(DATA&&DATA.title)||'我的 Wiki';
+  var cards=(DATA&&DATA.menu||[]).map(function(n){
+    var c=countLeaves(n), ic=iconFor(n.title), fs=firstSrc(n);
+    var arg="'"+String(fs).replace(/'/g,"\\'")+"'";
+    return '<a class="home-card" href="#" onclick="window.parent.selectSrc('+arg+');return false;">'
+      +'<div class="home-card-icon">'+ic+'</div>'
+      +'<div class="home-card-title">'+esc(n.title)+'</div>'
+      +'<div class="home-card-sub">'+c+' 篇文档</div></a>';
+  }).join('');
+  var html='<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">'
+    +'<meta name="viewport" content="width=device-width,initial-scale=1.0"><style>'
+    +'*{margin:0;padding:0;box-sizing:border-box;font-family:\'Segoe UI\',Tahoma,Geneva,Verdana,sans-serif}'
+    +'body{background:linear-gradient(135deg,#f0f2f5 0%,#e8eefc 100%);min-height:100vh;padding:48px 32px;color:#1d2129}'
+    +'.home-wrap{max-width:1100px;margin:0 auto}'
+    +'.home-hero{text-align:center;margin-bottom:40px}'
+    +'.home-hero h1{font-size:40px;font-weight:700;background:linear-gradient(90deg,#165dff,#4b8bff);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:12px}'
+    +'.home-hero p{color:#86909c;font-size:15px}'
+    +'.home-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:18px}'
+    +'.home-card{display:block;background:#fff;border:1px solid #e5e6eb;border-radius:14px;padding:24px 18px;text-align:center;text-decoration:none;color:#1d2129;transition:all .2s ease;box-shadow:0 1px 4px rgba(0,0,0,.04)}'
+    +'.home-card:hover{transform:translateY(-4px);border-color:#165dff;box-shadow:0 8px 24px rgba(22,93,255,.18)}'
+    +'.home-card-icon{font-size:40px;margin-bottom:12px}'
+    +'.home-card-title{font-size:16px;font-weight:600;margin-bottom:6px}'
+    +'.home-card-sub{font-size:12px;color:#86909c}'
+    +'</style></head><body><div class="home-wrap">'
+    +'<div class="home-hero"><h1>'+esc(title)+'</h1><p>欢迎来到知识库，选择下面的分类开始浏览，或使用左侧菜单检索</p></div>'
+    +'<div class="home-grid">'+cards+'</div></div></body></html>';
+  F.removeAttribute('src'); F.srcdoc=html;
+}
+
+/* ---------- 菜单渲染（来自 JSON 配置，支持任意层级子菜单） ---------- */
+function renderMenu(nodes, container, depth){
+  nodes.forEach(function(n){
+    if(n.children && n.children.length){
+      var li=document.createElement('li');
+      li.className='folder';
+      if(depth===0) li.setAttribute('data-top','1');
+      var label=document.createElement('div');
+      label.className='folder-label';
+      label.innerHTML='<span class="caret">&#9662;</span><span class="folder-name"></span>';
+      label.querySelector('.folder-name').textContent=n.title||'(未命名)';
+      var ul=document.createElement('ul');
+      ul.className='subtree';
+      renderMenu(n.children, ul, depth+1);
+      li.appendChild(label); li.appendChild(ul);
+      container.appendChild(li);
+    } else if(n.src){
+      var li=document.createElement('li');
+      li.className='file';
+      var a=document.createElement('a');
+      a.href='javascript:void(0)';
+      a.setAttribute('data-src', n.src);
+      a.textContent=n.title||n.src;
+      li.appendChild(a);
+      container.appendChild(li);
+    }
+  });
+}
+
+/* ---------- 菜单配置加载：menu.json 优先，menu.js 兜底 ---------- */
+function loadMenuConfig(){
+  return fetch('menu.json',{cache:'no-cache'}).then(function(r){
+    if(r.ok) return r.json();
+    throw new Error('menu.json not ok');
+  }).then(function(d){ return d&&d.menu?d:Promise.reject('bad'); })
+    .catch(function(){
+      if(window.WIKI_MENU&&window.WIKI_MENU.menu) return window.WIKI_MENU;
+      throw new Error('no menu');
+    });
+}
+
+/* ---------- 选择 / 高亮 / 加载页面 ---------- */
+function safeSrc(raw){ return String(raw||'').replace(/#/g,'%23'); }
+function sel(a){
+  document.querySelectorAll('#tree a.menu-active').forEach(function(x){x.classList.remove('menu-active')});
+  a.classList.add('menu-active');
+  var src=a.getAttribute('data-src');
+  F.removeAttribute('srcdoc'); F.src=safeSrc(src);
+  try{ location.hash=encodeURIComponent(src); }catch(e){}
+  if(window.innerWidth<1024) hideM();
+}
+function findLinkBySrc(src){
+  var safe=String(src).replace(/\\/g,'\\\\').replace(/"/g,'\\"');
+  return T.querySelector('a[data-src="'+safe+'"]');
+}
+
+/* ---------- 搜索 ---------- */
+function doSearch(){
+  var q=S.value.trim().toLowerCase();
+  T.querySelectorAll('li.file').forEach(function(li){
+    var n=li.querySelector('a').textContent.toLowerCase();
+    li.style.display=(q===''||n.indexOf(q)>=0)?'':'none';
+  });
+  Array.prototype.slice.call(T.querySelectorAll('li.folder')).reverse().forEach(function(li){
+    var fn=li.querySelector('.folder-name').textContent.toLowerCase();
+    var selfMatch=(q!==''&&fn.indexOf(q)>=0);
+    var childVisible=false;
+    li.querySelectorAll(':scope > .subtree > li').forEach(function(c){ if(c.style.display!=='none') childVisible=true; });
+    var v=selfMatch||childVisible;
+    li.style.display=v?'':'none';
+    if(q!==''&&v&&childVisible) li.classList.add('expanded');
+    else if(q===''){ li.classList.remove('expanded'); }
+  });
+}
+
+/* ---------- 一键合上所有目录 ---------- */
+function collapseAll(){ T.querySelectorAll('li.folder').forEach(function(li){ li.classList.remove('expanded'); }); }
+
+/* ---------- 侧边栏折叠 / 移动端 ---------- */
+var sb=document.getElementById('sidebar'),st=document.getElementById('sidebarTitle'),
+    hb=document.getElementById('homeBtn'),tsb=document.getElementById('toggleSidebarWidth'),
+    ti=document.getElementById('toggleIcon'),mc=document.querySelector('.menu-container'),
+    ws=document.querySelector('.wiki-search-wrap'),col=false;
+function tog(){
+  col=!col;
+  if(col){ sb.className='sidebar-collapsed'; ti.innerHTML='&#9654;'; st.style.display='none'; mc.style.display='none'; ws.style.display='none'; hb.style.display='none'; tsb.style.margin='0 auto'; }
+  else { sb.className='sidebar-expanded'; ti.innerHTML='&#9664;'; st.style.display='block'; mc.style.display='block'; ws.style.display='block'; hb.style.display=''; tsb.style.margin='0'; }
+}
+function showM(){ if(col) tog(); sb.className='sidebar-expanded'; document.getElementById('sidebarOverlay').style.display='block'; document.getElementById('closeSidebar').style.display='block'; }
+function hideM(){ sb.className='sidebar-collapsed'; document.getElementById('sidebarOverlay').style.display='none'; document.getElementById('closeSidebar').style.display='none'; }
+
+/* ---------- 事件绑定 ---------- */
+T.addEventListener('click',function(e){
+  var L=e.target.closest('.folder-label'); if(L){ L.parentElement.classList.toggle('expanded'); e.stopPropagation(); return; }
+  var A=e.target.closest('a[data-src]'); if(A){ sel(A); }
+});
+S.addEventListener('input',doSearch);
+document.getElementById('collapseAll').addEventListener('click',collapseAll);
+tsb.addEventListener('click',tog);
+document.getElementById('toggleMobileSidebar').addEventListener('click',showM);
+document.getElementById('closeSidebar').addEventListener('click',hideM);
+document.getElementById('sidebarOverlay').addEventListener('click',hideM);
+window.addEventListener('resize',function(){
+  if(window.innerWidth>=1024){ sb.className='sidebar-expanded'; document.getElementById('sidebarOverlay').style.display='none'; document.getElementById('closeSidebar').style.display='none'; hb.display=''; }
+  else if(!col) hideM();
+});
+window.addEventListener('hashchange',function(){
+  var hash=decodeURIComponent(location.hash.slice(1));
+  if(!hash) return;
+  var a=findLinkBySrc(hash);
+  if(a && !a.classList.contains('menu-active')){ sel(a); expandAncestors(a); }
+});
+
+/* ---------- 初始化：渲染菜单并定位到默认/历史页面 ---------- */
+function init(){
+  loadMenuConfig().then(function(data){
+    DATA=data;
+    if(data.title){ document.getElementById('sidebarTitle').textContent=data.title; document.title=data.title; }
+    T.innerHTML='';
+    renderMenu(data.menu, T, 0);
+    var hash=decodeURIComponent(location.hash.slice(1));
+    var target=hash?findLinkBySrc(hash):null;
+    if(target){ sel(target); }
+    else { showHome(); }
+  }).catch(function(){
+    T.innerHTML='<li class="empty-tip">菜单加载失败 ✕<br><br>请确认 <code>menu.json</code> / <code>menu.js</code> 与本页面在同一目录。<br><br>若你是<b>直接双击以 file:// 打开</b>且仍失败，浏览器会拦截本地 json 的 fetch；请用本地服务器预览：<br><code>python -m http.server</code><br>然后访问 <code>http://localhost:8000</code></li>';
+  });
+}
+init();
+</script></body></html>

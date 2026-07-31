@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/分享/C#开发exe程序.html|打开 HTML 页面]]
+
 ## 1.打开记事本,复制代码(简易计算器)
 
 ```csharp
