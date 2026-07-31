@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/工具/Java/第三方API/百度OCR识别,人脸比对.html|打开 HTML 页面]]
+
 ```
 package com.ecovacs.store.util;
 

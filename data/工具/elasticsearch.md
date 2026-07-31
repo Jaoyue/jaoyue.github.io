@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/工具/elasticsearch.html|打开 HTML 页面]]
+
 Elasticsearch（简称ES）是一个分布式、可扩展、实时的搜索与数据分析引擎。ES不仅仅只是全文搜索，还支持结构化搜索、数据分析、复杂的语言处理、地理位置和对象间关联关系等。
 
 ### 倒排索引:

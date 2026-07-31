@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/添可项目/派恩/需求/假故障sop_维修sop.html|打开 HTML 页面]]
+
 ### 1.新建表
 ```sql
 CREATE TABLE `pyne_agent`.`pn_fake_fault_sop_process`  (

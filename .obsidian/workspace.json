@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "data/添可项目/营销中台/2026年/0731TOB促销前置价格申请单新增“寄售”类型并优化价目表生效逻辑.md",
+                "file": "data/Linux/redis监控(Prometheus + Grafana).md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "0731TOB促销前置价格申请单新增“寄售”类型并优化价目表生效逻辑"
+              "title": "redis监控(Prometheus + Grafana)"
             }
           }
         ]
@@ -99,7 +99,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "data/添可项目/营销中台/2026年/0731TOB促销前置价格申请单新增“寄售”类型并优化价目表生效逻辑.md",
+                "file": "data/Linux/redis监控(Prometheus + Grafana).md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -118,7 +118,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "data/添可项目/营销中台/2026年/0731TOB促销前置价格申请单新增“寄售”类型并优化价目表生效逻辑.md",
+                "file": "data/Linux/redis监控(Prometheus + Grafana).md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
@@ -161,7 +161,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "data/添可项目/营销中台/2026年/0731TOB促销前置价格申请单新增“寄售”类型并优化价目表生效逻辑.md",
+                "file": "data/Linux/redis监控(Prometheus + Grafana).md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -170,8 +170,7 @@
               "title": "大纲"
             }
           }
-        ],
-        "currentTab": 4
+        ]
       }
     ],
     "direction": "horizontal",
@@ -193,50 +192,51 @@
   },
   "active": "698390df396ee00f",
   "lastOpenFiles": [
+    "data/Linux/常用命令.md",
+    "data/组件/Navicat.md",
+    "data/组件/git常用命令.md",
+    "data/组件/elasticsearch.md",
     "data/智能体-codeAgent/赛意课件/MCP.md",
-    "data/添可项目/营销中台/2026年/0731TOB促销前置价格申请单新增“寄售”类型并优化价目表生效逻辑.md",
-    "data/分享/C#开发exe程序.md",
-    "page/wiki/data/分享/C#开发exe程序.html",
-    "page/wiki/data/分享/C.md",
-    "page/wiki/data/分享/珊瑚MCP、插件、SKILL使用.html",
-    "page/wiki/build-menu.vbs",
-    "page/wiki/build-menu.bat",
-    "page/wiki/build-menu.py",
-    "page/wiki/menu.js",
-    "page/wiki/menu.json",
-    "util/_verify.py",
-    "util/_run_bat_test.py",
-    "util/gen_out.txt",
     "data/智能体-codeAgent/赛意课件/小作文模版.md",
-    "page/wiki/data/智能体-codeAgent/灵码规则/测试.html.md",
-    "data/智能体-codeAgent/灵码规则/测试.md",
+    "data/智能体-codeAgent/赛意课件/通义灵码使用说明手册v2.md",
+    "data/智能体-codeAgent/灵码规则/center_rule.md",
+    "page/wiki/data/智能体-codeAgent/灵码规则/ali_java_rule.html",
     "data/智能体-codeAgent/灵码规则/ali_java_rule.md",
-    "page/wiki/data/后端应用/md-img/百度云OCR识别,人脸比对1_1/image-20260415161825989.png",
-    "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 32.png",
-    "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 33.png",
-    "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 30.png",
-    "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 31.png",
-    "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 29.png",
-    "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 25.png",
-    "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 28.png",
-    "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 27.png",
-    "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 26.png",
-    "data/添可项目/派恩/需求/可维修性评估A2A对接香农).md",
-    "data/添可项目/派恩/需求/添可排障戴明改善问题优化.md",
-    "data/添可项目/派恩/需求/排障迁移珊瑚.md",
-    "data/添可项目/派恩/需求/国际化.md",
-    "data/添可项目/派恩/需求/一键获取戴明dfmea.md",
-    "data/添可项目/派恩/需求/舆情.md",
-    "data/添可项目/派恩/需求/假故障sop_维修sop.md",
-    "data/添可项目/派恩/需求/530可维修性评估调整.md",
-    "data/添可项目/派恩/发版计划/5.29发版计划.md",
-    "data/添可项目/派恩/发版计划/6月发版计划.md",
-    "data/添可项目/派恩/发版计划/619发版计划.md",
-    "data/添可项目/派恩/发版计划/630发版计划.md",
-    "data/添可项目/派恩/发版计划/730发版计划.md",
-    "data/添可项目/派恩/发版计划/930发版计划.md",
-    "data/添可项目/派恩/dify平台/需求/维修排障-730优化.md",
-    "data/添可项目/派恩/dify平台/工作流/工具-md文档转Excel.md",
-    "data/添可项目/派恩/dify平台/工作流/卡耐基-质检.md"
+    "HTML Pages/data/智能体-codeAgent/灵码规则/ali_java_rule.html.md",
+    "HTML Pages/data/智能体-codeAgent/灵码规则",
+    "HTML Pages/data/智能体-codeAgent",
+    "HTML Pages/data",
+    "HTML Pages",
+    "data/智能体-codeAgent/灵码规则/测试.md",
+    "page/wiki/data/智能体-codeAgent/灵码规则/测试.html.md",
+    "data/智能体-codeAgent/会议纪要/MCP与AI项目开发应用探讨_20260106.md",
+    "data/智能体-codeAgent/会议纪要/Java后端中心规范作业提交_20260106.md",
+    "data/智能体-codeAgent/会议纪要/AI生成代码构建项目框架_20260113.md",
+    "data/智能体-codeAgent/会议纪要/Ai辅助软件开发流程优化_20260105.md",
+    "data/智能体-codeAgent/会议纪要/Ai辅助开发规则库知识库建设_20260105.md",
+    "data/智能体-codeAgent/会议纪要/AI编码与业务逻辑注释规范_20251230.md",
+    "data/智能体-codeAgent/会议纪要/AI编码效率质量提升与实践_20260109.md",
+    "data/智能体-codeAgent/会议纪要/业务文档整理与代码生成练习_20260107.md",
+    "data/智能体-codeAgent/会议纪要/开发规则平台与实验项目开发_20260114.md",
+    "data/智能体-codeAgent/会议纪要/代码生成与优化技巧_20260112.md",
+    "data/业务问题/TOC业务/电商/直销切换供销(淘宝).md",
+    "data/业务问题/TOC业务/电商/直销切换供销(京东).md",
+    "data/业务问题/TOC业务/电商/抖音直播秒退拉单慢.md",
+    "data/业务问题/TOB业务/资料汇总.md",
+    "page/wiki/data/添可项目/CSS/css派恩缝合320.html",
+    "page/wiki/data/添可项目/营销中台/2026年/0731TOB促销前置价格申请单新增“寄售”类型并优化价目表生效逻辑.html",
+    "data/工作模块/线下门店/业务逻辑/门店销售.jpg",
+    "page/wiki/data/分享/珊瑚MCP、插件、SKILL使用.html",
+    "page/wiki/data/添可项目/派恩/辛顿经分体sql配置/md-img/设计文档/自然语言sql生成.png",
+    "page/wiki/data/添可项目/派恩/md-img/派恩Agent资料梳理/1746523041419-45353b83-2ce0-4057-9c74-279ad230456d.png",
+    "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image.png",
+    "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 9.png",
+    "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 8.png",
+    "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 7.png",
+    "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 65.png",
+    "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 64.png",
+    "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 63.png",
+    "page/wiki/data/分享/C#开发exe程序.html",
+    "page/wiki/build-menu.vbs"
   ]
 }

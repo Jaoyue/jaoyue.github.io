@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/GOMS电商订单模块功能架构.html|打开 HTML 页面]]
+
 # GOMS电商订单模块功能架构
 
 # 一、系统定义

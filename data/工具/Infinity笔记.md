@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/工具/Infinity笔记.html|打开 HTML 页面]]
+
 # 补考勤逻辑
 > <font style="color:rgb(51, 51, 51);background-color:rgb(249, 249, 249);">含当天6天内（10号最多补5号）</font>
 >

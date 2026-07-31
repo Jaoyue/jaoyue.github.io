@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/工具/Java/spring多数据源配置/mybatis-plus @DS注解.html|打开 HTML 页面]]
+
 ### DS注解的基本概念：
 
 `@DS`注解用于动态数据源切换，用于指定方法或类使用特定的数据源  

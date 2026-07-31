@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/工具/小玩意/代码生成工具-基于mybatis(高斯框架).html|打开 HTML 页面]]
+
 ```java
 @Test
 public void contextLoaded() throws Exception {

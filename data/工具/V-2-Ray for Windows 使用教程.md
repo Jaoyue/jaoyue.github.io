@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/工具/V-2-Ray for Windows 使用教程.html|打开 HTML 页面]]
+
 ### 1.文件下载
 Windows版: [https://dbu-file.tineco.cn:7443/data/dbu/store/2025-11-27/0af4c11b-becc-46a2-ab03-4332167b47ef.zip](https://dbu-file.tineco.cn:7443/data/dbu/store/2025-11-27/0af4c11b-becc-46a2-ab03-4332167b47ef.zip)
 

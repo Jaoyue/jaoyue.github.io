@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/Linux/redis监控(Prometheus + Grafana).html|打开 HTML 页面]]
+
 # 使用Prometheus + Grafana监控Redis内存
 下面详细介绍如何使用Prometheus和Grafana搭建Redis内存监控系统，并在内存超过4.5GB时发送邮件告警。
 

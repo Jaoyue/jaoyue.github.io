@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/后端应用/HttpServlet.html|打开 HTML 页面]]
+
 **<font style="color:rgb(77, 77, 77);">HttpServlet是在继承GenericServlet的基础上进一步的扩展。提供将要被子类化以创建适用于Web站点的HTTP servlet的抽象类。</font>**
 
 **<font style="color:rgb(77, 77, 77);">HTTPServlet的子类可以重写父类的方法，该方法通常是：</font>**

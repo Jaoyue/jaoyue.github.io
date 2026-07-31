@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/工具/Java/AbstractProcessor注解处理器.html|打开 HTML 页面]]
+
 示例: [Java注解编译期处理AbstractProcessor详解 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/625759003)
 
 [好玩的编译时注解处理工具——APT_annotationprocessorpaths-CSDN博客](https://blog.csdn.net/qq_31142553/article/details/103843936)  

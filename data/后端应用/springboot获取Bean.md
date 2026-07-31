@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/后端应用/springboot获取Bean.html|打开 HTML 页面]]
+
 ### <font style="color:rgb(31, 35, 40);">1. </font>**<font style="color:rgb(31, 35, 40);">通过Spring上下文获取Bean</font>**
 <font style="color:rgb(31, 35, 40);">如果你有Spring上下文的引用，可以通过上下文来获取Bean实例。这是最常见的方法。</font>
 

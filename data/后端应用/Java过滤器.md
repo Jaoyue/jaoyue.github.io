@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/后端应用/Java过滤器.html|打开 HTML 页面]]
+
 ### <font style="color:rgb(77, 77, 77);">filter也称之为过滤器，它是</font>[javaWeb](https://so.csdn.net/so/search?q=javaWeb&spm=1001.2101.3001.7020)<font style="color:rgb(77, 77, 77);">三大组件之一（Servlet程序、Listener监听器、Filter过滤器）, 既可以对请求进行拦截，也可以对响应进行处理.</font>
 **<font style="color:rgb(77, 77, 77);">要想调用配置一个过滤器：</font>**
 

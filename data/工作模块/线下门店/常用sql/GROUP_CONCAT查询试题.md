@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/工作模块/线下门店/常用sql/GROUP_CONCAT查询试题.html|打开 HTML 页面]]
+
 ```plsql
 set @n = 0;
 select (@n := @n + 1) as '序号', t.试题内容,t.题型,t.难易度,t.选项 from 

@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/配置文档pyne/README.html|打开 HTML 页面]]
+
 # gauss-ai
 
 AI工具包

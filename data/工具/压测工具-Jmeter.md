@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/工具/压测工具-Jmeter.html|打开 HTML 页面]]
+
 ### 1.Jmeter安装
 1>安装jdk
 

@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/工作模块/线下门店/常用sql/分部修改sql.html|打开 HTML 页面]]
+
 ```plsql
 -- 修改深圳、东莞、惠州、河源、梅州、潮州、揭阳、汕头、汕尾 网点为深圳分部
 update `platform-store`.sp_store_workspace set sales_region = 'SHENZHEN' where city_id in (select area_id from `platform-admin`.sys_area where area_name in ('深圳市','东莞市','惠州市','河源市','梅州市','潮州市','揭阳市','汕头市','汕尾市')) and sales_region = 'HUANAN'; 

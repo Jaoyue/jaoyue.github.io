@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/工具/Jenkins定时任务监控重启方案.html|打开 HTML 页面]]
+
 # 1.被监控任务发版流程加锁:
 ### 以ecovacs-store-api为例,在pre steps和post steps中增加锁配置
 ![](md-img/Jenkins定时任务监控重启方案/1763710341381-dfb98c86-7f0d-45ed-a6c8-6d6463231aea.png)

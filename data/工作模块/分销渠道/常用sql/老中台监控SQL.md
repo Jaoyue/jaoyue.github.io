@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/工作模块/分销渠道/常用sql/老中台监控SQL.html|打开 HTML 页面]]
+
 ### 分销库存监控
 
 ```

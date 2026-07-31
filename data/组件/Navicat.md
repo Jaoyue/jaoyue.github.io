@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/组件/Navicat.html|打开 HTML 页面]]
+
 ## 比对两个数据库表结构异同(测试-生产)
 工具-结构同步
 

@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/添可项目/派恩/dify平台/工作流/派恩-备件BOM.html|打开 HTML 页面]]
+
 ```yaml
 app:
   description: 售后维修智能体搭建备件BOM业务

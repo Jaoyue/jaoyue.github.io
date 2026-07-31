@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/工具/TIDB.html|打开 HTML 页面]]
+
 TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库。
 
 是一款同时支持在线事务处理与在线分析处理 (Hybrid Transactional and Analytical Processing, HTAP)的融合型分布式数据库产品，具备水平扩容或者缩容、金融级高可用、实时 HTAP、[云原生](https://baike.baidu.com/item/%E4%BA%91%E5%8E%9F%E7%94%9F/53770166?fromModule=lemma_inlink)的分布式数据库、兼容 MySQL 5.7 协议和 MySQL 生态等重要特性。

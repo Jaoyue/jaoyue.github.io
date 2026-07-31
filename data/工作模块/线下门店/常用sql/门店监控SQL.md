@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/工作模块/线下门店/常用sql/门店监控SQL.html|打开 HTML 页面]]
+
 ```sql
 select a.store_no,a.material_no,a.stock_amount,b.stock from sp_prototype_store_stock a,(select store_no,material_no,count(*) stock from sp_store_prototype_sn where delete_flag = 0 group by store_no,material_no) b where a.store_no = b.store_no and a.material_no = b.material_no HAVING stock_amount <> stock
 

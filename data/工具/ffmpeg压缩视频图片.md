@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/工具/ffmpeg压缩视频图片.html|打开 HTML 页面]]
+
 ## Linux中安装ffmpeg
 
 1. 安装ffmpeg: sudo yum install ffmpeg

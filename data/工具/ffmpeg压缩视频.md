@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/工具/ffmpeg压缩视频.html|打开 HTML 页面]]
+
 ## <font style="color:rgb(23, 43, 77);">Linux中安装ffmpeg</font>
 1. 安装ffmpeg: <font style="color:rgb(153, 51, 0);">sudo</font><font style="color:rgb(153, 51, 0);"> </font><font style="color:rgb(153, 51, 0);">yum install ffmpeg</font>
 2. <font style="color:rgb(0, 0, 0);">如果报错</font><font style="color:rgb(31, 35, 40);">没有可用软件包 ffmpeg,按下面方式解决</font>

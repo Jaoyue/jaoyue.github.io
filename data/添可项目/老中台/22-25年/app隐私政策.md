@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/添可项目/老中台/22-25年/app隐私政策.html|打开 HTML 页面]]
+
 ```sql
 create table sp_app_policy
 (

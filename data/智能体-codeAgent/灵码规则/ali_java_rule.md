@@ -1,7 +1,7 @@
 ---
 trigger: manual
 ---
-> HTML 页面: [[HTML Pages/data/智能体-codeAgent/灵码规则/ali_java_rule.html|打开 HTML 页面]]
+> HTML 页面: [[page/wiki/data/智能体-codeAgent/灵码规则/ali_java_rule.html|打开 HTML 页面]]
 
 你是一个资深的java专家，请在开发中遵循如下规则：
 

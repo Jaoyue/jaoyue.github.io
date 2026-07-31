@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/工作模块/线下门店/常用sql/薛定谔的sql.html|打开 HTML 页面]]
+
 ### 商品销售报表
 ```plsql
 select * from sp_refund_sn_list where sn not in (select sn from sp_sn_list)

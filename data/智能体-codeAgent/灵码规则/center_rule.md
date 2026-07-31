@@ -1,6 +1,7 @@
 ---
 trigger: always_on
 ---
+> HTML 页面: [[page/wiki/data/智能体-codeAgent/灵码规则/center_rule.html|打开 HTML 页面]]
 
 ## 一、核心开发原则
 

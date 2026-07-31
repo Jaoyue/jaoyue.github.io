@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/工具/Java/springboot获取Bean.html|打开 HTML 页面]]
+
 ### 1. **通过Spring上下文获取Bean**
 
 如果你有Spring上下文的引用，可以通过上下文来获取Bean实例。这是最常见的方法。

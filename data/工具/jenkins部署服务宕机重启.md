@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/工具/jenkins部署服务宕机重启.html|打开 HTML 页面]]
+
 ## 0.需要修改的地方：
 ### 1. **Post Steps 保持不变**
 你的 Jenkins Post Steps **完全不需要修改**：

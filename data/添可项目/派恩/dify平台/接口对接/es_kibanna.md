@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/添可项目/派恩/dify平台/接口对接/es_kibanna.html|打开 HTML 页面]]
+
 ```json
 GET /series_match/_search
 {

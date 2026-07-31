@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/工作模块/线下门店/常用sql/json解析.html|打开 HTML 页面]]
+
 ```plsql
 SELECT j.id,j.name,replace(REPLACE(j.detail,"{",""),"}","") 
 from sp_train_job j where id = 114

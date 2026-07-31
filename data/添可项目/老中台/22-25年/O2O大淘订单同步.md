@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/添可项目/老中台/22-25年/O2O大淘订单同步.html|打开 HTML 页面]]
+
 ```sql
 CREATE TABLE `platform-store`.`sp_store_datao`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'id',

@@ -45,6 +45,7 @@ GET /v1/private/{deviceId}/{appCode}/{appVersion}/{channel}/{deviceType}/stat/fl
 - 若发生业务异常（如 `EcovacsValidateException`），返回对应错误码和消息。
 
 ---
+> HTML 页面: [[page/wiki/data/添可项目/老中台/22-25年/工作流报表app接口.html|打开 HTML 页面]]
 
 ### 2. 获取工作流数据
 

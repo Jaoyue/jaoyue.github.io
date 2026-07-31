@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/智能体-codeAgent/赛意课件/MCP.html|打开 HTML 页面]]
+
 # MCP
 
 

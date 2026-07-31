@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/组件/git常用命令.html|打开 HTML 页面]]
+
 #### git修改用户名: 
 git config --global user.name 'zhaoyue'
 

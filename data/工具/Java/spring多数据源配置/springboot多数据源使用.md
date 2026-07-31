@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/工具/Java/spring多数据源配置/springboot多数据源使用.html|打开 HTML 页面]]
+
 ### yml文件配置,配置多数据源
 
 ```

@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/添可项目/老中台/22-25年/WMS改造上线.html|打开 HTML 页面]]
+
 ### inqurie
 #### 配置:
 ```yaml
