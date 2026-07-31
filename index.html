@@ -3,433 +3,525 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My tools</title>
-  <!-- 使用内嵌SVG作为标签页图标，无需外部资源 -->
-  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHRleHQgeD0iMCIgeT0iMTYiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZmlsbD0iI0ZGMDAwMCI+TVQ8L3RleHQ+PC9zdmc+" type="image/svg+xml">
- 
+  <title>jaoyue · 技术博客</title>
+  <meta name="description" content="jaoyue 的个人博客，记录技术笔记、开发心得与实用工具。">
+  <!-- 内嵌 SVG 作为标签页图标，无外部依赖 -->
+  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHJlY3Qgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiByeD0iNiIgZmlsbD0iIzE2NWRmZiIvPjx0ZXh0IHg9IjEyIiB5PSIxNyIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5KPC90ZXh0Pjwvc3ZnPg==">
+
   <style>
-    /* 基础样式重置 */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #f7f8fa;
+      --text: #1d2129;
+      --text-soft: #4e5969;
+      --text-mute: #86909c;
+      --accent: #165dff;
+      --accent-dark: #0e42c0;
+      --accent-soft: rgba(22, 93, 255, 0.08);
+      --border: #e5e6eb;
+      --radius: 14px;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      --shadow-hover: 0 8px 30px rgba(22, 93, 255, 0.15);
+      --max-width: 1080px;
     }
-    
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
     body {
-      background-color: #f0f2f5;
-      height: 100vh;
-      overflow: hidden;
-      display: flex;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
     }
-    
-    /* 主内容区 */
-    main {
-      display: flex;
-      flex: 1;
-      width: 100%;
-      overflow: hidden;
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 24px;
     }
-    
-    /* 侧边栏样式 */
-    #sidebar {
-      background-color: white;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
-      height: 100vh;
-      position: fixed;
-      z-index: 20;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: width 0.3s ease-in-out;
+
+    /* ===== 顶部导航栏 ===== */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: saturate(180%) blur(12px);
+      border-bottom: 1px solid var(--border);
     }
-    
-    /* 侧边栏展开/收起状态 */
-    .sidebar-expanded {
-      width: 256px;
-    }
-    
-    .sidebar-collapsed {
-      width: 40px;
-    }
-    
-    /* 侧边栏头部 */
-    .sidebar-header {
-      padding: 16px;
-      border-bottom: 1px solid #eee;
+
+    .navbar-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 64px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-    
-    #sidebarTitle {
-      font-size: 18px;
-      font-weight: 600;
-      color: #1d2129;
-      transition: opacity 0.3s ease;
-    }
-    
-    /* 切换按钮 */
-    #toggleSidebarWidth {
-      background: none;
-      border: none;
-      color: #86909c;
-      cursor: pointer;
-      transition: color 0.2s ease;
-      font-size: 18px;
-    }
-    
-    #toggleSidebarWidth:hover {
-      color: #165dff;
-    }
-    
-    /* 菜单容器 */
-    .menu-container {
-      padding: 16px 0;
-      height: calc(100% - 60px);
-      overflow-y: auto;
-    }
-    
-    #menuList {
-      list-style: none;
-      padding: 0 8px;
-    }
-    
-    #menuList li {
-      margin-bottom: 4px;
-    }
-    
-    #menuList a {
+
+    .brand {
       display: flex;
       align-items: center;
-      padding: 12px 16px;
-      color: #4e5969;
-      text-decoration: none;
-      border-radius: 6px;
-      transition: all 0.2s ease;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: 0.5px;
     }
-    
-    #menuList a:hover {
-      background-color: #f2f3f5;
-    }
-    
-    .menu-active {
-      background-color: rgba(22, 93, 255, 0.1);
-      color: #165dff !important;
-      border-left: 4px solid #165dff;
-    }
-    
-    /* 右侧内容区域 */
-    .content-area {
-      flex: 1;
-      overflow: hidden;
-      position: relative;
-    }
-    
-    /* 移动端菜单按钮 */
-    #toggleMobileSidebar {
-      position: absolute;
-      top: 16px;
-      left: 16px;
-      background-color: white;
-      border: none;
-      width: 40px;
-      height: 40px;
-      border-radius: 6px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-      color: #4e5969;
-      cursor: pointer;
-      z-index: 10;
-      display: none;
-    }
-    
-    #toggleMobileSidebar:hover {
-      color: #165dff;
-    }
-    
-    /* 遮罩层 */
-    #sidebarOverlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 10;
-      display: none;
-    }
-    
-    /* iframe样式 */
-    #contentIframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-    
-    /* 移动端关闭按钮 */
-    #closeSidebar {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      background-color: white;
-      border: none;
+
+    .brand .logo {
       width: 32px;
       height: 32px;
-      border-radius: 50%;
-      color: #86909c;
-      cursor: pointer;
-      z-index: 10;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #165dff, #4080ff);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      padding: 8px 14px;
+      border-radius: 8px;
+      color: var(--text-soft);
+      font-size: 15px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .nav-links a:hover { background: var(--bg-soft); color: var(--text); }
+
+    .nav-links a.active { color: var(--accent); background: var(--accent-soft); }
+
+    .nav-toggle {
       display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 22px;
+      color: var(--text-soft);
     }
-    
-    #closeSidebar:hover {
-      color: #165dff;
+
+    /* ===== Hero 个人介绍 ===== */
+    .hero {
+      background: linear-gradient(135deg, #165dff 0%, #4080ff 55%, #69b1ff 100%);
+      color: #fff;
+      padding: 72px 0 80px;
     }
-    
-    /* 响应式设计 */
-    @media (max-width: 1023px) {
-      #toggleMobileSidebar {
-        display: block;
-      }
-      
-      .sidebar-expanded {
-        transform: translateX(0);
-      }
-      
-      .sidebar-collapsed {
-        transform: translateX(-100%);
-      }
+
+    .hero-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 36px;
     }
-    
-    @media (min-width: 1024px) {
-      #sidebar {
-        position: static;
+
+    .avatar {
+      width: 112px;
+      height: 112px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.18);
+      border: 3px solid rgba(255, 255, 255, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 44px;
+      font-weight: 800;
+      flex-shrink: 0;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .hero-text h1 {
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .hero-text .role {
+      font-size: 16px;
+      opacity: 0.92;
+      margin-bottom: 12px;
+    }
+
+    .hero-text .bio {
+      font-size: 15px;
+      opacity: 0.9;
+      max-width: 560px;
+    }
+
+    .hero-social {
+      margin-top: 18px;
+      display: flex;
+      gap: 12px;
+    }
+
+    .hero-social a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.16);
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.2s ease;
+    }
+
+    .hero-social a:hover { background: rgba(255, 255, 255, 0.3); }
+
+    /* ===== 区块标题 ===== */
+    .section { padding: 56px 0; }
+    .section.alt { background: var(--bg-soft); }
+
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 28px;
+    }
+
+    .section-head h2 {
+      font-size: 22px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-head h2::before {
+      content: "";
+      width: 4px;
+      height: 20px;
+      border-radius: 2px;
+      background: var(--accent);
+    }
+
+    .section-head .more {
+      font-size: 14px;
+      color: var(--text-mute);
+      transition: color 0.2s ease;
+    }
+    .section-head .more:hover { color: var(--accent); }
+
+    /* ===== 文章列表 ===== */
+    .post-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .post-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .post-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+      border-color: transparent;
+    }
+
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .tag {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+
+    .post-date { font-size: 13px; color: var(--text-mute); }
+
+    .post-card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+
+    .post-card p {
+      font-size: 14px;
+      color: var(--text-soft);
+      margin-bottom: 14px;
+    }
+
+    .post-card .read-more {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* ===== 工具箱入口栏 ===== */
+    .tools-cta {
+      background: linear-gradient(135deg, #1d2129 0%, #2a2f3a 100%);
+      border-radius: 18px;
+      padding: 40px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+
+    .tools-cta .info { flex: 1; min-width: 260px; }
+
+    .tools-cta .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #69b1ff;
+      background: rgba(105, 177, 255, 0.12);
+      padding: 5px 12px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+
+    .tools-cta h3 { font-size: 24px; font-weight: 800; margin-bottom: 10px; }
+
+    .tools-cta p { font-size: 15px; opacity: 0.82; margin-bottom: 16px; }
+
+    .tool-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tool-chips span {
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #c9cdd4;
+    }
+
+    .btn-tools {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 14px 26px;
+      border-radius: 12px;
+      white-space: nowrap;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .btn-tools:hover { background: var(--accent-dark); transform: translateY(-2px); }
+
+    /* ===== 页脚 ===== */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 0;
+      color: var(--text-mute);
+      font-size: 14px;
+    }
+    .footer-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-links { display: flex; gap: 18px; }
+    .footer-links a:hover { color: var(--accent); }
+
+    /* ===== 响应式 ===== */
+    @media (max-width: 768px) {
+      .nav-links {
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        background: #fff;
+        border-bottom: 1px solid var(--border);
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 8px 16px 16px;
+        display: none;
       }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 12px 14px; }
+      .nav-toggle { display: block; }
+
+      .hero { padding: 48px 0 56px; }
+      .hero-inner { flex-direction: column; text-align: center; gap: 22px; }
+      .hero-text .bio { margin: 0 auto; }
+      .hero-social { justify-content: center; }
+
+      .post-grid { grid-template-columns: 1fr; }
+      .tools-cta { padding: 28px; }
+      .btn-tools { width: 100%; justify-content: center; }
     }
   </style>
 </head>
 <body>
-  <!-- 主内容区 -->
-  <main>
-    <!-- 侧边栏菜单 - 可展开/收起 -->
-    <aside id="sidebar" class="sidebar-expanded">
-      <!-- 侧边栏头部和切换按钮 -->
-      <div class="sidebar-header">
-        <h2 id="sidebarTitle">My tools</h2>
-        <button id="toggleSidebarWidth">
-          <span id="toggleIcon">◀</span>
-        </button>
-      </div>
-      
-      <!-- 移动端关闭按钮 -->
-      <button id="closeSidebar">×</button>
-      
-      <nav class="menu-container">
-        <ul id="menuList">
-          <!-- 菜单将通过JavaScript动态生成 -->
-        </ul>
-      </nav>
-    </aside>
-
-    <!-- 右侧内容区域 -->
-    <div class="content-area">
-      <!-- 移动端显示的菜单按钮 -->
-      <button id="toggleMobileSidebar">
-        ≡
-      </button>
-      
-      <div id="sidebarOverlay"></div>
-      <iframe 
-        id="contentIframe" 
-        src="" 
-        allowfullscreen
-      ></iframe>
+  <!-- 顶部导航栏 -->
+  <header class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="brand">
+        <span class="logo">J</span>
+        <span>jaoyue</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="菜单">≡</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" class="active">首页</a></li>
+        <li><a href="page/tools/index.html">工具</a></li>
+        <li><a href="page/wiki/index.html">Wiki</a></li>
+        <li><a href="#">关于</a></li>
+      </ul>
     </div>
-  </main>
+  </header>
+
+  <!-- Hero 个人介绍 -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="avatar">J</div>
+      <div class="hero-text">
+        <h1>你好，我是 jaoyue 👋</h1>
+        <div class="role">Java 开发工程师 · 苏州</div>
+        <p class="bio">
+          这里记录我的技术笔记、开发心得与踩坑经验，也会分享一些平时顺手写的效率工具。
+          欢迎随便逛逛，希望对你有所帮助。
+        </p>
+        <div class="hero-social">
+          <a href="https://github.com/jaoyue" target="_blank" rel="noopener">GitHub</a>
+          <a href="mailto:you@example.com">邮箱</a>
+          <a href="page/tools/index.html">工具箱</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 最新文章 -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>最新文章</h2>
+        <a href="#" class="more">查看全部 →</a>
+      </div>
+      <div class="post-grid">
+        <article class="post-card">
+          <div class="post-meta">
+            <span class="tag">Java</span>
+            <span class="post-date">2026-07-20</span>
+          </div>
+          <h3>Spring Boot 中那些容易被忽视的性能陷阱</h3>
+          <p>从连接池配置到懒加载，盘点几个在上线后才暴露的性能问题，以及对应的排查思路与修复方案。</p>
+          <a href="#" class="read-more">阅读全文 →</a>
+        </article>
+
+        <article class="post-card">
+          <div class="post-meta">
+            <span class="tag">架构</span>
+            <span class="post-date">2026-07-12</span>
+          </div>
+          <h3>从单体到微服务的拆分边界怎么定</h3>
+          <p>聊一聊业务边界、数据一致性与团队协作成本之间如何权衡，避免"为了微服务而微服务"。</p>
+          <a href="#" class="read-more">阅读全文 →</a>
+        </article>
+
+        <article class="post-card">
+          <div class="post-meta">
+            <span class="tag">工具</span>
+            <span class="post-date">2026-07-05</span>
+          </div>
+          <h3>我常用的一些开发提效小工具</h3>
+          <p>时间戳转换、批量文件下载、接口压测……把自己攒的在线工具整理成了一个工具箱，随用随取。</p>
+          <a href="page/tools/index.html" class="read-more">进入工具箱 →</a>
+        </article>
+
+        <article class="post-card">
+          <div class="post-meta">
+            <span class="tag">随笔</span>
+            <span class="post-date">2026-06-28</span>
+          </div>
+          <h3>关于搭建个人博客这件事</h3>
+          <p>为什么我又双叒叕搭了一个博客？记录一下这次用 GitHub Pages 重新整理站点的过程与想法。</p>
+          <a href="#" class="read-more">阅读全文 →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 工具箱入口栏 -->
+  <section class="section alt">
+    <div class="container">
+      <div class="tools-cta">
+        <div class="info">
+          <span class="badge">⚡ 实用工具箱</span>
+          <h3>开发常用的在线小工具</h3>
+          <p>时间戳转换、Base64 互转、文件批量下载、接口压测……打开即用，无需安装。</p>
+          <div class="tool-chips">
+            <span>时间戳转换</span>
+            <span>Base64 转 Excel</span>
+            <span>数字转换</span>
+            <span>批量文件下载</span>
+            <span>接口压测</span>
+            <span>文件转 Base64</span>
+            <span>HTML 在线运行</span>
+          </div>
+        </div>
+        <a href="page/tools/index.html" class="btn-tools">前往工具箱 →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <span>© 2026 jaoyue. Built with GitHub Pages.</span>
+      <div class="footer-links">
+        <a href="index.html">首页</a>
+        <a href="page/tools/index.html">工具</a>
+        <a href="https://github.com/jaoyue" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </footer>
 
   <script>
-    // 菜单配置 - 可根据需要修改、添加或删除菜单项
-    const menuConfig = [
-      { 
-        name: "时间戳转换", 
-        url: "https://dbu-file.tineco.cn:7443/data/dbu/store/2025-09-25/ba64d058-f295-4a7a-8d12-40055d5762c8.html"
-      },
-      { 
-        name: "base64转excel", 
-        url: "https://dbu-file.tineco.cn:7443/data/dbu/store/2025-09-24/7d549a3f-f7f6-4920-8135-4dc8e11506b9.html"
-      },
-      { 
-        name: "数字转换", 
-        url: "https://dbu-file.tineco.cn:7443/data/dbu/store/2025-11-08/8ccc909a-a71a-4dfa-a6cc-867d07404505.html"
-      },
-      { 
-        name: "批量文件下载", 
-        url: "https://dbu-file.tineco.cn:7443/data/dbu/store/2025-11-08/d1efc894-3faf-46a9-ad28-5493acec6646.html"
-      },
-      { 
-        name: "接口压测", 
-        url: "https://dbu-file.tineco.cn:7443/data/dbu/store/2025-11-11/dc26e91c-75ba-4349-800d-82114fa1a1a1.html"
-      },
-      { 
-        name: "下载测试工具", 
-        url: "https://dbu-file.tineco.cn:7443/data/dbu/store/2025-11-19/e5d553e5-1710-4964-8ec3-a5be71f55170.html"
-      },
-      { 
-        name: "文件转base64", 
-        url: "https://dbu-file.tineco.cn:7443/data/dbu/store/2025-11-27/9f540dd0-41a2-4cc5-84ab-0cca5fb8a8ec.html"
-      },
-      { 
-        name: "HTML在线运行", 
-        url: "https://dbu-file.tineco.cn:7443/data/dbu/store/2025-12-25/87b2cfae-fbb2-407a-8d70-093b2bdc6cfa.html"
-      },
-      { 
-        name: "json数组转excel", 
-        url: "https://dbu-file.tineco.cn:7443/data/dbu/store/2026-01-13/9872bf9d-fa3f-4845-8a23-8100b69447cc.html"
-      }
-    ];
-
-    // DOM元素
-    const menuList = document.getElementById('menuList');
-    const contentIframe = document.getElementById('contentIframe');
-    const sidebar = document.getElementById('sidebar');
-    const sidebarTitle = document.getElementById('sidebarTitle');
-    const toggleSidebarWidth = document.getElementById('toggleSidebarWidth');
-    const toggleIcon = document.getElementById('toggleIcon');
-    const toggleMobileSidebar = document.getElementById('toggleMobileSidebar');
-    const closeSidebar = document.getElementById('closeSidebar');
-    const sidebarOverlay = document.getElementById('sidebarOverlay');
-    const sidebarHeader = document.querySelector('.sidebar-header');
-    const menuContainer = document.querySelector('.menu-container');
-    
-    // 侧边栏状态
-    let sidebarCollapsed = false;
-
-    // 动态生成菜单
-    function renderMenu() {
-      menuList.innerHTML = '';
-      
-      menuConfig.forEach((menu, index) => {
-        const li = document.createElement('li');
-        li.innerHTML = `
-          <a href="javascript:void(0)" class="${index === 0 ? 'menu-active' : ''}" data-index="${index}">
-            <span class="menu-text">${menu.name}</span>
-          </a>
-        `;
-        menuList.appendChild(li);
-      });
-
-      // 为菜单添加点击事件
-      document.querySelectorAll('#menuList a').forEach(item => {
-        item.addEventListener('click', function() {
-          // 移除所有菜单的活跃状态
-          document.querySelectorAll('#menuList a').forEach(link => {
-            link.classList.remove('menu-active');
-          });
-          
-          // 添加当前菜单的活跃状态
-          this.classList.add('menu-active');
-          
-          // 获取当前点击的菜单索引并加载对应URL
-          const index = parseInt(this.getAttribute('data-index'));
-          contentIframe.src = menuConfig[index].url;
-          
-          // 在移动设备上点击菜单后自动隐藏侧边栏
-          if (window.innerWidth < 1024) {
-            hideMobileSidebar();
-          }
-        });
-      });
-    }
-
-    // 切换侧边栏宽度（展开/收起）
-    function toggleSidebar() {
-      sidebarCollapsed = !sidebarCollapsed;
-      
-      if (sidebarCollapsed) {
-        // 收起状态 - 只保留展开按钮
-        sidebar.classList.remove('sidebar-expanded');
-        sidebar.classList.add('sidebar-collapsed');
-        toggleIcon.textContent = '▶';
-        
-        // 隐藏标题和菜单内容
-        sidebarTitle.style.display = 'none';
-        menuContainer.style.display = 'none';
-        
-        // 调整按钮位置使其居中
-        toggleSidebarWidth.style.margin = '0 auto';
-      } else {
-        // 展开状态 - 显示完整菜单
-        sidebar.classList.remove('sidebar-collapsed');
-        sidebar.classList.add('sidebar-expanded');
-        toggleIcon.textContent = '◀';
-        
-        // 显示标题和菜单内容
-        sidebarTitle.style.display = 'block';
-        menuContainer.style.display = 'block';
-        
-        // 恢复按钮位置
-        toggleSidebarWidth.style.margin = '0';
-      }
-    }
-
-    // 显示移动端侧边栏
-    function showMobileSidebar() {
-      // 确保展开状态
-      if (sidebarCollapsed) {
-        toggleSidebar();
-      }
-      
-      sidebar.classList.remove('sidebar-collapsed');
-      sidebar.classList.add('sidebar-expanded');
-      sidebarOverlay.style.display = 'block';
-      closeSidebar.style.display = 'block';
-    }
-
-    // 隐藏移动端侧边栏
-    function hideMobileSidebar() {
-      sidebar.classList.remove('sidebar-expanded');
-      sidebar.classList.add('sidebar-collapsed');
-      sidebarOverlay.style.display = 'none';
-      closeSidebar.style.display = 'none';
-    }
-
-    // 初始化页面
-    function init() {
-      renderMenu();
-      
-      // 默认加载第一个菜单的页面
-      if (menuConfig.length > 0) {
-        contentIframe.src = menuConfig[0].url;
-      }
-      
-      // 侧边栏宽度切换事件
-      toggleSidebarWidth.addEventListener('click', toggleSidebar);
-      
-      // 移动端侧边栏切换事件
-      toggleMobileSidebar.addEventListener('click', showMobileSidebar);
-      
-      // 移动端关闭侧边栏事件
-      closeSidebar.addEventListener('click', hideMobileSidebar);
-      
-      // 点击遮罩层关闭侧边栏
-      sidebarOverlay.addEventListener('click', hideMobileSidebar);
-      
-      // 窗口大小变化时处理侧边栏显示状态
-      window.addEventListener('resize', () => {
-        if (window.innerWidth >= 1024) {
-          sidebar.classList.remove('sidebar-collapsed');
-          sidebar.classList.add('sidebar-expanded');
-          sidebarOverlay.style.display = 'none';
-          closeSidebar.style.display = 'none';
-        } else if (!sidebarCollapsed) {
-          hideMobileSidebar();
-        }
-      });
-    }
-
-    // 页面加载完成后初始化
-    window.addEventListener('DOMContentLoaded', init);
+    // 移动端导航菜单展开/收起
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    navToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+    });
+    // 点击菜单项后自动收起
+    navLinks.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => navLinks.classList.remove('open'));
+    });
   </script>
 </body>
 </html>
-    

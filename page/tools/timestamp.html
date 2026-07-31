@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>时间戳转换工具</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .card {
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        input, select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        button {
+            padding: 8px 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        button:hover {
+            background: #0056b3;
+        }
+        
+        .flex {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .flex-wrap {
+            flex-wrap: wrap;
+        }
+        
+        .flex-1 {
+            flex: 1;
+        }
+        
+        .status-message {
+            position: absolute;
+            right: 16px;
+            top: 16px;
+            background: #28a745;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        
+        .show-message {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="text-align: center; font-size: 24px; margin-bottom: 20px">时间戳与日期转换</h1>
+        
+        <!-- 当前时间戳卡片 -->
+        <div class="card">
+            <div class="status-message" id="statusMessage"></div>
+            <h2 style="font-weight: bold; margin-bottom: 10px">当前时间戳</h2>
+            <div class="flex flex-wrap">
+                <input type="text" id="currentTs" class="flex-1" readonly>
+                <span id="unitLabel">毫秒</span>
+            </div>
+            <div class="flex">
+                <button id="switchBtn">切换单位</button>
+                <button id="copyBtn">复制</button>
+            </div>
+        </div>
+        
+        <!-- 时间戳转日期卡片 -->
+        <div class="card">
+            <h2 style="font-weight: bold; margin-bottom: 10px">时间戳转日期</h2>
+            <div class="flex flex-wrap">
+                <input type="text" id="tsInput" placeholder="输入时间戳" class="flex-1">
+                <select id="tsUnit">
+                    <option value="ms">毫秒</option>
+                    <option value="s">秒</option>
+                </select>
+                <button id="tsToDateBtn">转换</button>
+            </div>
+            <input type="text" id="tsResult" class="flex-1" readonly style="margin-top: 10px">
+        </div>
+        
+        <!-- 日期转时间戳卡片 -->
+        <div class="card">
+            <h2 style="font-weight: bold; margin-bottom: 10px">日期转时间戳</h2>
+            <div class="flex flex-wrap">
+                <input type="text" id="dateInput" placeholder="例如:2023-10-01 12:30:45" class="flex-1">
+                <button id="dateToTsBtn">转换</button>
+            </div>
+            <div class="flex flex-wrap" style="margin-top: 10px">
+                <input type="text" id="dateResult" class="flex-1" readonly>
+                <select id="dateUnit">
+                    <option value="ms">毫秒</option>
+                    <option value="s">秒</option>
+                </select>
+            </div>
+            <p style="font-size: 12px; color: #666; margin-top: 5px">
+                支持格式:YYYY-MM-DD HH:MM:SS、YYYY/MM/DD HH:MM:SS
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // 显示状态消息
+        function showStatusMessage(message) {
+            const statusEl = document.getElementById("statusMessage");
+            statusEl.textContent = message;
+            statusEl.classList.add("show-message");
+            
+            // 2秒后隐藏消息
+            setTimeout(() => {
+                statusEl.classList.remove("show-message");
+            }, 2000);
+        }
+        
+        // 当前时间戳相关逻辑
+        let currentUnit = "ms"; // 默认单位为毫秒
+        const currentTsEl = document.getElementById("currentTs");
+        const unitLabel = document.getElementById("unitLabel");
+        
+        // 更新当前时间戳显示
+        function updateCurrentTs() {
+            const now = Date.now();
+            currentTsEl.value = currentUnit === "ms" ? now : Math.floor(now / 1000);
+        }
+        
+        // 初始化当前时间戳并每秒更新
+        updateCurrentTs();
+        setInterval(updateCurrentTs, 1000);
+        
+        // 切换单位按钮事件
+        document.getElementById("switchBtn").addEventListener("click", (e) => {
+            e.preventDefault();
+            currentUnit = currentUnit === "ms" ? "s" : "ms";
+            unitLabel.textContent = currentUnit === "ms" ? "毫秒" : "秒";
+            updateCurrentTs();
+            showStatusMessage(`已切换为${unitLabel.textContent}`);
+            e.target.blur();
+        });
+        
+        // 复制按钮事件
+        document.getElementById("copyBtn").addEventListener("click", (e) => {
+            e.preventDefault();
+            currentTsEl.select();
+            document.execCommand("copy");
+            window.getSelection().removeAllRanges();
+            showStatusMessage("已复制到剪贴板");
+            e.target.blur();
+        });
+        
+        // 时间戳转日期按钮事件
+        document.getElementById("tsToDateBtn").addEventListener("click", (e) => {
+            e.preventDefault();
+            const tsValue = document.getElementById("tsInput").value;
+            const tsUnit = document.getElementById("tsUnit").value;
+            
+            // 验证输入
+            if (!tsValue || isNaN(tsValue)) {
+                showStatusMessage("请输入有效的时间戳");
+                return;
+            }
+            
+            // 转换时间戳为日期
+            const timestamp = tsUnit === "s" ? 1000 * parseInt(tsValue) : parseInt(tsValue);
+            const date = new Date(timestamp);
+            
+            // 格式化日期显示
+            document.getElementById("tsResult").value = `${date.getFullYear()}-${
+                (date.getMonth() + 1).toString().padStart(2, "0")
+            }-${
+                date.getDate().toString().padStart(2, "0")
+            } ${
+                date.getHours().toString().padStart(2, "0")
+            }:${
+                date.getMinutes().toString().padStart(2, "0")
+            }:${
+                date.getSeconds().toString().padStart(2, "0")
+            }`;
+            
+            e.target.blur();
+        });
+        
+        // 日期转时间戳按钮事件
+        document.getElementById("dateToTsBtn").addEventListener("click", (e) => {
+            e.preventDefault();
+            const dateValue = document.getElementById("dateInput").value;
+            const dateUnit = document.getElementById("dateUnit").value;
+            
+            // 验证输入
+            if (!dateValue) {
+                showStatusMessage("请输入日期");
+                return;
+            }
+            
+            let date;
+            // 尝试多种日期解析方法
+            const parsers = [
+                () => new Date(dateValue),
+                () => new Date(dateValue.replace(/\//g, "-")),
+                () => {
+                    const [datePart = "0000-00-00", timePart = "00:00:00"] = dateValue.split(" ");
+                    const [year, month, day] = datePart.split(/-|\//).map(Number);
+                    const [hours, minutes, seconds] = timePart.split(":").map(Number);
+                    return new Date(year, month - 1, day, hours, minutes, seconds);
+                }
+            ];
+            
+            // 尝试解析日期
+            for (const parser of parsers) {
+                const parsedDate = parser();
+                if (!isNaN(parsedDate.getTime())) {
+                    date = parsedDate;
+                    break;
+                }
+            }
+            
+            // 验证解析结果
+            if (!date || isNaN(date.getTime())) {
+                showStatusMessage("日期格式不正确");
+                return;
+            }
+            
+            // 转换日期为时间戳
+            const timestamp = dateUnit === "s" 
+                ? Math.floor(date.getTime() / 1000) 
+                : date.getTime();
+            
+            document.getElementById("dateResult").value = timestamp;
+            e.target.blur();
+        });
+        
+        // 页面加载完成后初始化日期输入框
+        document.addEventListener("DOMContentLoaded", () => {
+            const now = new Date();
+            document.getElementById("dateInput").value = `${now.getFullYear()}-${
+                (now.getMonth() + 1).toString().padStart(2, "0")
+            }-${
+                now.getDate().toString().padStart(2, "0")
+            } ${
+                now.getHours().toString().padStart(2, "0")
+            }:${
+                now.getMinutes().toString().padStart(2, "0")
+            }:${
+                now.getSeconds().toString().padStart(2, "0")
+            }`;
+        });
+    </script>
+</body>
+</html>

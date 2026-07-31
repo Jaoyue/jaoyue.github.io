@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My tools</title>
+  <!-- 使用内嵌SVG作为标签页图标，无需外部资源 -->
+  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHRleHQgeD0iMCIgeT0iMTYiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZmlsbD0iI0ZGMDAwMCI+TVQ8L3RleHQ+PC9zdmc+" type="image/svg+xml">
+ 
+  <style>
+    /* 基础样式重置 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f0f2f5;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+    
+    /* 主内容区 */
+    main {
+      display: flex;
+      flex: 1;
+      width: 100%;
+      overflow: hidden;
+    }
+    
+    /* 侧边栏样式 */
+    #sidebar {
+      background-color: white;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+      height: 100vh;
+      position: fixed;
+      z-index: 20;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: width 0.3s ease-in-out;
+    }
+    
+    /* 侧边栏展开/收起状态 */
+    .sidebar-expanded {
+      width: 256px;
+    }
+    
+    .sidebar-collapsed {
+      width: 40px;
+    }
+    
+    /* 侧边栏头部 */
+    .sidebar-header {
+      padding: 16px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    #sidebarTitle {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1d2129;
+      transition: opacity 0.3s ease;
+    }
+    
+    /* 切换按钮 */
+    #toggleSidebarWidth {
+      background: none;
+      border: none;
+      color: #86909c;
+      cursor: pointer;
+      transition: color 0.2s ease;
+      font-size: 18px;
+    }
+    
+    #toggleSidebarWidth:hover {
+      color: #165dff;
+    }
+    
+    /* 头部左侧：返回首页按钮 + 标题 组合 */
+    .brand-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    /* 返回首页（小房子）按钮 */
+    .home-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      color: #86909c;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color 0.2s ease, background 0.2s ease;
+    }
+    
+    .home-btn:hover {
+      color: #165dff;
+      background: rgba(22, 93, 255, 0.08);
+    }
+    
+    .home-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+    
+    /* 菜单容器 */
+    .menu-container {
+      padding: 16px 0;
+      height: calc(100% - 60px);
+      overflow-y: auto;
+    }
+    
+    #menuList {
+      list-style: none;
+      padding: 0 8px;
+    }
+    
+    #menuList li {
+      margin-bottom: 4px;
+    }
+    
+    #menuList a {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      color: #4e5969;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+    
+    #menuList a:hover {
+      background-color: #f2f3f5;
+    }
+    
+    .menu-active {
+      background-color: rgba(22, 93, 255, 0.1);
+      color: #165dff !important;
+      border-left: 4px solid #165dff;
+    }
+    
+    /* 右侧内容区域 */
+    .content-area {
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    /* 移动端菜单按钮 */
+    #toggleMobileSidebar {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      background-color: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      color: #4e5969;
+      cursor: pointer;
+      z-index: 10;
+      display: none;
+    }
+    
+    #toggleMobileSidebar:hover {
+      color: #165dff;
+    }
+    
+    /* 遮罩层 */
+    #sidebarOverlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 10;
+      display: none;
+    }
+    
+    /* iframe样式 */
+    #contentIframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    
+    /* 移动端关闭按钮 */
+    #closeSidebar {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background-color: white;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      color: #86909c;
+      cursor: pointer;
+      z-index: 10;
+      display: none;
+    }
+    
+    #closeSidebar:hover {
+      color: #165dff;
+    }
+    
+    /* 响应式设计 */
+    @media (max-width: 1023px) {
+      #toggleMobileSidebar {
+        display: block;
+      }
+      
+      .sidebar-expanded {
+        transform: translateX(0);
+      }
+      
+      .sidebar-collapsed {
+        transform: translateX(-100%);
+      }
+    }
+    
+    @media (min-width: 1024px) {
+      #sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 主内容区 -->
+  <main>
+    <!-- 侧边栏菜单 - 可展开/收起 -->
+    <aside id="sidebar" class="sidebar-expanded">
+      <!-- 侧边栏头部和切换按钮 -->
+      <div class="sidebar-header">
+        <div class="brand-left">
+          <a href="../../index.html" id="homeBtn" class="home-btn" title="返回首页" aria-label="返回首页">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 11l9-8 9 8"></path>
+              <path d="M5 10v10h14V10"></path>
+              <path d="M10 20v-6h4v6"></path>
+            </svg>
+          </a>
+          <h2 id="sidebarTitle">My tools</h2>
+        </div>
+        <button id="toggleSidebarWidth">
+          <span id="toggleIcon">◀</span>
+        </button>
+      </div>
+      
+      <!-- 移动端关闭按钮 -->
+      <button id="closeSidebar">×</button>
+      
+      <nav class="menu-container">
+        <ul id="menuList">
+          <!-- 菜单将通过JavaScript动态生成 -->
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- 右侧内容区域 -->
+    <div class="content-area">
+      <!-- 移动端显示的菜单按钮 -->
+      <button id="toggleMobileSidebar">
+        ≡
+      </button>
+      
+      <div id="sidebarOverlay"></div>
+      <iframe 
+        id="contentIframe" 
+        src="" 
+        allowfullscreen
+      ></iframe>
+    </div>
+  </main>
+
+  <script>
+    // 菜单配置 - 可根据需要修改、添加或删除菜单项
+    // url 指向本仓库 page/tools/ 下的本地文件
+    const menuConfig = [
+      { 
+        name: "时间戳转换", 
+        url: "timestamp.html"
+      },
+      { 
+        name: "base64转excel", 
+        url: "base64-to-excel.html"
+      },
+      { 
+        name: "数字转换", 
+        url: "number-convert.html"
+      },
+      { 
+        name: "批量文件下载", 
+        url: "batch-download.html"
+      },
+      { 
+        name: "接口压测", 
+        url: "api-pressure-test.html"
+      },
+      { 
+        name: "下载测试工具", 
+        url: "download-test.html"
+      },
+      { 
+        name: "文件转base64", 
+        url: "file-to-base64.html"
+      },
+      { 
+        name: "HTML在线运行", 
+        url: "html-runner.html"
+      },
+      { 
+        name: "json数组转excel", 
+        url: "json-to-excel.html"
+      }
+    ];
+
+    // DOM元素
+    const menuList = document.getElementById('menuList');
+    const contentIframe = document.getElementById('contentIframe');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarTitle = document.getElementById('sidebarTitle');
+    const homeBtn = document.getElementById('homeBtn');
+    const toggleSidebarWidth = document.getElementById('toggleSidebarWidth');
+    const toggleIcon = document.getElementById('toggleIcon');
+    const toggleMobileSidebar = document.getElementById('toggleMobileSidebar');
+    const closeSidebar = document.getElementById('closeSidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const sidebarHeader = document.querySelector('.sidebar-header');
+    const menuContainer = document.querySelector('.menu-container');
+    
+    // 侧边栏状态
+    let sidebarCollapsed = false;
+
+    // 动态生成菜单
+    function renderMenu() {
+      menuList.innerHTML = '';
+      
+      menuConfig.forEach((menu, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <a href="javascript:void(0)" class="${index === 0 ? 'menu-active' : ''}" data-index="${index}">
+            <span class="menu-text">${menu.name}</span>
+          </a>
+        `;
+        menuList.appendChild(li);
+      });
+
+      // 为菜单添加点击事件
+      document.querySelectorAll('#menuList a').forEach(item => {
+        item.addEventListener('click', function() {
+          // 移除所有菜单的活跃状态
+          document.querySelectorAll('#menuList a').forEach(link => {
+            link.classList.remove('menu-active');
+          });
+          
+          // 添加当前菜单的活跃状态
+          this.classList.add('menu-active');
+          
+          // 获取当前点击的菜单索引并加载对应URL
+          const index = parseInt(this.getAttribute('data-index'));
+          contentIframe.src = menuConfig[index].url;
+          
+          // 在移动设备上点击菜单后自动隐藏侧边栏
+          if (window.innerWidth < 1024) {
+            hideMobileSidebar();
+          }
+        });
+      });
+    }
+
+    // 切换侧边栏宽度（展开/收起）
+    function toggleSidebar() {
+      sidebarCollapsed = !sidebarCollapsed;
+      
+      if (sidebarCollapsed) {
+        // 收起状态 - 只保留展开按钮
+        sidebar.classList.remove('sidebar-expanded');
+        sidebar.classList.add('sidebar-collapsed');
+        toggleIcon.textContent = '▶';
+        
+        // 隐藏标题和菜单内容
+        sidebarTitle.style.display = 'none';
+        menuContainer.style.display = 'none';
+        // 收起状态隐藏返回首页按钮，避免 40px 宽度下与展开按钮重叠
+        homeBtn.style.display = 'none';
+        
+        // 调整按钮位置使其居中
+        toggleSidebarWidth.style.margin = '0 auto';
+      } else {
+        // 展开状态 - 显示完整菜单
+        sidebar.classList.remove('sidebar-collapsed');
+        sidebar.classList.add('sidebar-expanded');
+        toggleIcon.textContent = '◀';
+        
+        // 显示标题和菜单内容
+        sidebarTitle.style.display = 'block';
+        menuContainer.style.display = 'block';
+        // 恢复返回首页按钮
+        homeBtn.style.display = '';
+        
+        // 恢复按钮位置
+        toggleSidebarWidth.style.margin = '0';
+      }
+    }
+
+    // 显示移动端侧边栏
+    function showMobileSidebar() {
+      // 确保展开状态
+      if (sidebarCollapsed) {
+        toggleSidebar();
+      }
+      
+      sidebar.classList.remove('sidebar-collapsed');
+      sidebar.classList.add('sidebar-expanded');
+      sidebarOverlay.style.display = 'block';
+      closeSidebar.style.display = 'block';
+    }
+
+    // 隐藏移动端侧边栏
+    function hideMobileSidebar() {
+      sidebar.classList.remove('sidebar-expanded');
+      sidebar.classList.add('sidebar-collapsed');
+      sidebarOverlay.style.display = 'none';
+      closeSidebar.style.display = 'none';
+    }
+
+    // 初始化页面
+    function init() {
+      renderMenu();
+      
+      // 默认加载第一个菜单的页面
+      if (menuConfig.length > 0) {
+        contentIframe.src = menuConfig[0].url;
+      }
+      
+      // 侧边栏宽度切换事件
+      toggleSidebarWidth.addEventListener('click', toggleSidebar);
+      
+      // 移动端侧边栏切换事件
+      toggleMobileSidebar.addEventListener('click', showMobileSidebar);
+      
+      // 移动端关闭侧边栏事件
+      closeSidebar.addEventListener('click', hideMobileSidebar);
+      
+      // 点击遮罩层关闭侧边栏
+      sidebarOverlay.addEventListener('click', hideMobileSidebar);
+      
+      // 窗口大小变化时处理侧边栏显示状态
+      window.addEventListener('resize', () => {
+        if (window.innerWidth >= 1024) {
+          sidebar.classList.remove('sidebar-collapsed');
+          sidebar.classList.add('sidebar-expanded');
+          sidebarOverlay.style.display = 'none';
+          closeSidebar.style.display = 'none';
+          homeBtn.style.display = '';
+        } else if (!sidebarCollapsed) {
+          hideMobileSidebar();
+        }
+      });
+    }
+
+    // 页面加载完成后初始化
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>

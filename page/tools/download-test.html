@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>下载流测试工具</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 20px;
+            background-color: #f0f2f5;
+        }
+        .container {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+            font-weight: 500;
+        }
+        input, button {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+        .log-box {
+            margin-top: 1.5rem;
+            height: 250px;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 10px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+        }
+        .log-item {
+            margin-bottom: 6px;
+            padding: 4px 0;
+            color: #212529;
+            border-bottom: 1px solid #f1f3f5;
+        }
+        .log-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>下载流测试工具</h1>
+        <div class="form-group">
+            <label for="fileUrl">文件地址 (URL):</label>
+            <input type="text" id="fileUrl" placeholder="请输入要测试的文件URL" value="https://example.com/large-file.iso">
+        </div>
+        <div class="form-group">
+            <label for="testTimes">测试次数:</label>
+            <input type="number" id="testTimes" min="1" value="3">
+        </div>
+        <button id="startTest">开始测试</button>
+        <div class="log-box" id="logBox">
+            <div class="log-item">准备就绪，点击“开始测试”按钮开始。</div>
+        </div>
+    </div>
+
+    <script>
+        const fileUrlInput = document.getElementById('fileUrl');
+        const testTimesInput = document.getElementById('testTimes');
+        const startTestBtn = document.getElementById('startTest');
+        const logBox = document.getElementById('logBox');
+        
+        let logs = [];
+
+        startTestBtn.addEventListener('click', async () => {
+            const fileUrl = fileUrlInput.value.trim();
+            const testTimes = parseInt(testTimesInput.value);
+
+            if (!fileUrl) {
+                addLog('错误：请输入有效的文件URL。');
+                return;
+            }
+            if (isNaN(testTimes) || testTimes <= 0) {
+                addLog('错误：请输入有效的测试次数。');
+                return;
+            }
+            
+            startTestBtn.disabled = true;
+            startTestBtn.textContent = "测试进行中...";
+            
+            // 清空现有日志，只保留提示
+            logs = ['测试开始...'];
+            renderLogs();
+
+            for (let i = 1; i <= testTimes; i++) {
+                await testDownloadStream(i, fileUrl);
+                // 每次测试后短暂延迟，避免请求过于密集
+                if (i < testTimes) {
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                }
+            }
+            
+            addLog('所有测试完成！');
+            startTestBtn.disabled = false;
+            startTestBtn.textContent = "开始测试";
+        });
+
+        async function testDownloadStream(index, url) {
+            addLog(`--- 第 ${index} 次尝试 ---`);
+            
+            try {
+                const startTime = performance.now(); // 使用performance.now()获得更高精度
+                
+                // 发起GET请求
+                const response = await fetch(url, {
+                    method: 'GET',
+                    // 可以添加 headers，例如 Authorization
+                    // headers: { 'Authorization': 'Bearer your-token' }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP 错误! 状态: ${response.status}`);
+                }
+
+                // 检查是否是流式响应
+                if (!response.body) {
+                    throw new Error('浏览器不支持 ReadableStream。');
+                }
+
+                const reader = response.body.getReader();
+                const contentLength = response.headers.get('content-length');
+                let receivedLength = 0;
+
+                addLog(`开始下载，文件大小: ${contentLength ? formatFileSize(contentLength) : '未知'}`);
+
+                // 循环读取数据流
+                while(true) {
+                    const { done, value } = await reader.read();
+                    
+                    if (done) {
+                        // 读取完成
+                        break;
+                    }
+                    
+                    // 'value' 是一个 Uint8Array，我们不需要处理它，
+                    // 只需要知道我们接收到了数据
+                    receivedLength += value.length;
+                    
+                    // (可选) 可以在这里添加下载进度的日志，但根据你的要求，我们省略它
+                    // const progress = contentLength ? (receivedLength / contentLength) * 100 : 0;
+                    // console.log(`进度: ${progress.toFixed(2)}%`);
+                }
+
+                const endTime = performance.now();
+                const duration = (endTime - startTime) / 1000; // 转换为秒
+                
+                addLog(`下载完成！总耗时: ${duration.toFixed(2)} 秒。`);
+
+            } catch (error) {
+                addLog(`下载失败: ${error.message}`);
+            }
+        }
+
+        function addLog(message) {
+            // 使用当前时间作为前缀
+            const timeStr = new Date().toLocaleTimeString();
+            logs.push(`[${timeStr}] ${message}`);
+            
+            // 保持日志最多10条
+            if (logs.length > 10) {
+                logs.shift();
+            }
+            
+            renderLogs();
+        }
+
+        function renderLogs() {
+            logBox.innerHTML = logs.map(log => `<div class="log-item">${log}</div>`).join('');
+            // 自动滚动到底部
+            logBox.scrollTop = logBox.scrollHeight;
+        }
+        
+        // 辅助函数：格式化文件大小
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+    </script>
+</body>
+</html>
