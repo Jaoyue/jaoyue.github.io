@@ -1,0 +1,1 @@
+select * from spro_wx_activity_info

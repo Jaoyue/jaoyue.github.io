@@ -1,0 +1,292 @@
+```
+package com.ecovacs.store.mgr.creatSQL;
+
+import org.apache.commons.lang.StringUtils;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ * 数据库实体类代码生成器 按需使用
+ * @date: 2023/7/3 17:06
+ */
+public class EntityGenerator {
+    static String user = "tineco";
+    static String password = "tineco@admin@20190308";
+    static String driver = "com.mysql.jdbc.Driver";
+    static String url = "jdbc:mysql://10.108.128.18:3306/platform-store?useUnicode=true&amp;characterEncoding=UTF-8";
+    static String white = "id,creater,create_time,modifier,modify_time,version";
+
+    public static void main(String[] args) {
+
+        String pojoPath = "E:\\code\\suyuan3.1\\ecovacs-store\\store-mgr\\src\\test\\java\\com\\ecovacs\\store\\mgr\\creatSQL";
+        String dtoPath = "E:\\code\\suyuan3.1\\ecovacs-store\\store-mgr\\src\\test\\java\\com\\ecovacs\\store\\mgr\\creatSQL\\dto";
+        String daoPath = "E:\\code\\suyuan3.1\\ecovacs-store\\store-mgr\\src\\test\\java\\com\\ecovacs\\store\\mgr\\creatSQL\\dao";
+        String[] tableNames = {
+                "tmp_gift",
+                "tmp_refund",
+                "tmp_sales_order",
+                "tmp_sn",
+                "tmp_store",
+        };
+        generateEntity(tableNames, pojoPath, dtoPath, daoPath);
+    }
+
+    public static void generateEntity(String[] tableNames, String pojoPath, String dtoPath, String daoPath) {
+        System.out.println("初始化数据库连接: " + url);
+        for (String tableName : tableNames) {
+            generateEntity(tableName, pojoPath, dtoPath, daoPath);
+        }
+        System.out.println("======实体类初始化成功======.");
+    }
+
+    private static void generateEntity(String tableName, String pojoPath, String dtoPath, String daoPath) {
+
+        String[] split = tableName.split("_");
+        StringBuilder className = new StringBuilder();
+        for (String s : split) {
+            className.append(s.substring(0, 1).toUpperCase()).append(s.substring(1));
+        }
+        String packageName = getLastPackage(pojoPath);
+
+        String template =
+                "package " + packageName + ";\n\n" +
+                        "%s" +
+                        "@Entity\n" +
+                        "@Table(name=\"" + tableName + "\")\n" +
+                        "public class " + className.toString() + " extends BaseEntity {\n\n" +
+                        "%s\n\n" +
+                        "%s" +
+                        "%s" +
+                        "}";
+
+        String variables = "";
+        String gettersAndSetters = "";
+        String imports = "import com.ecovacs.common.model.BaseEntity;\n";
+        String others = "";
+        List<String[]> dtoVars = new ArrayList<>();
+        try {
+
+            Class.forName(driver);
+            Connection conn = DriverManager.getConnection(url, user, password);
+
+            Statement stmt = conn.createStatement();
+            ResultSet resultSet = stmt.executeQuery("SHOW FULL COLUMNS FROM " + tableName);
+
+            while (resultSet.next()) {
+                String columnName = resultSet.getString("Field");
+                String columnComment = resultSet.getString("Comment");
+                String columnType = extractDataType(resultSet.getString("type"));
+                String variableName = convertToCamelCase(columnName);
+                String variableType = mapColumnType(columnType);
+                if (StringUtils.isNotEmpty(dtoPath)) {
+                    String[] vars = {variableType, variableName};
+                    dtoVars.add(vars);
+                }
+                if (white.contains(columnName)) continue;
+                imports += buildImport4VarType(variableType);
+                if (StringUtils.isNotEmpty(columnComment)) {
+                    variables += "\t/**\n\t * " + columnComment + "\n\t */\n";
+                }
+                variables += "\tprivate " + variableType + " " + variableName + ";\n\n";
+                gettersAndSetters += generateGetterAndSetter(variableType, variableName, columnName);
+            }
+            resultSet.close();
+            stmt.close();
+            conn.close();
+            System.out.println("生成实体类: " + packageName + "." + className.toString());
+            if (StringUtils.isNotEmpty(dtoPath)) {
+                String dtoPackageName = getLastPackage(dtoPath);
+                imports += "import " + dtoPackageName + "." + className + "Dto;\n" +
+                        "import org.springframework.beans.BeanUtils;\n";
+                buildDto(className + "Dto", dtoPath, dtoVars);
+            }
+            if (StringUtils.isNotEmpty(daoPath)) {
+                buildDao(className, daoPath, packageName);
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+        imports += "\nimport javax.persistence.*;\n\n";
+        others = buildOthers(dtoPath, className.toString());
+        String content = String.format(template, imports, variables, gettersAndSetters, others);
+
+        File file = new File(pojoPath + "/" + className + ".java");
+
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            writer.write(content);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static String buildImport4VarType(String variableType) {
+        switch (variableType){
+            case "BigDecimal":
+                return "import java.math.BigDecimal;\n";
+        }
+        return "";
+    }
+
+    private static void buildDao(StringBuilder className, String daoPath, String pojoPackage) {
+        String packageName = getLastPackage(daoPath);
+        String template =
+                "package " + packageName + ";\n\n" +
+                        "import com.ecovacs.core.dao.GenericRepository;\n" +
+                        "import " + pojoPackage + "." + className + ";\n" +
+                        "public interface " + className + "Dao extends GenericRepository<" + className + ", Long> {\n\n" +
+                        "}";
+        String content = template;
+        File file = new File(daoPath + "/" + className + "Dao.java");
+        System.out.println("生成Dao对象: " + packageName + "." + className + "Dao");
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            writer.write(content);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void buildDto(String dtoName, String dtoPath, List<String[]> dtoVars) {
+        String packageName = getLastPackage(dtoPath);
+        String template =
+                "package " + packageName + ";\n\n" +
+                        "%s\n" +
+                        "public class " + dtoName + " {\n\n" +
+                        "%s\n\n" +
+                        "%s" +
+                        "}";
+        String variables = "";
+        String gettersAndSetters = "";
+        String imports = "";
+        for (String[] dtoVar : dtoVars) {
+            imports += buildImport4VarType(dtoVar[0]);
+            variables += "\tprivate " + dtoVar[0] + " " + dtoVar[1] + ";\n\n";
+            gettersAndSetters += generateGetterAndSetter4Dto(dtoVar[0], dtoVar[1]);
+        }
+        String content = String.format(template, imports, variables, gettersAndSetters);
+        File file = new File(dtoPath + "/" + dtoName + ".java");
+        System.out.println("生成Dto对象: " + packageName + "." + dtoName);
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            writer.write(content);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static String extractDataType(String type) {
+        String pattern = "(.*?)\\(";
+        Pattern r = Pattern.compile(pattern);
+        Matcher m = r.matcher(type);
+        if (m.find()) {
+            return m.group(1);
+        }
+        return "Object";
+    }
+
+    private static String buildOthers(String dtoPath, String className) {
+        String other = "";
+        if (StringUtils.isEmpty(dtoPath)) {
+            other += "\t@Override\n" +
+                    "\tpublic <T> T toDTO() {\n" +
+                    "\t\treturn null;\n" +
+                    "\t}";
+        } else {
+            other += "\t@Override\n" +
+                    "\tpublic " + className + "Dto toDTO() {\n" +
+                    "\t\t" + className + "Dto dto = new " + className + "Dto();\n" +
+                    "\t\tBeanUtils.copyProperties(this, dto);\n" +
+                    "\t\treturn dto;\n" +
+                    "\t}";
+        }
+        return other;
+    }
+
+    private static String getLastPackage(String pathName) {
+        // 将路径字符串以 '\\' 分割成数组
+        String[] packages = pathName.split("\\\\");
+        // 找到最后一个包名的索引
+        int lastIndex = packages.length - 1;
+        // 从最后一个包名开始拼接字符串，使用 '.' 连接
+        StringBuilder result = new StringBuilder();
+        for (int i = lastIndex; i >= 0; i--) {
+            if (packages[i].equals("java")) {
+                break; // 找到最后一个包名的索引后停止拼接
+            }
+            result.insert(0, packages[i]);
+            if (i != 0) {
+                result.insert(0, ".");
+            }
+        }
+        return result.toString().substring(1);
+    }
+
+    public static String mapColumnType(String columnType) {
+        switch (columnType) {
+            case "int":
+                return "Integer";
+            case "bigint":
+                return "Long";
+            case "text":
+            case "varchar":
+                return "String";
+            case "decimal":
+                return "BigDecimal";
+            case "double":
+                return "Double";
+            case "bit":
+                return "Boolean";
+
+            default:
+                return "Object";
+        }
+    }
+
+    public static String generateGetterAndSetter(String variableType, String variableName, String columnName) {
+        String capitalizedVariableName = variableName.substring(0, 1).toUpperCase() + variableName.substring(1);
+
+        return "\t@Column(name = \"" + columnName + "\") \n" +
+                "\tpublic " + variableType + " get" + capitalizedVariableName + "() {\n" +
+                "\t\treturn " + variableName + ";\n" +
+                "\t}\n\n" +
+                "\tpublic void set" + capitalizedVariableName + "(" + variableType + " " + variableName + ") {\n" +
+                "\t\tthis." + variableName + " = " + variableName + ";\n" +
+                "\t}\n\n";
+    }
+
+    public static String generateGetterAndSetter4Dto(String variableType, String variableName) {
+        String capitalizedVariableName = variableName.substring(0, 1).toUpperCase() + variableName.substring(1);
+
+        return "\tpublic " + variableType + " get" + capitalizedVariableName + "() {\n" +
+                "\t\treturn " + variableName + ";\n" +
+                "\t}\n\n" +
+                "\tpublic void set" + capitalizedVariableName + "(" + variableType + " " + variableName + ") {\n" +
+                "\t\tthis." + variableName + " = " + variableName + ";\n" +
+                "\t}\n\n";
+    }
+
+    public static String convertToCamelCase(String columnName) {
+        String[] parts = columnName.split("_");
+        String result = parts[0];
+
+        for (int i = 1; i < parts.length; i++) {
+            String part = parts[i];
+            result += part.substring(0, 1).toUpperCase() + part.substring(1);
+        }
+
+        return result;
+    }
+}
+```

@@ -1,0 +1,2 @@
+select store_no,store_name,start_time,end_time,sales_region,title,this_target_sales from spro_promotion_forecast
+select * from spro_promotion_forecast

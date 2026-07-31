@@ -1,0 +1,1 @@
+select spu_name,product_sap_id,factory_model,customer_type from tineco_agent_prod_pbi_main_info_dd
