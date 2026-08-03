@@ -101,13 +101,13 @@
         <!-- 时间戳转日期卡片 -->
         <div class="card">
             <h2 style="font-weight: bold; margin-bottom: 10px">时间戳转日期</h2>
-            <div class="flex flex-wrap">
+            <div class="flex" style="flex-wrap: nowrap">
                 <input type="text" id="tsInput" placeholder="输入时间戳" class="flex-1">
-                <select id="tsUnit">
+                <select id="tsUnit" style="width: auto; min-width: 70px; flex: 0 0 auto">
                     <option value="ms">毫秒</option>
                     <option value="s">秒</option>
                 </select>
-                <button id="tsToDateBtn">转换</button>
+                <button id="tsToDateBtn" style="flex: 0 0 auto">转换</button>
             </div>
             <input type="text" id="tsResult" class="flex-1" readonly style="margin-top: 10px">
         </div>
@@ -115,6 +115,19 @@
         <!-- 日期转时间戳卡片 -->
         <div class="card">
             <h2 style="font-weight: bold; margin-bottom: 10px">日期转时间戳</h2>
+            <p style="font-size: 12px; color: #666; margin-bottom: 5px">
+                快捷选择（自动带入当天 0 点或 23:59:59）：
+            </p>
+            <div class="flex flex-wrap" style="margin-bottom: 10px">
+                <div class="flex-1">
+                    <label style="font-size: 12px; color: #666; display: block; margin-bottom: 4px">当天 0 点</label>
+                    <input type="date" id="dateStartPicker">
+                </div>
+                <div class="flex-1">
+                    <label style="font-size: 12px; color: #666; display: block; margin-bottom: 4px">当天 23:59:59</label>
+                    <input type="date" id="dateEndPicker">
+                </div>
+            </div>
             <div class="flex flex-wrap">
                 <input type="text" id="dateInput" placeholder="例如:2023-10-01 12:30:45" class="flex-1">
                 <button id="dateToTsBtn">转换</button>
@@ -261,6 +274,27 @@
             e.target.blur();
         });
         
+        // 日期快捷选择：直接带入 0 点或 23:59:59 到输入框
+        function fillDateFromPicker(pickerValue, timeStr, btnEl) {
+            if (!pickerValue) {
+                return;
+            }
+            document.getElementById("dateInput").value = `${pickerValue} ${timeStr}`;
+            if (btnEl) {
+                btnEl.blur();
+            }
+        }
+
+        document.getElementById("dateStartPicker").addEventListener("change", (e) => {
+            e.preventDefault();
+            fillDateFromPicker(e.target.value, "00:00:00", e.target);
+        });
+
+        document.getElementById("dateEndPicker").addEventListener("change", (e) => {
+            e.preventDefault();
+            fillDateFromPicker(e.target.value, "23:59:59", e.target);
+        });
+
         // 页面加载完成后初始化日期输入框
         document.addEventListener("DOMContentLoaded", () => {
             const now = new Date();

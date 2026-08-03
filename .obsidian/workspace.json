@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "8c4c2413d0fd1fca",
+        "id": "7c3770ee9de4e3bf",
         "type": "tabs",
         "children": [
           {
-            "id": "698390df396ee00f",
+            "id": "3d962dc970261e7b",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "data/Linux/redis监控(Prometheus + Grafana).md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "redis监控(Prometheus + Grafana)"
+              "title": "新标签页"
             }
           }
         ]
@@ -41,7 +37,7 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical",
-                "autoReveal": true,
+                "autoReveal": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
@@ -99,7 +95,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "data/Linux/redis监控(Prometheus + Grafana).md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -118,7 +113,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "data/Linux/redis监控(Prometheus + Grafana).md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
@@ -161,7 +155,6 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "data/Linux/redis监控(Prometheus + Grafana).md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -190,8 +183,13 @@
       "notes-to-html-pages:导出当前笔记为 HTML 页面": false
     }
   },
-  "active": "698390df396ee00f",
+  "active": "3d962dc970261e7b",
   "lastOpenFiles": [
+    "page/tools/timestamp.html",
+    "page/tools/number-convert.html",
+    "data/添可项目/营销中台/2026年/0731TOB促销前置价格申请单新增“寄售”类型并优化价目表生效逻辑.md",
+    "page/wiki/data/添可项目/营销中台/2026年/0731TOB促销前置价格申请单新增“寄售”类型并优化价目表生效逻辑.html",
+    "data/Linux/redis监控(Prometheus + Grafana).md",
     "data/Linux/常用命令.md",
     "data/组件/Navicat.md",
     "data/组件/git常用命令.md",
@@ -220,11 +218,7 @@
     "data/智能体-codeAgent/会议纪要/开发规则平台与实验项目开发_20260114.md",
     "data/智能体-codeAgent/会议纪要/代码生成与优化技巧_20260112.md",
     "data/业务问题/TOC业务/电商/直销切换供销(淘宝).md",
-    "data/业务问题/TOC业务/电商/直销切换供销(京东).md",
-    "data/业务问题/TOC业务/电商/抖音直播秒退拉单慢.md",
-    "data/业务问题/TOB业务/资料汇总.md",
     "page/wiki/data/添可项目/CSS/css派恩缝合320.html",
-    "page/wiki/data/添可项目/营销中台/2026年/0731TOB促销前置价格申请单新增“寄售”类型并优化价目表生效逻辑.html",
     "data/工作模块/线下门店/业务逻辑/门店销售.jpg",
     "page/wiki/data/分享/珊瑚MCP、插件、SKILL使用.html",
     "page/wiki/data/添可项目/派恩/辛顿经分体sql配置/md-img/设计文档/自然语言sql生成.png",
@@ -236,7 +230,6 @@
     "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 65.png",
     "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 64.png",
     "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 63.png",
-    "page/wiki/data/分享/C#开发exe程序.html",
-    "page/wiki/build-menu.vbs"
+    "page/wiki/data/分享/C#开发exe程序.html"
   ]
 }
