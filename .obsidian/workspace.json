@@ -4,17 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "7c3770ee9de4e3bf",
+        "id": "c751ba1a3a97172a",
         "type": "tabs",
         "children": [
           {
-            "id": "3d962dc970261e7b",
+            "id": "0df7e22947a2df34",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "data/添可项目/营销中台/2026年/0805星厨订单开发.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "新标签页"
+              "title": "0805星厨订单开发"
             }
           }
         ]
@@ -37,7 +41,7 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical",
-                "autoReveal": false,
+                "autoReveal": true,
                 "showSearch": false,
                 "searchQuery": ""
               },
@@ -95,6 +99,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "data/添可项目/营销中台/2026年/0805星厨订单开发.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -113,6 +118,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "data/添可项目/营销中台/2026年/0805星厨订单开发.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
@@ -155,6 +161,7 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "data/添可项目/营销中台/2026年/0805星厨订单开发.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -163,7 +170,8 @@
               "title": "大纲"
             }
           }
-        ]
+        ],
+        "currentTab": 4
       }
     ],
     "direction": "horizontal",
@@ -183,12 +191,21 @@
       "notes-to-html-pages:导出当前笔记为 HTML 页面": false
     }
   },
-  "active": "3d962dc970261e7b",
+  "active": "0df7e22947a2df34",
   "lastOpenFiles": [
+    "page/wiki/data/添可项目/营销中台/2026年/0805星厨订单开发.html",
+    "data/添可项目/营销中台/2026年/0805星厨订单开发.md",
+    "data/添可项目/营销中台/2026年/0731TOB促销前置价格申请单新增“寄售”类型并优化价目表生效逻辑.md",
+    "index.html",
+    "2026-08-04.md",
+    "page/wiki/data/添可项目/营销中台/2026年/0731TOB促销前置价格申请单新增“寄售”类型并优化价目表生效逻辑.html",
+    "data/添可项目/营销中台/厂发额度占用.md",
+    "data/添可项目/营销中台/2026年/sn录单.canvas",
+    "page/wiki/index.html",
+    "page/wiki/data/添可项目/营销中台/2026年/0520数据泵功能开发设计方案.html",
+    "data/添可项目/营销中台/2026年/0520数据泵功能开发设计方案.md",
     "page/tools/timestamp.html",
     "page/tools/number-convert.html",
-    "data/添可项目/营销中台/2026年/0731TOB促销前置价格申请单新增“寄售”类型并优化价目表生效逻辑.md",
-    "page/wiki/data/添可项目/营销中台/2026年/0731TOB促销前置价格申请单新增“寄售”类型并优化价目表生效逻辑.html",
     "data/Linux/redis监控(Prometheus + Grafana).md",
     "data/Linux/常用命令.md",
     "data/组件/Navicat.md",
@@ -203,8 +220,6 @@
     "HTML Pages/data/智能体-codeAgent/灵码规则/ali_java_rule.html.md",
     "HTML Pages/data/智能体-codeAgent/灵码规则",
     "HTML Pages/data/智能体-codeAgent",
-    "HTML Pages/data",
-    "HTML Pages",
     "data/智能体-codeAgent/灵码规则/测试.md",
     "page/wiki/data/智能体-codeAgent/灵码规则/测试.html.md",
     "data/智能体-codeAgent/会议纪要/MCP与AI项目开发应用探讨_20260106.md",
@@ -214,13 +229,7 @@
     "data/智能体-codeAgent/会议纪要/Ai辅助开发规则库知识库建设_20260105.md",
     "data/智能体-codeAgent/会议纪要/AI编码与业务逻辑注释规范_20251230.md",
     "data/智能体-codeAgent/会议纪要/AI编码效率质量提升与实践_20260109.md",
-    "data/智能体-codeAgent/会议纪要/业务文档整理与代码生成练习_20260107.md",
-    "data/智能体-codeAgent/会议纪要/开发规则平台与实验项目开发_20260114.md",
-    "data/智能体-codeAgent/会议纪要/代码生成与优化技巧_20260112.md",
-    "data/业务问题/TOC业务/电商/直销切换供销(淘宝).md",
-    "page/wiki/data/添可项目/CSS/css派恩缝合320.html",
     "data/工作模块/线下门店/业务逻辑/门店销售.jpg",
-    "page/wiki/data/分享/珊瑚MCP、插件、SKILL使用.html",
     "page/wiki/data/添可项目/派恩/辛顿经分体sql配置/md-img/设计文档/自然语言sql生成.png",
     "page/wiki/data/添可项目/派恩/md-img/派恩Agent资料梳理/1746523041419-45353b83-2ce0-4057-9c74-279ad230456d.png",
     "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image.png",
@@ -229,7 +238,6 @@
     "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 7.png",
     "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 65.png",
     "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 64.png",
-    "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 63.png",
-    "page/wiki/data/分享/C#开发exe程序.html"
+    "page/wiki/data/文档/C端交接/GOMS电商订单模块功能架构/图片和附件/image 63.png"
   ]
 }

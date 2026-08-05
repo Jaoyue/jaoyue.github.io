@@ -1,0 +1,11 @@
+{
+	"nodes":[
+		{"id":"0eb1dbe7fe5be2ea","x":-280,"y":-180,"width":250,"height":60,"type":"text","text":"店员录单"},
+		{"id":"2577e84270cb9aee","x":-280,"y":40,"width":250,"height":60,"type":"text","text":"sn是否未销售"},
+		{"id":"4cec1d501f82d906","x":-280,"y":240,"width":250,"height":60,"type":"text","text":"sn溯源"}
+	],
+	"edges":[
+		{"id":"e00528c00011417f","fromNode":"0eb1dbe7fe5be2ea","fromSide":"bottom","toNode":"2577e84270cb9aee","toSide":"top"},
+		{"id":"462f127628e50786","fromNode":"2577e84270cb9aee","fromSide":"bottom","toNode":"4cec1d501f82d906","toSide":"top"}
+	]
+}

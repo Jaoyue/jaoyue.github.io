@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+<script>(function(){try{if(localStorage.getItem('wiki_auth'))return;}catch(e){}document.documentElement.style.visibility='hidden';})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>我的 Wiki</title>
@@ -9,7 +10,7 @@
 body{background:#f0f2f5;height:100vh;overflow:hidden;display:flex}
 main{display:flex;flex:1;width:100%;overflow:hidden}
 #sidebar{background:#fff;box-shadow:0 0 15px rgba(0,0,0,.05);height:100vh;position:fixed;z-index:20;overflow:hidden;display:flex;flex-direction:column;transition:width .3s ease}
-.sidebar-expanded{width:300px}.sidebar-collapsed{width:40px}
+.sidebar-expanded{width:256px}.sidebar-collapsed{width:40px}
 .sidebar-header{padding:16px;border-bottom:1px solid #eee;display:flex;align-items:center;justify-content:space-between}
 #sidebarTitle{font-size:18px;font-weight:600;color:#1d2129}
 #toggleSidebarWidth{background:none;border:none;color:#86909c;cursor:pointer;font-size:18px}
@@ -21,7 +22,7 @@ main{display:flex;flex:1;width:100%;overflow:hidden}
 #wikiSearch{flex:1;width:100%;padding:8px 12px;border:1px solid #e5e6eb;border-radius:6px;font-size:13px;color:#1d2129;outline:none}
 #collapseAll{flex:0 0 auto;width:34px;height:34px;font-size:15px}
 #wikiSearch:focus{border-color:#165dff}
-.menu-container{padding:8px 0;height:calc(100% - 110px);overflow-y:auto}
+.menu-container{padding:8px 0;flex:1;overflow-y:auto}
 #tree{list-style:none;padding:0 8px}#tree ul{list-style:none;padding-left:14px}
 .folder-label{display:flex;align-items:center;gap:6px;padding:8px 12px;color:#1d2129;cursor:pointer;border-radius:6px;font-weight:600;font-size:14px;user-select:none}
 .folder-label:hover{background:#f2f3f5}
@@ -41,7 +42,20 @@ main{display:flex;flex:1;width:100%;overflow:hidden}
 .empty-tip{list-style:none;padding:16px;color:#86909c;font-size:13px;line-height:1.7}
 .empty-tip code{background:#f2f3f5;padding:1px 6px;border-radius:4px;color:#165dff}
 @media(max-width:1023px){#toggleMobileSidebar{display:block}.sidebar-expanded{transform:translateX(0)}.sidebar-collapsed{transform:translateX(-100%)}}
-@media(min-width:1024px){#sidebar{position:static}}</style>
+@media(min-width:1024px){#sidebar{position:static}}
+#wikiGate{position:fixed;inset:0;background:rgba(30,33,42,.96);z-index:99999;display:flex;align-items:center;justify-content:center;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+.gate-box{background:#fff;border-radius:16px;padding:36px 32px;width:320px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,.4);text-align:center}
+.gate-title{font-size:20px;font-weight:700;color:#1d2129;margin-bottom:6px}
+.gate-sub{font-size:13px;color:#86909c;margin-bottom:20px}
+.gate-input{width:100%;padding:12px 14px;border:1px solid #e5e6eb;border-radius:10px;font-size:15px;outline:none;box-sizing:border-box;margin-bottom:14px}
+.gate-input:focus{border-color:#165dff}
+.gate-btn{width:100%;padding:12px;border:none;border-radius:10px;background:#165dff;color:#fff;font-size:15px;font-weight:600;cursor:pointer}
+.gate-btn:hover{background:#0e48d0}
+.gate-err{color:#f53f3f;font-size:13px;margin-top:12px;min-height:18px}
+.sidebar-footer{padding:10px 16px;border-top:1px solid #eee;display:flex;justify-content:center;align-items:center;background:#fff}
+.logout-btn{padding:6px;width:32px;height:32px;border:1px solid #e5e6eb;background:#fff;border-radius:8px;color:#86909c;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.logout-btn svg{width:16px;height:16px}
+.logout-btn:hover{color:#f53f3f;border-color:#f53f3f;background:#fff2f0}</style>
 </head><body><main>
 <aside id="sidebar" class="sidebar-expanded">
 <div class="sidebar-header"><div class="brand-left">
@@ -53,6 +67,7 @@ main{display:flex;flex:1;width:100%;overflow:hidden}
 <nav class="menu-container"><ul id="tree" class="tree">
   <li class="empty-tip">菜单加载中…</li>
 </ul></nav>
+<div class="sidebar-footer"><button id="logoutBtn" class="logout-btn" title="退出当前身份，重新输入验证码"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg></button></div>
 </aside>
 <div class="content-area">
 <button id="toggleMobileSidebar" title="菜单">&#9776;</button>
@@ -67,6 +82,23 @@ main{display:flex;flex:1;width:100%;overflow:hidden}
      新增页面时：把 html 放到 data/ 下，然后编辑 menu.json（必要时同步 menu.js）即可。 -->
 <script src="menu.js"></script>
 <script>
+/* ===== 访客/管理员验证码鉴权（哈希加盐，F12 只见密文，无明文密码） ===== */
+const AUTH_SALT='jw_static_wiki_7f3a9c2e';
+function cyrb53(str,seed=0){let h1=0xdeadbeef^seed,h2=0x41c6ce57^seed;for(let i=0;i<str.length;i++){const ch=str.charCodeAt(i);h1=Math.imul(h1^ch,2654435761);h2=Math.imul(h2^ch,1597334677);}h1=Math.imul(h1^(h1>>>16),2246822507);h1^=Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507);h2^=Math.imul(h1^(h1>>>13),3266489909);return (4294967296*(h2>>>0)+(h1>>>0)).toString(16).padStart(13,'0');}
+const FULL_HASH=cyrb53(AUTH_SALT+'zxcvbnm1');
+const LIMITED_HASHES=[cyrb53(AUTH_SALT+'abc123'),cyrb53(AUTH_SALT+'xyz456'),cyrb53(AUTH_SALT+'789000')];
+function verifyCode(input){const h=cyrb53(AUTH_SALT+input);if(h===FULL_HASH)return 'full';if(LIMITED_HASHES.indexOf(h)>=0)return 'limited';return null;}
+window.__AUTH='';window.__ALLOWED='';
+function getStoredAuth(){try{return localStorage.getItem('wiki_auth')||'';}catch(e){return '';}}
+function setStoredAuth(v){try{localStorage.setItem('wiki_auth',v);}catch(e){}}
+function showToast(msg){var t=document.getElementById('wikiToast');if(!t){t=document.createElement('div');t.id='wikiToast';t.style.cssText='position:fixed;left:50%;bottom:40px;transform:translateX(-50%);background:rgba(0,0,0,.8);color:#fff;padding:10px 18px;border-radius:8px;font-size:14px;z-index:9999;transition:opacity .3s;pointer-events:none;';document.body.appendChild(t);}t.textContent=msg;t.style.opacity='1';clearTimeout(t.__timer);t.__timer=setTimeout(function(){t.style.opacity='0';},2500);}
+function showGate(){document.documentElement.style.visibility='visible';var gate=document.createElement('div');gate.id='wikiGate';gate.innerHTML='<div class="gate-box"><div class="gate-title">知识库访问验证</div><div class="gate-sub">请输入访问码</div><input id="gateInput" class="gate-input" type="password" placeholder="访问码" autocomplete="off"><button id="gateBtn" class="gate-btn">进入</button><div id="gateErr" class="gate-err"></div></div>';document.body.appendChild(gate);var input=document.getElementById('gateInput'),btn=document.getElementById('gateBtn'),err=document.getElementById('gateErr');function tryEnter(){var role=verifyCode(input.value.trim());if(!role){err.textContent='访问码错误，请重试';input.value='';input.focus();return;}setStoredAuth(role);window.__AUTH=role;gate.parentNode.removeChild(gate);startWiki();}btn.addEventListener('click',tryEnter);input.addEventListener('keydown',function(e){if(e.key==='Enter')tryEnter();});setTimeout(function(){input.focus();},50);}
+function startWiki(){document.documentElement.style.visibility='visible';init();}
+(function(){var stored=getStoredAuth();if(stored==='full'||stored==='limited'){window.__AUTH=stored;window.__ALLOWED=decodeURIComponent(location.hash.slice(1))||'';document.documentElement.style.visibility='visible';}})();
+
+/* 退出按钮：清除身份并重回验证码 */
+(function(){var btn=document.getElementById('logoutBtn');if(!btn)return;btn.addEventListener('click',function(){setStoredAuth('');window.__AUTH='';window.__ALLOWED='';location.reload();});})();
+
 var T=document.getElementById('tree'),F=document.getElementById('contentIframe'),S=document.getElementById('wikiSearch'),DATA=null;
 
 /* ---------- 首页（默认入口，不自动打开第一个文档） ---------- */
@@ -150,6 +182,7 @@ function loadMenuConfig(){
 /* ---------- 选择 / 高亮 / 加载页面 ---------- */
 function safeSrc(raw){ return String(raw||'').replace(/#/g,'%23'); }
 function sel(a){
+  if(window.__AUTH==='limited'){var _src=a.getAttribute('data-src');if(_src!==window.__ALLOWED){showToast('权限不足：访客码仅可查看分享的页面');return;}}
   document.querySelectorAll('#tree a.menu-active').forEach(function(x){x.classList.remove('menu-active')});
   a.classList.add('menu-active');
   var src=a.getAttribute('data-src');
@@ -228,11 +261,12 @@ function init(){
     renderMenu(data.menu, T, 0);
     var hash=decodeURIComponent(location.hash.slice(1));
     var target=hash?findLinkBySrc(hash):null;
-    if(target){ sel(target); }
+    if(target){ window.__ALLOWED=hash; sel(target); }
+    else if(window.__AUTH==='limited'){ var f=firstSrc(data); if(f){ window.__ALLOWED=f; var fa=findLinkBySrc(f); if(fa) sel(fa); } }
     else { showHome(); }
   }).catch(function(){
     T.innerHTML='<li class="empty-tip">菜单加载失败 ✕<br><br>请确认 <code>menu.json</code> / <code>menu.js</code> 与本页面在同一目录。<br><br>若你是<b>直接双击以 file:// 打开</b>且仍失败，浏览器会拦截本地 json 的 fetch；请用本地服务器预览：<br><code>python -m http.server</code><br>然后访问 <code>http://localhost:8000</code></li>';
   });
 }
-init();
+if(window.__AUTH){ init(); } else { showGate(); }
 </script></body></html>

@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="notes-to-html-pages-style" content="clean">
-<meta name="notes-to-html-pages-source" content="data/添可项目/营销中台/2026年/0731TOB促销前置价格申请单新增“寄售”类型并优化价目表生效逻辑.md">
+<meta name="notes-to-html-pages-source" content="data/添可项目/营销中台/2026年/0805星厨订单开发.md">
 <meta name="notes-to-html-pages-sync-annotations" content="true">
-<title>TOB促销前置价格申请单新增“寄售”类型并优化价目表生效逻辑</title>
+<title>星厨订单开发</title>
 <style>:root {
 	color-scheme: light;
 	--page-bg: #f3f0e8;
@@ -1141,56 +1141,34 @@ sup {
 <body class="style-clean">
 <main class="page">
 <header class="article-hero">
-<h1><span>TOB促销前置价格申请单新增“寄售”类型并优化价目表生效逻辑</span></h1>
+<h1><span>星厨订单开发</span></h1>
 
 <div class="hero-rule" aria-hidden="true"></div>
 </header>
-<nav class="table-of-contents" aria-label="目录">
-<h2>目录</h2>
-<ol>
-<li><a href="#代码逻辑调整">代码逻辑调整</a></li>
-<li><a href="#数据字典">数据字典</a></li>
-<li><a href="#枚举修改">枚举修改</a></li>
-</ol>
-</nav>
-<aside class="side-table-of-contents" aria-label="章节目录">
-<div class="side-toc-title">目录</div>
-<ol>
-<li><a href="#代码逻辑调整">代码逻辑调整</a></li>
-<li><a href="#数据字典">数据字典</a></li>
-<li><a href="#枚举修改">枚举修改</a></li>
-</ol>
-</aside>
 <article class="article-body">
-<h2 id="代码逻辑调整">代码逻辑调整</h2>
-<h3 id="后端">后端</h3>
-<blockquote class="readable-blockquote quote-block">
-<p>1.增加寄售类型CONSIGNMENT
-2.提交时寄售类型不校验AI计算结果
-<font color="#1f497d">3.寄售类型促销价格批文tob申请单，提交时不强制校验重复，审批通过后将旧促销价目表结束时间改为新促销价开始时间前一天</font></p>
-</blockquote>
-<h3 id="前端">前端</h3>
-<blockquote class="readable-blockquote callout-block callout-highlight">
-<p>1.寄售类型前置单，商品信息列和改造前的货源与特价申请保持一致，去掉AI计算结果的标签栏
-2.寄售类型促销价格批文tob申请单，提交时如果有重复，弹窗提醒，点击继续提交后强制提交</p>
-</blockquote>
-<h2 id="数据字典">数据字典</h2>
-<blockquote class="readable-blockquote quote-block">
-<p>IMS_PROMOTION_PRICE_BEFORE_TYPE 增加 寄售 = CONSIGNMENT</p>
-</blockquote>
-<h2 id="枚举修改">枚举修改</h2>
-<pre class="code-figure" data-label="代码"><code class="language-java">增加寄售类型
-public enum ImsPromotionPriceBeforeTypeEnum {  
-  
-    SUPPLY_SOURCE_SPECIAL_OFFER("SUPPLY_SOURCE_SPECIAL_OFFER", "货源与特价申请"),  
-    ECOMMERCE_PLATFORM_SUPPLY_PRICE("ECOMMERCE_PLATFORM_SUPPLY_PRICE", "电商平台供价申请"),  
-    CONSIGNMENT("CONSIGNMENT", "寄售");
-    }
+<h2 id="大货赠品关系管理">大货赠品关系管理</h2>
+<h3 id="建表">建表</h3>
+<pre class="code-figure" data-label="代码"><code class="language-sql">-- Vx.y__IMS_PRODUCT_GIFT_RELATION_ADD.sql
+CREATE TABLE `ims_product_gift_relation` (
+  `relation_id`       bigint(20)   NOT NULL    COMMENT '主键ID',
+  `goods_sap_id`      varchar(64)  NOT NULL DEFAULT '' COMMENT '大货SAP ID',
+  `goods_name`        varchar(255) NOT NULL DEFAULT '' COMMENT '大货名称',
+  `gift_sap_id`       varchar(64)  NOT NULL DEFAULT '' COMMENT '赠品SAP ID',
+  `gift_name`         varchar(255) NOT NULL DEFAULT '' COMMENT '赠品名称',
+  `version_num`       int(11)      NOT NULL DEFAULT '0' COMMENT '版本号',
+  `delete_flag`       tinyint(1)   NOT NULL DEFAULT '0' COMMENT '删除标识 1-删除 0-未删除',
+  `creation_date`     datetime     DEFAULT NULL COMMENT '创建时间',
+  `created_by`        int(11)      NOT NULL DEFAULT '-1' COMMENT '创建人',
+  `last_updated_by`   int(11)      NOT NULL DEFAULT '-1' COMMENT '最后更新人',
+  `last_update_date`  datetime     DEFAULT NULL COMMENT '最后更新时间',
+  `last_update_login` int(11)      NOT NULL DEFAULT '-1' COMMENT '最后登录人',
+  PRIMARY KEY (`relation_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='大货赠品关系表';
 </code></pre>
 </article>
 </main>
 <div id="reader-controls" aria-label="阅读工具" data-copied-text="已复制  条" data-empty-text="暂无划线" data-failed-text="复制失败" data-note-label="备注"><button type="button" class="reader-control-button reader-control-copy" data-action="copy-highlights" title="复制所有划线" aria-label="复制所有划线"><span class="reader-control-glyph" aria-hidden="true">⧉</span><span class="reader-control-label">复制所有划线</span></button></div>
-<script type="application/json" id="notes-to-html-pages-config">{"sourcePath":"data/添可项目/营销中台/2026年/0731TOB促销前置价格申请单新增“寄售”类型并优化价目表生效逻辑.md","syncAnnotationsToSource":true,"text":{"annotationToolbarUnderline":"划线","annotationInlinePlaceholder":"这里可以写备注...","annotationInlineSave":"保存","annotationCardPlaceholder":"添加批注...","annotationComposerSave":"保存","annotationDelete":"删除","annotationPanelTitle":"批注","annotationQuoteLabel":"原文","annotationNoteLabel":"批注","annotationSyncDisabled":"仅保存在当前页面"}}</script>
+<script type="application/json" id="notes-to-html-pages-config">{"sourcePath":"data/添可项目/营销中台/2026年/0805星厨订单开发.md","syncAnnotationsToSource":true,"text":{"annotationToolbarUnderline":"划线","annotationInlinePlaceholder":"这里可以写备注...","annotationInlineSave":"保存","annotationCardPlaceholder":"添加批注...","annotationComposerSave":"保存","annotationDelete":"删除","annotationPanelTitle":"批注","annotationQuoteLabel":"原文","annotationNoteLabel":"批注","annotationSyncDisabled":"仅保存在当前页面"}}</script>
 <script type="application/json" id="notes-to-html-pages-annotations">[]</script>
 <script>(() => {
 	"use strict";
