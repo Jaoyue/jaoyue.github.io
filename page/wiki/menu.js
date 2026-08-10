@@ -487,6 +487,10 @@ window.WIKI_MENU = {
           "src": "data/工具/Outlook使用技巧.html"
         },
         {
+          "title": "Qoder CN + CodeGraph  + 海豚 CLI 集成开发与知识管理操作指南",
+          "src": "data/工具/Qoder CN + CodeGraph  + 海豚 CLI 集成开发与知识管理操作指南.html"
+        },
+        {
           "title": "TIDB",
           "src": "data/工具/TIDB.html"
         },
@@ -1302,6 +1306,10 @@ window.WIKI_MENU = {
                 {
                   "title": "0731TOB促销前置价格申请单新增“寄售”类型并优化价目表生效逻辑",
                   "src": "data/添可项目/营销中台/2026年/0731TOB促销前置价格申请单新增“寄售”类型并优化价目表生效逻辑.html"
+                },
+                {
+                  "title": "0805星厨订单开发",
+                  "src": "data/添可项目/营销中台/2026年/0805星厨订单开发.html"
                 }
               ]
             },
