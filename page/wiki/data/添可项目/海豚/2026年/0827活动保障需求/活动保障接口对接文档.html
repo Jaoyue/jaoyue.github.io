@@ -1,0 +1,5042 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="notes-to-html-pages-style" content="clean">
+<meta name="notes-to-html-pages-source" content="data/添可项目/海豚/2026年/0827活动保障需求/活动保障接口对接文档.md">
+<meta name="notes-to-html-pages-sync-annotations" content="true">
+<title>活动保障接口对接文档</title>
+<style>:root {
+	color-scheme: light;
+	--page-bg: #f3f0e8;
+	--paper: #fbf8f1;
+	--ink: #20201d;
+	--muted: #77736a;
+	--line: #d8d1c6;
+	--line-soft: #ebe6dd;
+	--accent: #c7352b;
+	--accent-soft: #f8ede9;
+	--quote-bg: #f8f4eb;
+	--code-bg: #eee9df;
+	--link: #2f7a4b;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	background: var(--page-bg);
+	font-size: 16px;
+	scroll-behavior: smooth;
+	scroll-padding-top: 1.4rem;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+body {
+	position: relative;
+	margin: 0;
+	color: var(--ink);
+	background: var(--page-bg);
+	font-family: Georgia, "Times New Roman", "Noto Serif SC", "Songti SC", SimSun, serif;
+	line-height: 1.76;
+	letter-spacing: 0;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+}
+
+.page {
+	width: min(100%, 860px);
+	margin: 0 auto;
+	padding: 2.8rem 1.6rem 5rem;
+}
+
+.article-hero {
+	width: 100%;
+	max-width: 720px;
+	margin: 0 auto 2.4rem;
+	padding: 1.4rem 0 2rem;
+	text-align: center;
+	border-bottom: 1px solid var(--line);
+	background: transparent;
+}
+
+.article-hero h1 {
+	max-width: 720px;
+	margin: 0 auto;
+	color: #1f1f1d;
+	font-size: 2.25rem;
+	font-weight: 700;
+	line-height: 1.25;
+	letter-spacing: 0;
+	text-align: center;
+	text-wrap: balance;
+}
+
+.article-hero h1 span {
+	display: block;
+}
+
+.article-deck {
+	max-width: 680px;
+	margin: 0.95rem auto 0;
+	color: var(--muted);
+	font-size: 1rem;
+	font-style: italic;
+	line-height: 1.72;
+	text-wrap: pretty;
+}
+
+.article-deck p {
+	margin: 0;
+}
+
+.article-deck strong {
+	color: inherit;
+	font-weight: 600;
+}
+
+.hero-rule {
+	width: 3.4rem;
+	height: 2px;
+	margin: 1.55rem auto 0;
+	background: var(--accent);
+}
+
+.table-of-contents {
+	max-width: 720px;
+	margin: 0 auto 3.2rem;
+	padding: 1.35rem 1.45rem 1.25rem;
+	border: 1px solid var(--line);
+	border-radius: 8px;
+	background: rgba(251, 248, 241, 0.86);
+}
+
+.table-of-contents h2 {
+	margin: 0 0 0.85rem;
+	padding: 0;
+	border: 0;
+	color: var(--muted);
+	font-size: 0.9rem;
+	font-weight: 700;
+	line-height: 1.3;
+}
+
+.table-of-contents h2::before {
+	content: none;
+}
+
+.table-of-contents ol {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0.32rem 1.35rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	counter-reset: toc;
+	font-size: 0.86rem;
+	line-height: 1.48;
+}
+
+.table-of-contents li {
+	margin: 0;
+	padding: 0;
+	counter-increment: toc;
+	break-inside: avoid;
+}
+
+.table-of-contents a {
+	display: grid;
+	grid-template-columns: 1.9em minmax(0, 1fr);
+	gap: 0.3rem;
+	margin: 0 -0.35rem;
+	padding: 0.1rem 0.35rem;
+	border-radius: 5px;
+	color: var(--ink);
+	text-decoration: none;
+	cursor: pointer;
+	transition: color 160ms ease, background-color 160ms ease;
+}
+
+.table-of-contents a::before {
+	content: counter(toc) ".";
+	color: var(--muted);
+	text-align: right;
+	transition: color 160ms ease;
+}
+
+.table-of-contents a:hover,
+.table-of-contents a:focus-visible {
+	background: var(--accent-soft);
+	color: var(--accent);
+}
+
+.table-of-contents a:hover::before,
+.table-of-contents a:focus-visible::before {
+	color: var(--accent);
+}
+
+.side-table-of-contents {
+	display: none;
+}
+
+.side-toc-title {
+	margin: 0 0 0.75rem;
+	color: var(--muted);
+	font-size: 0.72rem;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.side-table-of-contents ol {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	counter-reset: side-toc;
+	font-size: 0.76rem;
+	line-height: 1.36;
+}
+
+.side-table-of-contents li {
+	margin: 0;
+	padding: 0;
+	counter-increment: side-toc;
+}
+
+.side-table-of-contents a {
+	display: grid;
+	grid-template-columns: 2em minmax(0, 1fr);
+	gap: 0.28rem;
+	margin: 0 -0.35rem;
+	padding: 0.22rem 0.35rem;
+	border-radius: 5px;
+	color: var(--muted);
+	text-decoration: none;
+	cursor: pointer;
+	transition: color 160ms ease, background-color 160ms ease;
+}
+
+.side-table-of-contents a::before {
+	content: counter(side-toc) ".";
+	color: #aaa39a;
+	text-align: right;
+	transition: color 160ms ease;
+}
+
+.side-table-of-contents a:hover,
+.side-table-of-contents a:focus-visible {
+	background: var(--accent-soft);
+	color: var(--accent);
+}
+
+.side-table-of-contents a:hover::before,
+.side-table-of-contents a:focus-visible::before {
+	color: var(--accent);
+}
+
+.article-body {
+	counter-reset: section;
+	width: 100%;
+	max-width: 720px;
+	margin: 0 auto;
+	font-size: 1rem;
+}
+
+.article-body > * {
+	max-width: 100%;
+}
+
+.article-body h2,
+.article-body h3,
+.article-body h4 {
+	color: #20201d;
+	letter-spacing: 0;
+	line-height: 1.32;
+	text-wrap: balance;
+}
+
+.article-body h2 {
+	counter-increment: section;
+	position: relative;
+	margin: 2.85rem 0 1rem;
+	padding: 0;
+	border: 0;
+	font-size: 1.55rem;
+	font-weight: 700;
+}
+
+.article-body h2:target {
+	color: var(--accent);
+}
+
+.article-body h2::before {
+	content: counter(section, cjk-ideographic) "、";
+	display: inline-block;
+	min-width: 2.35em;
+	margin-right: 0.2rem;
+	color: var(--accent);
+	font-weight: 500;
+}
+
+.article-body h3 {
+	margin: 2.1rem 0 0.72rem;
+	font-size: 1.25rem;
+	font-weight: 700;
+}
+
+.article-body h4 {
+	margin: 1.65rem 0 0.58rem;
+	font-size: 1.08rem;
+	font-weight: 700;
+}
+
+p {
+	margin: 0.9rem 0;
+}
+
+a {
+	color: var(--link);
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.18em;
+}
+
+[hidden] {
+	display: none !important;
+}
+
+.annotation-mark {
+	margin: 0 0.01em;
+	padding: 0.02em 0.08em 0.03em;
+	border-bottom: 1px solid rgba(199, 53, 43, 0.34);
+	background: rgba(199, 53, 43, 0.1);
+	cursor: pointer;
+	transition: background-color 160ms ease, box-shadow 160ms ease;
+}
+
+.annotation-mark:hover,
+.annotation-mark.is-active {
+	background: rgba(199, 53, 43, 0.16);
+	box-shadow: 0 0 0 2px rgba(199, 53, 43, 0.08);
+}
+
+.annotation-inline-disclosure {
+	display: none;
+}
+
+.annotation-popover {
+	position: absolute;
+	z-index: 30;
+	width: min(20rem, calc(100vw - 1.75rem));
+	padding: 0.5rem;
+	border: 1px solid rgba(92, 75, 56, 0.16);
+	border-radius: 10px;
+	background: rgba(255, 252, 246, 0.98);
+	box-shadow: 0 12px 30px rgba(60, 45, 30, 0.14);
+	backdrop-filter: blur(10px);
+}
+
+.annotation-popover::before {
+	content: "";
+	position: absolute;
+	top: -6px;
+	left: 1.2rem;
+	width: 10px;
+	height: 10px;
+	border-top: 1px solid rgba(92, 75, 56, 0.16);
+	border-left: 1px solid rgba(92, 75, 56, 0.16);
+	background: rgba(255, 252, 246, 0.98);
+	transform: rotate(45deg);
+}
+
+.annotation-popover-actions {
+	display: flex;
+	align-items: center;
+	margin-bottom: 0.42rem;
+}
+
+.annotation-popover button,
+.annotation-card button {
+	appearance: none;
+	border: 0;
+	border-radius: 5px;
+	background: transparent;
+	color: var(--ink);
+	font: inherit;
+	font-size: 0.78rem;
+	line-height: 1;
+	cursor: pointer;
+}
+
+.annotation-underline-button {
+	width: 100%;
+	padding: 0.5rem 0.68rem;
+	border: 1px solid rgba(199, 53, 43, 0.18) !important;
+	background: rgba(199, 53, 43, 0.08) !important;
+	color: var(--accent) !important;
+	font-weight: 700 !important;
+	text-align: center;
+}
+
+.annotation-popover button:hover,
+.annotation-popover button:focus-visible,
+.annotation-card button:hover,
+.annotation-card button:focus-visible {
+	background: var(--accent-soft);
+	color: var(--accent);
+	outline: none;
+}
+
+.annotation-note-row {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	gap: 0.4rem;
+	align-items: center;
+	padding: 0.28rem;
+	border: 1px solid rgba(216, 209, 198, 0.9);
+	border-radius: 8px;
+	background: rgba(251, 248, 241, 0.92);
+}
+
+.annotation-note-input {
+	width: 100%;
+	min-width: 0;
+	padding: 0.46rem 0.5rem;
+	border: 0;
+	border-radius: 6px;
+	background: transparent;
+	color: var(--ink);
+	font: inherit;
+	font-size: 0.8rem;
+	line-height: 1.2;
+}
+
+.annotation-note-row:focus-within {
+	border-color: rgba(199, 53, 43, 0.44);
+	box-shadow: 0 0 0 2px rgba(199, 53, 43, 0.08);
+}
+
+.annotation-note-input:focus {
+	outline: none;
+}
+
+.annotation-card textarea:focus {
+	border-color: rgba(199, 53, 43, 0.52);
+	outline: 2px solid rgba(199, 53, 43, 0.12);
+}
+
+.annotation-mini-save,
+.annotation-card-save {
+	padding: 0.42rem 0.58rem;
+	border-radius: 6px !important;
+	background: var(--accent) !important;
+	color: #fff !important;
+}
+
+.annotation-panel {
+	position: absolute;
+	top: 0;
+	right: max(1.25rem, calc(50% - 360px - 17rem));
+	width: 15.8rem;
+	z-index: 20;
+	padding-left: 0.8rem;
+	border-left: 1px solid var(--line-soft);
+	overflow: visible;
+}
+
+.annotation-panel-title {
+	display: none;
+}
+
+.annotation-list {
+	position: relative;
+	width: 100%;
+}
+
+.annotation-card {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	padding: 0;
+	border: 0;
+	border-radius: 10px;
+	background: transparent;
+	color: var(--ink);
+	font: inherit;
+	text-align: left;
+	box-shadow: none;
+	cursor: pointer;
+	transition-property: background-color, box-shadow;
+	transition-duration: 180ms;
+	transition-timing-function: ease-out;
+}
+
+.annotation-card:hover,
+.annotation-card.is-active {
+	background: transparent;
+	box-shadow: none;
+}
+
+.annotation-card.is-editing {
+	background: transparent;
+	box-shadow: none;
+}
+
+.annotation-card-body {
+	position: relative;
+	padding: 0.18rem 0.5rem 0.42rem 1.55rem;
+}
+
+.annotation-number {
+	position: absolute;
+	top: 0.18rem;
+	left: 0.12rem;
+	min-width: 1rem;
+	color: var(--accent);
+	font-size: 0.88rem;
+	font-weight: 700;
+	font-variant-numeric: tabular-nums;
+}
+
+.annotation-quote,
+.annotation-status {
+	margin: 0;
+}
+
+.annotation-quote {
+	margin: 0;
+	color: #625d54;
+	font-size: 0.78rem;
+	line-height: 1.46;
+	border-left: 2px solid rgba(199, 53, 43, 0.34);
+	background: rgba(199, 53, 43, 0.045);
+	padding: 0.36rem 0.48rem;
+	text-wrap: pretty;
+}
+
+.annotation-note {
+	margin: 0.62rem 0 0;
+	padding: 0;
+	border: 0;
+	color: var(--ink);
+	font-size: 0.86rem;
+	line-height: 1.52;
+	text-wrap: pretty;
+}
+
+.annotation-status {
+	margin-top: 0.45rem;
+	color: var(--muted);
+	font-size: 0.7rem;
+}
+
+.annotation-card-editor {
+	display: grid;
+	gap: 0.42rem;
+	margin-top: 0.86rem;
+	padding-top: 0.74rem;
+	border-top: 1px solid var(--line-soft);
+}
+
+.annotation-card textarea {
+	display: block;
+	width: 100%;
+	resize: vertical;
+	min-height: 4.5rem;
+	padding: 0.58rem 0.62rem;
+	border: 1px solid var(--line);
+	border-radius: 6px;
+	background: var(--paper);
+	color: var(--ink);
+	font: inherit;
+	font-size: 0.78rem;
+	line-height: 1.48;
+}
+
+.annotation-card-save {
+	font-size: 0.72rem !important;
+}
+
+.annotation-card-actions {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 0.38rem;
+	margin-top: 0.06rem;
+}
+
+.annotation-card-delete,
+.annotation-card-save {
+	min-width: auto;
+	min-height: 2.1rem;
+	padding: 0.36rem 0.58rem !important;
+	font-size: 0.72rem !important;
+	transition-property: background-color, border-color, box-shadow, color, scale;
+	transition-duration: 150ms;
+	transition-timing-function: ease-out;
+}
+
+.annotation-card-delete {
+	border-color: transparent !important;
+	background: transparent !important;
+	color: var(--accent) !important;
+	box-shadow: none !important;
+}
+
+.annotation-card .annotation-card-delete:hover,
+.annotation-card .annotation-card-delete:focus-visible {
+	background: rgba(199, 53, 43, 0.075) !important;
+	color: var(--accent) !important;
+	box-shadow: none !important;
+	outline: none;
+}
+
+.annotation-card .annotation-card-save:hover,
+.annotation-card .annotation-card-save:focus-visible {
+	background: #ae2e26 !important;
+	box-shadow: 0 2px 5px rgba(152, 43, 35, 0.22) !important;
+	outline: none;
+}
+
+.annotation-card-delete:active,
+.annotation-card-save:active {
+	scale: 0.96;
+}
+
+strong {
+	color: var(--accent);
+	font-weight: 700;
+}
+
+em {
+	color: var(--muted);
+}
+
+blockquote {
+	position: relative;
+	margin: 1.55rem 0;
+	padding: 0.95rem 1.15rem 0.95rem 1.25rem;
+	border: 0;
+	border-left: 3px solid var(--line);
+	border-radius: 6px;
+	background: var(--quote-bg);
+	color: #272622;
+}
+
+blockquote.quote-block {
+	color: #3c3932;
+}
+
+blockquote.callout-block {
+	border: 1px solid var(--line);
+	border-left: 4px solid var(--accent);
+	background: #f9f2eb;
+}
+
+blockquote.callout-highlight {
+	box-shadow: inset 0 0 0 1px rgba(199, 53, 43, 0.05);
+}
+
+blockquote.callout-conclusion {
+	padding: 1.05rem 1.25rem;
+	border: 1px solid #d9cdc0;
+	border-top: 3px solid var(--accent);
+	border-left-color: #d9cdc0;
+	background: var(--paper);
+	box-shadow: 0 10px 28px rgba(70, 48, 26, 0.06);
+}
+
+blockquote p:first-child {
+	margin-top: 0;
+}
+
+blockquote p:last-child {
+	margin-bottom: 0;
+}
+
+blockquote strong {
+	color: var(--accent);
+}
+
+blockquote.callout-block p:first-child strong:first-child {
+	display: inline-block;
+	margin-bottom: 0.25rem;
+	padding: 0.06rem 0.42rem;
+	border-radius: 999px;
+	background: var(--accent-soft);
+	color: var(--accent);
+	font-size: 0.78rem;
+	line-height: 1.45;
+}
+
+ul,
+ol {
+	margin: 0.9rem 0 1.05rem 1.35rem;
+	padding: 0;
+}
+
+li {
+	margin: 0.35rem 0;
+	padding-left: 0.25rem;
+}
+
+li::marker {
+	color: #151513;
+	font-weight: 600;
+}
+
+hr {
+	margin: 2.2rem 0;
+	border: 0;
+	border-top: 1px solid var(--line-soft);
+}
+
+.table-scroll {
+	max-width: 100%;
+	margin: 1.45rem 0;
+	border: 1px solid var(--line);
+	border-radius: 6px;
+	background: var(--paper);
+	overflow-x: auto;
+}
+
+table {
+	width: max-content;
+	min-width: 100%;
+	border-collapse: separate;
+	border-spacing: 0;
+	background: var(--paper);
+	font-size: 0.84rem;
+	line-height: 1.55;
+}
+
+thead {
+	background: transparent;
+}
+
+th {
+	background: #ebe6dc;
+	color: #4a463f;
+	font-weight: 700;
+	white-space: nowrap;
+}
+
+th,
+td {
+	padding: 0.55rem 0.66rem;
+	border: 0;
+	border-right: 1px solid var(--line);
+	border-bottom: 1px solid var(--line);
+	text-align: left;
+	vertical-align: top;
+}
+
+tr > :last-child {
+	border-right: 0;
+}
+
+tbody tr:last-child td {
+	border-bottom: 0;
+}
+
+tbody tr:nth-child(even) {
+	background: #f7f3ea;
+}
+
+tbody tr:hover {
+	background: #f4eadc;
+}
+
+pre,
+code {
+	font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+code {
+	padding: 0.08rem 0.28rem;
+	border-radius: 4px;
+	background: var(--code-bg);
+	font-size: 0.82em;
+}
+
+pre {
+	position: relative;
+	margin: 1.6rem 0;
+	padding: 2rem 1rem 1rem;
+	border: 1px solid var(--line);
+	border-left: 4px solid #bbb3a8;
+	border-radius: 6px;
+	background: var(--code-bg);
+	overflow-x: auto;
+	line-height: 1.5;
+}
+
+pre::before {
+	content: "代码 / 图示";
+	position: absolute;
+	top: 0.55rem;
+	left: 0.9rem;
+	color: var(--muted);
+	font-family: Georgia, "Times New Roman", "Noto Serif SC", "Songti SC", SimSun, serif;
+	font-size: 0.72rem;
+	font-weight: 700;
+	line-height: 1;
+}
+
+pre.code-figure::before {
+	content: attr(data-label);
+}
+
+pre.code-figure.ascii-figure {
+	border-left-color: var(--accent);
+	background: #f1ece3;
+}
+
+pre.code-figure.ascii-figure::before {
+	color: var(--accent);
+}
+
+pre code {
+	padding: 0;
+	background: transparent;
+	font-size: 0.78rem;
+}
+
+img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+	margin: 1.5rem auto;
+	outline: 1px solid rgba(0, 0, 0, 0.1);
+	outline-offset: -1px;
+}
+
+sup {
+	line-height: 0;
+}
+
+@media (min-width: 1280px) {
+	.side-table-of-contents {
+		display: block;
+		position: fixed;
+		top: 5rem;
+		left: max(1.25rem, calc(50% - 360px - 14.5rem));
+		right: auto;
+		width: 12.75rem;
+		max-height: calc(100vh - 6rem);
+		padding: 0.2rem 0.75rem 0.5rem 0;
+		border-right: 1px solid var(--line-soft);
+		border-left: 0;
+		background: transparent;
+		overflow: auto;
+	}
+}
+
+@media (min-width: 1024px) and (max-width: 1179px) {
+	.article-body {
+		max-width: 640px;
+	}
+
+	.annotation-panel {
+		right: max(1rem, calc(50% - 320px - 11.5rem));
+		width: 10.5rem;
+		padding-left: 0.58rem;
+	}
+
+	.annotation-card-body {
+		padding-right: 0.25rem;
+		padding-left: 1.28rem;
+	}
+
+	.annotation-number {
+		left: 0.06rem;
+		font-size: 0.78rem;
+	}
+
+	.annotation-quote {
+		font-size: 0.72rem;
+	}
+
+	.annotation-note {
+		font-size: 0.8rem;
+	}
+}
+
+@media (min-width: 1180px) and (max-width: 1359px) {
+	.article-body {
+		max-width: 680px;
+	}
+
+	.annotation-panel {
+		right: max(1rem, calc(50% - 340px - 13.5rem));
+		width: 12.5rem;
+		padding-left: 0.68rem;
+	}
+}
+
+@media (max-width: 1023px) {
+	.annotation-panel {
+		display: none !important;
+	}
+
+	.annotation-popover {
+		width: min(22rem, calc(100vw - 1.5rem));
+	}
+
+	.annotation-inline-disclosure {
+		display: inline;
+		margin-left: 0.22em;
+		vertical-align: baseline;
+	}
+
+	.annotation-inline-trigger {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.24rem;
+		min-height: 1.3rem;
+		padding: 0.12rem 0.28rem;
+		border: 0;
+		border-radius: 4px;
+		background: rgba(92, 75, 56, 0.055);
+		color: var(--muted);
+		font: inherit;
+		font-size: 0.64rem;
+		font-variant-numeric: tabular-nums;
+		line-height: 1;
+		vertical-align: 0.08em;
+		cursor: pointer;
+		transition-property: background-color, color, scale;
+		transition-duration: 150ms;
+		transition-timing-function: ease-out;
+	}
+
+	.annotation-inline-trigger:hover,
+	.annotation-inline-trigger:focus-visible,
+	.annotation-inline-trigger[aria-expanded="true"] {
+		background: rgba(199, 53, 43, 0.09);
+		color: var(--accent);
+		outline: none;
+	}
+
+	.annotation-inline-trigger:active {
+		scale: 0.96;
+	}
+
+	.annotation-inline-icon {
+		position: relative;
+		display: inline-block;
+		width: 0.62rem;
+		height: 0.48rem;
+		border: 1px solid currentColor;
+		border-radius: 2px;
+	}
+
+	.annotation-inline-icon::after {
+		content: "";
+		position: absolute;
+		bottom: -0.17rem;
+		left: 0.12rem;
+		width: 0.2rem;
+		height: 0.2rem;
+		border-bottom: 1px solid currentColor;
+		border-left: 1px solid currentColor;
+		background: transparent;
+		transform: skewY(-36deg);
+	}
+
+	.annotation-inline-content {
+		margin-left: 0.3em;
+		padding: 0.08em 0.34em 0.1em;
+		border-left: 1px solid rgba(199, 53, 43, 0.3);
+		background: rgba(199, 53, 43, 0.038);
+		color: var(--ink);
+		font-size: 0.78rem;
+		line-height: 1.52;
+		text-wrap: pretty;
+		vertical-align: baseline;
+	}
+
+	.annotation-inline-note {
+		margin: 0;
+	}
+}
+
+@media (max-width: 780px) {
+	html {
+		font-size: 16px;
+	}
+
+	.page {
+		padding: 1.8rem 1rem 3.2rem;
+	}
+
+	.article-hero {
+		margin-bottom: 1.9rem;
+		padding-top: 0.8rem;
+		padding-bottom: 1.55rem;
+	}
+
+	.article-hero h1 {
+		font-size: 1.75rem;
+	}
+
+	.article-deck {
+		font-size: 0.95rem;
+	}
+
+	.table-of-contents {
+		margin-bottom: 2.5rem;
+		padding: 1.1rem 1rem;
+	}
+
+	.table-of-contents ol {
+		grid-template-columns: 1fr;
+		gap: 0.45rem;
+	}
+
+	.article-body h2 {
+		margin-top: 2.45rem;
+		font-size: 1.35rem;
+	}
+
+	.article-body h2::before {
+		min-width: 0;
+		margin-right: 0.15rem;
+	}
+
+	blockquote {
+		padding: 0.85rem 0.95rem;
+	}
+
+	table {
+		font-size: 0.8rem;
+	}
+
+	.annotation-popover {
+		max-width: calc(100vw - 1.5rem);
+	}
+}
+
+@media print {
+	html,
+	body {
+		background: #fff;
+	}
+
+	.page {
+		width: 100%;
+		padding: 0;
+	}
+
+	.article-hero {
+		margin-inline: 0;
+		padding-inline: 0;
+	}
+
+	a {
+		color: inherit;
+	}
+
+	.annotation-popover,
+	.annotation-panel {
+		display: none !important;
+	}
+}</style>
+<style>#reader-controls {
+	position: fixed;
+	right: 1.4rem;
+	bottom: 1.4rem;
+	z-index: 40;
+	display: flex;
+	gap: 0.4rem;
+}
+
+.reader-control-button {
+	appearance: none;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.42rem;
+	min-height: 1.9rem;
+	padding: 0.34rem 0.82rem;
+	border: 1px solid var(--line, #d8d1c6);
+	border-radius: 999px;
+	background: var(--paper, #fbf8f1);
+	color: var(--muted, #77736a);
+	font-family: inherit;
+	font-size: 0.8rem;
+	font-weight: 500;
+	line-height: 1;
+	letter-spacing: 0.01em;
+	cursor: pointer;
+	opacity: 0.78;
+	box-shadow: 0 2px 10px rgba(60, 45, 30, 0.07);
+	transition: opacity 180ms ease, color 180ms ease, background-color 180ms ease,
+		border-color 180ms ease, box-shadow 180ms ease, transform 120ms ease;
+}
+
+.reader-control-button:hover,
+.reader-control-button:focus-visible {
+	opacity: 1;
+	color: var(--accent, #c7352b);
+	background: var(--accent-soft, #f8ede9);
+	border-color: var(--accent, #c7352b);
+	box-shadow: 0 5px 18px rgba(60, 45, 30, 0.12);
+	outline: none;
+}
+
+.reader-control-button:active {
+	transform: translateY(1px);
+}
+
+.reader-control-glyph {
+	display: inline-flex;
+	font-size: 0.9rem;
+	line-height: 1;
+	opacity: 0.85;
+}
+
+.reader-control-label {
+	white-space: nowrap;
+}
+
+.reader-control-copy.is-done {
+	opacity: 1;
+	color: #2f7a4b;
+	background: rgba(47, 122, 75, 0.1);
+	border-color: rgba(47, 122, 75, 0.42);
+}
+
+.reader-control-copy.is-empty {
+	opacity: 1;
+	color: var(--muted, #77736a);
+	background: var(--paper, #fbf8f1);
+}
+
+@media (max-width: 1023px) {
+	#reader-controls {
+		right: 0.95rem;
+		bottom: 0.95rem;
+	}
+}
+
+@media (max-width: 600px) {
+	.reader-control-label {
+		display: none;
+	}
+
+	.reader-control-button {
+		min-width: 1.9rem;
+		padding: 0.4rem;
+		justify-content: center;
+	}
+}
+
+@media print {
+	#reader-controls {
+		display: none !important;
+	}
+}</style>
+</head>
+<body class="style-clean">
+<main class="page">
+<header class="article-hero">
+<h1><span>活动保障接口对接文档</span></h1>
+
+<div class="hero-rule" aria-hidden="true"></div>
+</header>
+<article class="article-body">
+<h3 id="分页查询活动保障列表">分页查询活动保障列表</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>项目</td>
+<td>内容</td>
+</tr>
+<tr>
+<td>接口地址</td>
+<td>/api/activityAssurance/pageList</td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>POST</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>入参说明：</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>字段</td>
+<td>类型</td>
+<td>必填</td>
+<td>说明</td>
+</tr>
+<tr>
+<td>pageNum</td>
+<td>Integer</td>
+<td>是</td>
+<td>页码，从1开始</td>
+</tr>
+<tr>
+<td>pageSize</td>
+<td>Integer</td>
+<td>是</td>
+<td>每页条数</td>
+</tr>
+<tr>
+<td>activityName</td>
+<td>String</td>
+<td>否</td>
+<td>活动名称（模糊查询）</td>
+</tr>
+<tr>
+<td>activityStatus</td>
+<td>String</td>
+<td>否</td>
+<td>活动状态（PENDING/PROCESSING/COMPLETED/REVIEWED）</td>
+</tr>
+<tr>
+<td>assuranceLeader</td>
+<td>String</td>
+<td>否</td>
+<td>保障负责人（模糊查询）</td>
+</tr>
+<tr>
+<td>assuranceDept</td>
+<td>String</td>
+<td>否</td>
+<td>保障部门</td>
+</tr>
+<tr>
+<td>createTime</td>
+<td>List<string></string></td>
+<td>否</td>
+<td>创建时间范围，如 ["2026-08-01 00:00:00","2026-08-31 23:59:59"]</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>入参示例：</strong></p>
+<p>{</p>
+<p>"pageNum": 1,</p>
+<p>"pageSize": 10,</p>
+<p>"activityName": "双11",</p>
+<p>"activityStatus": "PENDING"</p>
+<p>}</p>
+<p><strong>返回字段说明：</strong></p>
+<p><strong>外层响应：</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>code</td>
+<td>Integer</td>
+<td>状态码，200表示成功</td>
+</tr>
+<tr>
+<td>msg</td>
+<td>String</td>
+<td>提示信息</td>
+</tr>
+<tr>
+<td>message</td>
+<td>String</td>
+<td>提示信息（兼容字段，同 msg）</td>
+</tr>
+<tr>
+<td>data</td>
+<td>Object</td>
+<td>分页数据</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>data 分页对象：</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>records</td>
+<td>Array</td>
+<td>活动列表（OpsActivityAssuranceVo 数组）</td>
+</tr>
+<tr>
+<td>total</td>
+<td>Long</td>
+<td>总记录数</td>
+</tr>
+<tr>
+<td>current</td>
+<td>Long</td>
+<td>当前页码</td>
+</tr>
+<tr>
+<td>size</td>
+<td>Long</td>
+<td>每页条数</td>
+</tr>
+<tr>
+<td>pages</td>
+<td>Long</td>
+<td>总页数</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>records 列表元素（OpsActivityAssuranceVo）：</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Long</td>
+<td>主键ID</td>
+</tr>
+<tr>
+<td>activityNo</td>
+<td>String</td>
+<td>活动编号（如 ATHB2606010001）</td>
+</tr>
+<tr>
+<td>activityName</td>
+<td>String</td>
+<td>活动名称</td>
+</tr>
+<tr>
+<td>activityDesc</td>
+<td>String</td>
+<td>活动描述</td>
+</tr>
+<tr>
+<td>aiActivityLevel</td>
+<td>String</td>
+<td>AI活动等级（如 MAJOR_SUPPORT 重大保障）</td>
+</tr>
+<tr>
+<td>activityLevel</td>
+<td>String</td>
+<td>人工活动等级</td>
+</tr>
+<tr>
+<td>assuranceDept</td>
+<td>String</td>
+<td>保障部门（多个以英文逗号分隔）</td>
+</tr>
+<tr>
+<td>assuranceDeptAi</td>
+<td>String</td>
+<td>AI 推荐的保障部门（多个以英文逗号分隔）</td>
+</tr>
+<tr>
+<td>assuranceLeader</td>
+<td>String</td>
+<td>保障负责人姓名</td>
+</tr>
+<tr>
+<td>assuranceLeaderId</td>
+<td>String</td>
+<td>保障负责人域账号</td>
+</tr>
+<tr>
+<td>assuranceLeaderAi</td>
+<td>String</td>
+<td>AI 推荐的保障负责人姓名</td>
+</tr>
+<tr>
+<td>assuranceLeaderIdAi</td>
+<td>String</td>
+<td>AI 推荐的保障负责人域账号</td>
+</tr>
+<tr>
+<td>activityStatus</td>
+<td>String</td>
+<td>活动状态（PENDING 待保障 / PROCESSING 保障中 / COMPLETED 已完成 / REVIEWED 已复盘）</td>
+</tr>
+<tr>
+<td>submitterName</td>
+<td>String</td>
+<td>提报人姓名</td>
+</tr>
+<tr>
+<td>submitterAccount</td>
+<td>String</td>
+<td>提报人域账号</td>
+</tr>
+<tr>
+<td>submitterSupervisorAdCode</td>
+<td>String</td>
+<td>提报人直属上级域账号</td>
+</tr>
+<tr>
+<td>startTime</td>
+<td>String</td>
+<td>活动开始时间（格式：yyyy-MM-dd HH:mm:ss）</td>
+</tr>
+<tr>
+<td>endTime</td>
+<td>String</td>
+<td>活动结束时间（格式：yyyy-MM-dd HH:mm:ss）</td>
+</tr>
+<tr>
+<td>reviewTime</td>
+<td>String</td>
+<td>复盘时间（格式：yyyy-MM-dd HH:mm:ss）</td>
+</tr>
+<tr>
+<td>reviewStatus</td>
+<td>String</td>
+<td>复盘状态（DRAFT 草稿 / REVIEWING 复盘中 / SUBMITTED 已提交）</td>
+</tr>
+<tr>
+<td>reviewGuardFlag</td>
+<td>String</td>
+<td>复盘守门标识（NOT_GUARDED 未守门 / GUARDED 已守门）</td>
+</tr>
+<tr>
+<td>reviewGuardType</td>
+<td>String</td>
+<td>复盘守门类型（SILICON_GUARDED 硅基守门 / CARBON_GUARDED 碳基守门）</td>
+</tr>
+<tr>
+<td>reviewFaultIds</td>
+<td>String</td>
+<td>复盘关联故障ID列表（多个以英文逗号分隔）</td>
+</tr>
+<tr>
+<td>aiPlanStatus</td>
+<td>String</td>
+<td>AI 方案状态（如 GENERATED 已生成）</td>
+</tr>
+<tr>
+<td>aiAnalysisStatus</td>
+<td>String</td>
+<td>AI 分析状态（如 SUCCESS 成功）</td>
+</tr>
+<tr>
+<td>planGuardFlag</td>
+<td>String</td>
+<td>方案守门标识（如 SILICON_GUARDED）</td>
+</tr>
+<tr>
+<td>planGuardStatus</td>
+<td>String</td>
+<td>方案守门状态（如 GUARDED 已守门）</td>
+</tr>
+<tr>
+<td>aiActionStatus</td>
+<td>String</td>
+<td>AI 行动计划状态（如 REGENERATED 已重新生成）</td>
+</tr>
+<tr>
+<td>taskPlatformTaskId</td>
+<td>String</td>
+<td>任务中心守门任务ID</td>
+</tr>
+<tr>
+<td>timelines</td>
+<td>Array</td>
+<td>时间轴列表（OpsActivityTimelineVo）</td>
+</tr>
+<tr>
+<td>actionPlans</td>
+<td>Array</td>
+<td>行动计划列表（OpsActivityActionPlanVo，列表接口返回）</td>
+</tr>
+<tr>
+<td>attachments</td>
+<td>Array</td>
+<td>活动附件列表（AttachmentDto）</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>timelines 元素（OpsActivityTimelineVo）：</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Long</td>
+<td>主键ID</td>
+</tr>
+<tr>
+<td>activityId</td>
+<td>Long</td>
+<td>关联活动主表ID</td>
+</tr>
+<tr>
+<td>startTime</td>
+<td>String</td>
+<td>开始时间</td>
+</tr>
+<tr>
+<td>endTime</td>
+<td>String</td>
+<td>结束时间</td>
+</tr>
+<tr>
+<td>coreTaskDesc</td>
+<td>String</td>
+<td>核心任务说明</td>
+</tr>
+<tr>
+<td>timelineType</td>
+<td>String</td>
+<td>类型</td>
+</tr>
+<tr>
+<td>sortOrder</td>
+<td>Integer</td>
+<td>排序序号</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>返回示例：</strong></p>
+<p>{</p>
+<p>"code": 200,</p>
+<p>"data": {</p>
+<p>"current": 1,</p>
+<p>"pages": 1,</p>
+<p>"records": [</p>
+<p>{</p>
+<p>"activityDesc": "双11大促期间系统全链路保障",</p>
+<p>"activityName": "双11大促保障",</p>
+<p>"activityNo": "ATHB2026083100003",</p>
+<p>"activityStatus": "PROCESSING",</p>
+<p>"aiActionStatus": "REGENERATED",</p>
+<p>"aiActivityLevel": "MAJOR_SUPPORT",</p>
+<p>"aiAnalysisStatus": "SUCCESS",</p>
+<p>"aiPlanStatus": "GENERATED",</p>
+<p>"assuranceDept": "国内营销智能部,智能运维部,数据决策智能部,供应链智能部",</p>
+<p>"assuranceDeptAi": "国内营销智能部,智能运维部,数据决策智能部,供应链智能部",</p>
+<p>"assuranceLeader": "丁青",</p>
+<p>"assuranceLeaderAi": "丁青",</p>
+<p>"assuranceLeaderId": "丁青",</p>
+<p>"assuranceLeaderIdAi": "丁青",</p>
+<p>"createBy": "zhaoyue.zy",</p>
+<p>"createTime": "2026-08-31 14:38:10",</p>
+<p>"endTime": "2026-11-12 00:00:00",</p>
+<p>"id": 14,</p>
+<p>"isDeleted": <strong>false</strong>,</p>
+<p>"planGuardFlag": "SILICON_GUARDED",</p>
+<p>"planGuardStatus": "GUARDED",</p>
+<p>"reviewFaultIds": "231,232",</p>
+<p>"reviewGuardFlag": "GUARDED",</p>
+<p>"reviewGuardType": "SILICON_GUARDED",</p>
+<p>"reviewStatus": "REVIEWING",</p>
+<p>"startTime": "2026-11-01 00:00:00",</p>
+<p>"submitterAccount": "zhaoyue.zy",</p>
+<p>"submitterName": "赵越",</p>
+<p>"updateBy": "zhaoyue.zy",</p>
+<p>"updateTime": "2026-08-31 17:36:50",</p>
+<p>"version": 7</p>
+<p>}</p>
+<p>],</p>
+<p>"size": 10,</p>
+<p>"total": 1</p>
+<p>},</p>
+<p>"message": "success"</p>
+<p>}</p>
+<hr>
+<h3 id="查询活动详情">查询活动详情</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>项目</td>
+<td>内容</td>
+</tr>
+<tr>
+<td>接口地址</td>
+<td>/api/activityAssurance/getDetail/{id}</td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>GET</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>路径参数：</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>必填</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Long</td>
+<td>是</td>
+<td>活动保障主键ID（如 14）</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>返回字段说明：</strong></p>
+<p>外层响应同「分页查询活动保障列表」（code / msg / message / data）。其中 <strong>data 为 OpsActivityAssuranceVo 对象</strong>，字段与分页列表的 <code>records</code> 元素完全一致并额外包含以下子对象：</p>
+<p><strong>data.actionPlans 元素（OpsActivityActionPlanVo）：</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Long</td>
+<td>行动计划主键ID</td>
+</tr>
+<tr>
+<td>activityId</td>
+<td>Long</td>
+<td>关联活动主表ID</td>
+</tr>
+<tr>
+<td>title</td>
+<td>String</td>
+<td>行动计划标题</td>
+</tr>
+<tr>
+<td>category</td>
+<td>String</td>
+<td>计划分类（如 应急恢复 / 原因排查 / 根本解决）</td>
+</tr>
+<tr>
+<td>objective</td>
+<td>String</td>
+<td>目标</td>
+</tr>
+<tr>
+<td>measure</td>
+<td>String</td>
+<td>措施（多行文本）</td>
+</tr>
+<tr>
+<td>responsiblePerson</td>
+<td>String</td>
+<td>责任人姓名</td>
+</tr>
+<tr>
+<td>responsiblePersonId</td>
+<td>String</td>
+<td>责任人ID（域账号）</td>
+</tr>
+<tr>
+<td>expectedCompletionTime</td>
+<td>String</td>
+<td>预计完成时间（yyyy-MM-dd HH:mm:ss）</td>
+</tr>
+<tr>
+<td>guardStatus</td>
+<td>String</td>
+<td>守门状态（NOT_GUARDED 未守门 / GUARDED 已守门）</td>
+</tr>
+<tr>
+<td>guardType</td>
+<td>String</td>
+<td>守门类型（SILICON_GUARDED 硅基 / CARBON_GUARDED 碳基，为空时可能不返回）</td>
+</tr>
+<tr>
+<td>isEdited</td>
+<td>Integer</td>
+<td>是否经过人工编辑（0否 1是）</td>
+</tr>
+<tr>
+<td>isPushed</td>
+<td>Integer</td>
+<td>是否已推送任务中心（0否 1是）</td>
+</tr>
+<tr>
+<td>isAnnotated</td>
+<td>Integer</td>
+<td>是否已批注（0否 1是）</td>
+</tr>
+<tr>
+<td>taskStatus</td>
+<td>String</td>
+<td>任务中心状态（NOT_STARTED 未开始 / IN_PROGRESS 进行中 / DONE 已完成，为空时可能不返回）</td>
+</tr>
+<tr>
+<td>taskPlatformTaskId</td>
+<td>String</td>
+<td>任务中心任务ID（未推送时为空）</td>
+</tr>
+<tr>
+<td>annotation</td>
+<td>String</td>
+<td>批注内容（未批注时为空）</td>
+</tr>
+<tr>
+<td>createBy</td>
+<td>String</td>
+<td>创建人域账号</td>
+</tr>
+<tr>
+<td>createTime</td>
+<td>String</td>
+<td>创建时间（yyyy-MM-dd HH:mm:ss）</td>
+</tr>
+<tr>
+<td>updateBy</td>
+<td>String</td>
+<td>修改人域账号</td>
+</tr>
+<tr>
+<td>updateTime</td>
+<td>String</td>
+<td>修改时间（yyyy-MM-dd HH:mm:ss）</td>
+</tr>
+<tr>
+<td>isDeleted</td>
+<td>Boolean</td>
+<td>是否删除</td>
+</tr>
+<tr>
+<td>version</td>
+<td>Integer</td>
+<td>版本号</td>
+</tr>
+<tr>
+<td>operationLogs</td>
+<td>Array</td>
+<td>操作日志列表（OpsActivityActionPlanLogVo）</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>data.actionPlans[].operationLogs 元素（OpsActivityActionPlanLogVo）：</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Long</td>
+<td>主键ID</td>
+</tr>
+<tr>
+<td>actionPlanId</td>
+<td>Long</td>
+<td>关联行动计划ID</td>
+</tr>
+<tr>
+<td>activityId</td>
+<td>Long</td>
+<td>关联活动ID</td>
+</tr>
+<tr>
+<td>operationType</td>
+<td>String</td>
+<td>操作类型（如 CREATE 新增 / EDIT 编辑 / ANNOTATE 批注）</td>
+</tr>
+<tr>
+<td>operationDesc</td>
+<td>String</td>
+<td>操作描述</td>
+</tr>
+<tr>
+<td>afterValue</td>
+<td>String</td>
+<td>变更后内容（JSON 字符串）</td>
+</tr>
+<tr>
+<td>operatorAccount</td>
+<td>String</td>
+<td>操作人域账号</td>
+</tr>
+<tr>
+<td>operatorName</td>
+<td>String</td>
+<td>操作人姓名</td>
+</tr>
+<tr>
+<td>createBy</td>
+<td>String</td>
+<td>创建人域账号</td>
+</tr>
+<tr>
+<td>createTime</td>
+<td>String</td>
+<td>创建时间（yyyy-MM-dd HH:mm:ss）</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>data.attachments 元素（AttachmentDto）：</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>附件名称</td>
+</tr>
+<tr>
+<td>type</td>
+<td>String</td>
+<td>附件类型（如 xlsx / pdf / docx）</td>
+</tr>
+<tr>
+<td>url</td>
+<td>String</td>
+<td>附件下载地址</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>返回示例：</strong></p>
+<p>{
+"code": 200,
+"data": {
+"actionPlans": [
+{
+"activityId": 14,
+"category": "应急恢复",
+"createBy": "zhaoyue.zy",
+"createTime": "2026-08-31 17:36:50",
+"expectedCompletionTime": "2026-09-02 17:36:18",
+"guardStatus": "NOT_GUARDED",
+"id": 13,
+"isAnnotated": 0,
+"isDeleted": false,
+"isEdited": 0,
+"isPushed": 0,
+"measure": "1. 确认10月31日前完成T-7/T-3/T-1变更冻结，核心系统非紧急变更禁止发版\n2. 完成电信/联通/移动主备线路切换演练，确认DMZ带宽及国内线路扩容流程\n3. 检查DNS解析、CDN配置与回源、公网证书有效期、域名备案和访问策略\n4. 完成全链路压测，验证目标TPS达到预估峰值×1.5、成功率&gt;99.9%、P99&lt;3s\n5. 梳理网络、电源、数据库、终端风险清单，活动前确认所有风险关闭\n6. 确认备机数量及到场时限，完成电商中心、直播间现场巡检及网络接入确认",
+"objective": "按时完成双11大促所有事前准备工作，关闭所有已知风险",
+"operationLogs": [],
+"responsiblePerson": "黄腾龙",
+"responsiblePersonId": "brian.huang",
+"taskStatus": "NOT_STARTED",
+"title": "【紧急】落实GOMS-国内双11大促保障事前准备工作",
+"updateBy": "zhaoyue.zy",
+"updateTime": "2026-08-31 17:36:50",
+"version": 0
+},
+{
+"activityId": 14,
+"category": "原因排查",
+"createBy": "zhaoyue.zy",
+"createTime": "2026-08-31 17:36:50",
+"expectedCompletionTime": "2026-09-03 17:36:18",
+"guardStatus": "NOT_GUARDED",
+"id": 14,
+"isAnnotated": 0,
+"isDeleted": false,
+"isEdited": 0,
+"isPushed": 0,
+"measure": "1. 拉取近3个月内部交易订单模块的接口响应时间、错误率监控数据，分析趋势\n2. 针对核心下单流程进行单点性能测试，定位潜在瓶颈点\n3. 检查数据库索引、慢查询日志，优化存在性能问题的SQL语句\n4. 输出风险排查报告，明确优化点和改进计划",
+"objective": "提前识别内部交易订单模块在大促峰值下的潜在性能瓶颈，输出风险排查报告",
+"operationLogs": [],
+"responsiblePerson": "李强",
+"responsiblePersonId": "ares.li",
+"taskStatus": "NOT_STARTED",
+"title": "排查GOMS-国内内部交易订单模块潜在性能风险",
+"updateBy": "zhaoyue.zy",
+"updateTime": "2026-08-31 17:36:50",
+"version": 0
+},
+{
+"activityId": 14,
+"category": "根本解决",
+"createBy": "zhaoyue.zy",
+"createTime": "2026-08-31 17:36:50",
+"expectedCompletionTime": "2026-09-04 17:36:18",
+"guardStatus": "NOT_GUARDED",
+"id": 15,
+"isAnnotated": 0,
+"isDeleted": false,
+"isEdited": 0,
+"isPushed": 0,
+"measure": "1. 确认核心系统现场值班安排，11月1日、11月11日重要节点现场值守到位\n2. 按SLA要求演练故障升级流程，验证5分钟响应、15分钟介入、30分钟升级时效\n3. 制定11月1日及11日流量爆发期小时级状态播报机制，明确播报内容和渠道\n4. 确认每30分钟核心订单链路巡检机制，明确巡检节点和异常上报流程\n5. 演练主备线路切换、DNS/CDN异常处置流程，验证人工兜底作业审批流程",
+"objective": "确保大促期间各环节按SLA响应，故障及时处置不扩大",
+"operationLogs": [],
+"responsiblePerson": "黄腾龙",
+"responsiblePersonId": "brian.huang",
+"taskStatus": "NOT_STARTED",
+"title": "完善双11大促事中保障机制与应急响应流程",
+"updateBy": "zhaoyue.zy",
+"updateTime": "2026-08-31 17:36:50",
+"version": 0
+},
+{
+"activityId": 14,
+"category": "根本解决",
+"createBy": "zhaoyue.zy",
+"createTime": "2026-08-31 17:36:50",
+"expectedCompletionTime": "2026-09-04 17:36:18",
+"guardStatus": "NOT_GUARDED",
+"id": 16,
+"isAnnotated": 0,
+"isDeleted": false,
+"isEdited": 0,
+"isPushed": 0,
+"measure": "1. 制定订单、库存、退款、发货及资损场景的数据一致性核对规则\n2. 明确活动结束后3个工作日内完成数据核对，72小时内输出复盘报告\n3. 制定临时权限回收、备机回收、运营商保障项关闭流程\n4. 预复盘过往大促常见问题，更新保障预案和故障知识库",
+"objective": "确保大促结束后按时完成数据核对与复盘，沉淀经验更新保障预案",
+"operationLogs": [],
+"responsiblePerson": "黄腾龙",
+"responsiblePersonId": "brian.huang",
+"taskStatus": "NOT_STARTED",
+"title": "准备双11大促事后复盘流程与数据核对方案",
+"updateBy": "zhaoyue.zy",
+"updateTime": "2026-08-31 17:36:50",
+"version": 0
+},
+{
+"activityId": 14,
+"category": "应急恢复",
+"createBy": "zhaoyue.zy",
+"createTime": "2026-08-31 17:40:54",
+"expectedCompletionTime": "2026-11-01 02:00:00",
+"guardStatus": "NOT_GUARDED",
+"id": 17,
+"isAnnotated": 0,
+"isDeleted": false,
+"isEdited": 1,
+"isPushed": 0,
+"measure": "1. 监控主库状态\n2. 触发主备切换\n3. 验证切换结果",
+"objective": "确保数据库高可用",
+"operationLogs": [
+{
+"actionPlanId": 17,
+"activityId": 14,
+"afterValue": "{"responsiblePerson":"赵六","measure":"1. 监控主库状态\n2. 触发主备切换\n3. 验证切换结果","responsiblePersonId":"zhaoliu","category":"应急恢复","title":"数据库主备切换","objective":"确保数据库高可用"}",
+"createBy": "zhaoyue.zy",
+"createTime": "2026-08-31 17:40:54",
+"id": 1,
+"operationDesc": "新增行动计划：数据库主备切换",
+"operationType": "CREATE",
+"operatorAccount": "zhaoyue.zy",
+"operatorName": "赵越"
+}
+],
+"responsiblePerson": "赵六",
+"responsiblePersonId": "zhaoliu",
+"taskStatus": "NOT_STARTED",
+"title": "数据库主备切换",
+"updateBy": "zhaoyue.zy",
+"updateTime": "2026-08-31 17:40:54",
+"version": 0
+}
+],
+"activityDesc": "双11大促期间系统全链路保障",
+"activityName": "双11大促保障",
+"activityNo": "ATHB2026083100003",
+"activityStatus": "PROCESSING",
+"aiActionStatus": "REGENERATED",
+"aiActivityLevel": "MAJOR_SUPPORT",
+"aiAnalysisStatus": "SUCCESS",
+"aiPlanStatus": "GENERATED",
+"assuranceDept": "国内营销智能部,智能运维部,数据决策智能部,供应链智能部",
+"assuranceDeptAi": "国内营销智能部,智能运维部,数据决策智能部,供应链智能部",
+"assuranceLeader": "丁青",
+"assuranceLeaderAi": "丁青",
+"assuranceLeaderId": "丁青",
+"assuranceLeaderIdAi": "丁青",
+"attachments": [
+{
+"name": "保障方案.xlsx",
+"type": "xlsx",
+"url": "https://cloud-minio-test.tineco.com/tineco-cloud/op-repo/2082803571539460097.xlsx"
+}
+],
+"createBy": "zhaoyue.zy",
+"createTime": "2026-08-31 14:38:10",
+"endTime": "2026-11-12 00:00:00",
+"id": 14,
+"isDeleted": false,
+"planGuardFlag": "SILICON_GUARDED",
+"planGuardStatus": "GUARDED",
+"reviewFaultIds": "231,232",
+"reviewGuardFlag": "GUARDED",
+"reviewGuardType": "SILICON_GUARDED",
+"reviewStatus": "REVIEWING",
+"startTime": "2026-11-01 00:00:00",
+"submitterAccount": "zhaoyue.zy",
+"submitterName": "赵越",
+"submitterSupervisorAdCode": "xingyuan.ge",
+"timelines": [
+{
+"activityId": 14,
+"coreTaskDesc": "系统启动与初始化检查",
+"endTime": "2026-11-01 02:00:00",
+"id": 11,
+"sortOrder": 1,
+"startTime": "2026-11-01 00:00:00",
+"timelineType": "STARTUP"
+},
+{
+"activityId": 14,
+"coreTaskDesc": "流量爆发期监控保障",
+"endTime": "2026-11-11 06:00:00",
+"id": 12,
+"sortOrder": 2,
+"startTime": "2026-11-11 00:00:00",
+"timelineType": "BURST"
+}
+],
+"updateBy": "zhaoyue.zy",
+"updateTime": "2026-08-31 17:36:50",
+"version": 7
+},
+"message": "success"
+}</p>
+<hr>
+<h3 id="创建活动">创建活动</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>项目</td>
+<td>内容</td>
+</tr>
+<tr>
+<td>接口地址</td>
+<td>/api/activityAssurance/create</td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>POST</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+</tr>
+</tbody>
+</table></div>
+<p>AI 相关字段（aiActivityLevel、assuranceLeader、assuranceLeaderId、assuranceDeptAi、assuranceLeaderAi 等）由系统调用 AI 自动生成并回填，<strong>无需在入参中传入</strong>。</p>
+<p><strong>入参说明（OpsActivityAssuranceDto）：</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>必填</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Long</td>
+<td>否</td>
+<td>主键ID，编辑已有活动时传入（新增不传）</td>
+</tr>
+<tr>
+<td>activityNo</td>
+<td>String</td>
+<td>否</td>
+<td>活动编号（新增时由系统生成，一般无需传）</td>
+</tr>
+<tr>
+<td>activityName</td>
+<td>String</td>
+<td>是</td>
+<td>活动名称</td>
+</tr>
+<tr>
+<td>activityDesc</td>
+<td>String</td>
+<td>是</td>
+<td>活动描述</td>
+</tr>
+<tr>
+<td>startTime</td>
+<td>String</td>
+<td>是</td>
+<td>活动开始时间（yyyy-MM-dd HH:mm:ss）</td>
+</tr>
+<tr>
+<td>endTime</td>
+<td>String</td>
+<td>是</td>
+<td>活动结束时间（yyyy-MM-dd HH:mm:ss）</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>timelines</td>
+<td>Array</td>
+<td>否</td>
+<td>活动时间轴列表（OpsActivityTimelineDto）</td>
+</tr>
+<tr>
+<td>attachments</td>
+<td>Array</td>
+<td>否</td>
+<td>活动附件列表（AttachmentDto）</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>timelines 元素（OpsActivityTimelineDto）：</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>必填</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Long</td>
+<td>否</td>
+<td>主键ID</td>
+</tr>
+<tr>
+<td>activityId</td>
+<td>Long</td>
+<td>否</td>
+<td>关联活动主表ID</td>
+</tr>
+<tr>
+<td>startTime</td>
+<td>String</td>
+<td>是</td>
+<td>开始时间（yyyy-MM-dd HH:mm:ss）</td>
+</tr>
+<tr>
+<td>endTime</td>
+<td>String</td>
+<td>是</td>
+<td>结束时间（yyyy-MM-dd HH:mm:ss）</td>
+</tr>
+<tr>
+<td>coreTaskDesc</td>
+<td>String</td>
+<td>是</td>
+<td>核心任务说明</td>
+</tr>
+<tr>
+<td>timelineType</td>
+<td>String</td>
+<td>是</td>
+<td>类型（STARTUP 启动 / STRESS_TEST 压测 / WARMUP 预热 / BURST 爆发）</td>
+</tr>
+<tr>
+<td>sortOrder</td>
+<td>Integer</td>
+<td>否</td>
+<td>排序序号</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>attachments 元素（AttachmentDto）：</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>必填</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>是</td>
+<td>原始文件名</td>
+</tr>
+<tr>
+<td>url</td>
+<td>String</td>
+<td>是</td>
+<td>文件访问地址</td>
+</tr>
+<tr>
+<td>type</td>
+<td>String</td>
+<td>是</td>
+<td>文件类型（如 xlsx）</td>
+</tr>
+<tr>
+<td>extName</td>
+<td>String</td>
+<td>否</td>
+<td>文件扩展名</td>
+</tr>
+<tr>
+<td>size</td>
+<td>Long</td>
+<td>否</td>
+<td>文件大小（字节）</td>
+</tr>
+<tr>
+<td>id</td>
+<td>String</td>
+<td>是</td>
+<td>文件ID</td>
+</tr>
+<tr>
+<td>md5</td>
+<td>String</td>
+<td>否</td>
+<td>文件MD5值</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>入参示例：</strong></p>
+<p>{
+"activityName": "双11大促保障",
+"activityDesc": "双11大促期间系统全链路保障",
+"startTime": "2026-11-01 00:00:00",
+"endTime": "2026-11-12 00:00:00",
+"assuranceDept": "国内营销智能部,智能运维部,数据决策智能部,供应链智能部",
+"timelines": [
+{
+"startTime": "2026-11-01 00:00:00",
+"endTime": "2026-11-01 02:00:00",
+"coreTaskDesc": "系统启动与初始化检查",
+"timelineType": "STARTUP",
+"sortOrder": 1
+},
+{
+"startTime": "2026-11-11 00:00:00",
+"endTime": "2026-11-11 06:00:00",
+"coreTaskDesc": "流量爆发期监控保障",
+"timelineType": "BURST",
+"sortOrder": 2
+}
+],
+"attachments": [
+{
+"name": "保障方案.xlsx",
+"type": "xlsx",
+"url": "https://cloud-minio-test.tineco.com/tineco-cloud/op-repo/2082803571539460097.xlsx"
+}
+]
+}</p>
+<p><strong>返回字段说明：</strong></p>
+<p>外层响应同前（code / msg / message / data）。<strong>data 为创建/更新后的活动对象（OpsActivityAssuranceVo）</strong>，完整字段见「查询活动详情」一节（含 id、activityNo、activityName、activityDesc、activityStatus、aiActivityLevel、assuranceDept、assuranceLeader、startTime、endTime、createBy、createTime、updateBy、updateTime 等；新增时 activityStatus 默认为 PENDING，AI 方案/行动计划相关状态为初始值）。</p>
+<p><strong>返回示例：</strong></p>
+<p>{
+"code": 200,
+"data": {
+"activityDesc": "双11大促期间系统全链路保障",
+"activityName": "双11大促保障",
+"activityNo": "ATHB2026083100003",
+"activityStatus": "PENDING",
+"aiActionStatus": "NOT_GENERATED",
+"aiActivityLevel": "MAJOR_SUPPORT",
+"aiAnalysisStatus": "SUCCESS",
+"aiPlanStatus": "GENERATED",
+"assuranceDept": "国内营销智能部,智能运维部,数据决策智能部,供应链智能部",
+"assuranceDeptAi": "国内营销智能部,智能运维部,数据决策智能部,供应链智能部",
+"assuranceLeader": "丁青",
+"assuranceLeaderAi": "丁青",
+"assuranceLeaderId": "丁青",
+"assuranceLeaderIdAi": "丁青",
+"createBy": "zhaoyue.zy",
+"createTime": "2026-08-31 14:38:10",
+"endTime": "2026-11-12 00:00:00",
+"id": 14,
+"isDeleted": false,
+"planGuardFlag": "NOT_GUARDED",
+"planGuardStatus": "NOT_GUARDED",
+"startTime": "2026-11-01 00:00:00",
+"submitterAccount": "zhaoyue.zy",
+"submitterName": "赵越",
+"updateBy": "zhaoyue.zy",
+"updateTime": "2026-08-31 14:40:07"
+},
+"message": "success"
+}</p>
+<hr>
+<h3 id="查询活动方案版本记录">查询活动方案版本记录</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>项目</td>
+<td>内容</td>
+</tr>
+<tr>
+<td>接口地址</td>
+<td>/api/activityAssurance/plan/versions</td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>GET</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>查询参数：</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>必填</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>activityId</td>
+<td>Long</td>
+<td>是</td>
+<td>活动保障ID（即创建活动返回的 id）</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>返回字段说明：</strong></p>
+<p>外层响应同前（code / msg / message / data）。<strong>data 为方案版本记录数组（OpsActivityPlanVersionVo）</strong>，每条记录字段如下：</p>
+<blockquote class="readable-blockquote quote-block" data-label="前端取值说明">
+<p><strong>前端取值说明</strong>：本接口主要用于获取 <strong>planText（方案文本）</strong>。记录中的 <code>assuranceDept</code>（保障部门）、<code>activityLevel</code>（活动等级）、<code>assuranceLeader</code>（保障负责人）等为该方案版本生成时的<strong>快照值</strong>，前端统一以「创建活动」/「查询活动详情」接口返回的最新字段为准，版本记录里这些字段仅作方案内容参考。</p>
+</blockquote>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Long</td>
+<td>版本记录ID</td>
+</tr>
+<tr>
+<td>activityId</td>
+<td>Long</td>
+<td>关联活动主表ID</td>
+</tr>
+<tr>
+<td>versionNo</td>
+<td>String</td>
+<td>版本号（如 V1、V2、V3…，序号越大版本越新）</td>
+</tr>
+<tr>
+<td>planText</td>
+<td>String</td>
+<td><strong>方案文本（本接口主要使用字段）</strong>：Markdown 格式，含保障等级、保障部门、保障系统、值班安排、响应 SLA、重要事项等完整方案内容</td>
+</tr>
+<tr>
+<td>activityLevel</td>
+<td>String</td>
+<td>活动等级（方案生成时的快照值，前端以创建活动/详情接口返回为准）</td>
+</tr>
+<tr>
+<td>assuranceDept</td>
+<td>String</td>
+<td>保障部门（方案生成时的快照值，多个英文逗号分隔，前端以创建活动/详情接口返回为准）</td>
+</tr>
+<tr>
+<td>assuranceLeader</td>
+<td>String</td>
+<td>保障负责人（方案生成时的快照值，前端以创建活动/详情接口返回为准）</td>
+</tr>
+<tr>
+<td>assuranceLeaderId</td>
+<td>String</td>
+<td>保障负责人域账号</td>
+</tr>
+<tr>
+<td>isGuard</td>
+<td>Integer</td>
+<td>是否守门：0 否 / 1 是</td>
+</tr>
+<tr>
+<td>source</td>
+<td>String</td>
+<td>来源（AI 表示 AI 生成 / 人工 表示人工编辑）</td>
+</tr>
+<tr>
+<td>operatorAccount</td>
+<td>String</td>
+<td>操作人域账号（生成或编辑该版本的人）</td>
+</tr>
+<tr>
+<td>operatorName</td>
+<td>String</td>
+<td>操作人姓名</td>
+</tr>
+<tr>
+<td>createTime</td>
+<td>String</td>
+<td>创建时间（yyyy-MM-dd HH:mm:ss）</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>返回示例：</strong></p>
+<p>[
+{
+"activityId": 14,
+"assuranceDept": "国内营销智能部,智能运维部,数据决策智能部,供应链智能部",
+"assuranceLeader": "丁青",
+"assuranceLeaderId": "丁青",
+"createTime": "2026-08-31 14:40:08",
+"id": 8,
+"isGuard": 1,
+"operatorAccount": "zhaoyue.zy",
+"operatorName": "赵越",
+"planText": "双11大促期间系统全链路保障方案666666666666666666",
+"source": "人工",
+"versionNo": "V4"
+},
+{
+"activityId": 14,
+"assuranceDept": "国内营销智能部,智能运维部,数据决策智能部,供应链智能部",
+"assuranceLeader": "丁青",
+"assuranceLeaderId": "丁青",
+"createTime": "2026-08-31 14:40:08",
+"id": 7,
+"isGuard": 1,
+"operatorAccount": "zhaoyue.zy",
+"operatorName": "赵越",
+"planText": "双11大促期间系统全链路保障方案000000000000000000000000000000000000000000000000000000",
+"source": "人工",
+"versionNo": "V3"
+},
+{
+"activityId": 14,
+"assuranceDept": "国内营销智能部,智能运维部,数据决策智能部,供应链智能部",
+"assuranceLeader": "丁青",
+"assuranceLeaderId": "丁青",
+"createTime": "2026-08-31 14:40:08",
+"id": 6,
+"isGuard": 1,
+"operatorAccount": "zhaoyue.zy",
+"operatorName": "赵越",
+"planText": "双11大促期间系统全链路保障方案11打撒发的书法大赛发多少大大方方的很过分都是",
+"source": "人工",
+"versionNo": "V2"
+},
+{
+"activityId": 14,
+"assuranceDept": "国内营销智能部,智能运维部,数据决策智能部,供应链智能部",
+"assuranceLeader": "丁青",
+"assuranceLeaderId": "丁青",
+"createTime": "2026-08-31 14:40:08",
+"id": 5,
+"isGuard": 0,
+"operatorAccount": "zhaoyue.zy",
+"operatorName": "赵越",
+"planText": "1. <strong>【双11大促保障】活动保障等级</strong>\n<code>重大活动保障</code>\n<em>定级说明：行业对标依据——电商行业通用定义“双11”为年度S级大促……（方案全文为 Markdown 长文本，此处省略后续内容）</em>\n\n4.5 重要事项（事前准备/事中保障/事后复盘）……",
+"source": "AI",
+"versionNo": "V1"
+}
+]</p>
+<hr>
+<h3 id="活动方案人工纠偏">活动方案人工纠偏</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>项目</td>
+<td>内容</td>
+</tr>
+<tr>
+<td>接口地址</td>
+<td>/api/activityAssurance/plan/correct</td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>POST</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="readable-blockquote quote-block" data-label="人工方案版本记录">
+<p>基于指定活动新增一条<strong>人工方案版本记录</strong>（source=人工），不修改原有版本。。</p>
+</blockquote>
+<p><strong>入参说明（OpsActivityPlanCorrectVO）：</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>必填</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>activityId</td>
+<td>Long</td>
+<td>是</td>
+<td>活动保障ID</td>
+</tr>
+<tr>
+<td>planText</td>
+<td>String</td>
+<td>是</td>
+<td>人工纠偏后的方案文本（Markdown 格式，建议包含保障等级、部门、系统、值班、SLA 等完整内容）</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>入参示例：</strong></p>
+<p>{
+"activityId": 14,
+"planText": "双11大促期间系统全链路保障方案666666666666666666"
+}</p>
+<p><strong>返回字段说明：</strong></p>
+<p>外层响应同前（code / msg / message / data）。<strong>data 为新生成的人工方案版本记录（OpsActivityPlanVersionVo）</strong>，字段同「查询活动方案版本记录」接口（id、activityId、versionNo、planText、activityLevel、assuranceDept、assuranceLeader、assuranceLeaderId、isGuard、source、operatorAccount、operatorName、createTime）。其中 <code>source</code>=人工，<code>isGuard</code>=1。</p>
+<p><strong>返回示例：</strong></p>
+<p>{
+"code": 200,
+"data": {
+"activityId": 14,
+"assuranceDept": "国内营销智能部,智能运维部,数据决策智能部,供应链智能部",
+"assuranceLeader": "丁青",
+"assuranceLeaderId": "丁青",
+"id": 8,
+"isGuard": 1,
+"operatorAccount": "zhaoyue.zy",
+"operatorName": "赵越",
+"planText": "双11大促期间系统全链路保障方案666666666666666666",
+"source": "人工",
+"versionNo": "V4"
+},
+"message": "success"
+}</p>
+<hr>
+<h3 id="活动方案守门">活动方案守门</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>项目</td>
+<td>内容</td>
+</tr>
+<tr>
+<td>接口地址</td>
+<td>/api/activityAssurance/plan/guard</td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>GET</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>查询参数：</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>必填</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>versionId</td>
+<td>Long</td>
+<td>是</td>
+<td>要守门的方案版本ID</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="readable-blockquote quote-block">
+<p>传入方案版本ID，标记该版本为守门（守门类型碳基/硅基由版本来源决定），并更新对应活动单的方案守门状态（planGuardStatus=GUARDED、planGuardFlag=守门类型）。同活动其他方案版本取消守门。方案守门通过后活动方可触发 AI 行动计划。</p>
+</blockquote>
+<p><strong>返回字段说明：</strong></p>
+<p>外层响应同前（code / msg / message / data）。<strong>data 为守门后的活动对象（OpsActivityAssuranceVo）</strong>，字段同「查询活动详情」一节（含 id、activityNo、activityName、activityDesc、activityStatus、aiActivityLevel、assuranceDept、assuranceDeptAi、assuranceLeader、assuranceLeaderAi、startTime、endTime、planGuardFlag、planGuardStatus 等）。守门成功后 <code>planGuardStatus</code>=GUARDED，<code>planGuardFlag</code> 为对应守门类型（如 SILICON_GUARDED）。</p>
+<p><strong>返回示例：</strong></p>
+<p>{
+"code": 200,
+"data": {
+"activityDesc": "双11大促期间系统全链路保障",
+"activityName": "双11大促保障",
+"activityNo": "ATHB2026083100003",
+"activityStatus": "PROCESSING",
+"aiActionStatus": "REGENERATED",
+"aiActivityLevel": "MAJOR_SUPPORT",
+"aiAnalysisStatus": "SUCCESS",
+"aiPlanStatus": "GENERATED",
+"assuranceDept": "国内营销智能部,智能运维部,数据决策智能部,供应链智能部",
+"assuranceDeptAi": "国内营销智能部,智能运维部,数据决策智能部,供应链智能部",
+"assuranceLeader": "丁青",
+"assuranceLeaderAi": "丁青",
+"assuranceLeaderId": "丁青",
+"assuranceLeaderIdAi": "丁青",
+"createBy": "zhaoyue.zy",
+"createTime": "2026-08-31 14:38:10",
+"endTime": "2026-11-12 00:00:00",
+"id": 14,
+"isDeleted": false,
+"planGuardFlag": "SILICON_GUARDED",
+"planGuardStatus": "GUARDED",
+"reviewFaultIds": "231,232",
+"reviewGuardFlag": "GUARDED",
+"reviewGuardType": "SILICON_GUARDED",
+"reviewStatus": "REVIEWING",
+"startTime": "2026-11-01 00:00:00",
+"submitterAccount": "zhaoyue.zy",
+"submitterName": "赵越",
+"updateBy": "zhaoyue.zy",
+"updateTime": "2026-09-01 14:38:14",
+"version": 8
+},
+"message": "success"
+}</p>
+<hr>
+<h3 id="方案生成行动计划">方案生成行动计划</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>项目</td>
+<td>内容</td>
+</tr>
+<tr>
+<td>接口地址</td>
+<td>/api/activityAssurance/generateActionPlan</td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>GET</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>查询参数：</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>必填</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Long</td>
+<td>是</td>
+<td>活动ID</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="readable-blockquote quote-block">
+<p>传入活动ID，由系统读取当前守门通过的活动方案，调用 AI 生成对应的行动计划列表并落库（保存为 actionPlans 数据）。调用前需先完成「活动方案守门」（planGuardStatus=GUARDED）。生成完成后会同步把活动表的 <code>aiActionStatus</code> 更新为 <code>REGENERATED</code>，并返回最新生成的全部行动计划列表。</p>
+</blockquote>
+<p><strong>返回字段说明：</strong></p>
+<p>外层响应同前（code / msg / message /data）。<strong>data 为 AI 生成的行动计划列表（OpsActivityActionPlanVo 数组）</strong>，每条元素的字段如下：</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+<th>页面使用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Long</td>
+<td>行动计划ID</td>
+<td>—</td>
+</tr>
+<tr>
+<td>activityId</td>
+<td>Long</td>
+<td>关联活动ID</td>
+<td>—</td>
+</tr>
+<tr>
+<td>title</td>
+<td>String</td>
+<td>标题（如「完成GOMS-国内系统双11大促保障事前准备工作」）</td>
+<td>是，标题</td>
+</tr>
+<tr>
+<td>category</td>
+<td>String</td>
+<td>分类（应急恢复 / 原因排查 / 根本解决 等）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>objective</td>
+<td>String</td>
+<td>目标</td>
+<td>是，目标</td>
+</tr>
+<tr>
+<td>measure</td>
+<td>String</td>
+<td>措施（多步骤，编号 1./2./3. 排版）</td>
+<td>是，措施</td>
+</tr>
+<tr>
+<td>responsiblePerson</td>
+<td>String</td>
+<td>责任人姓名</td>
+<td>是，责任人</td>
+</tr>
+<tr>
+<td>responsiblePersonId</td>
+<td>String</td>
+<td>责任人域账号</td>
+<td>—</td>
+</tr>
+<tr>
+<td>expectedCompletionTime</td>
+<td>Date</td>
+<td>预计完成时间（yyyy-MM-dd HH:mm:ss）</td>
+<td>是，预计完成时间</td>
+</tr>
+<tr>
+<td>isAnnotated</td>
+<td>Integer</td>
+<td>标记状态：0 未标记 / 1 已标记</td>
+<td>标记标签</td>
+</tr>
+<tr>
+<td>isEdited</td>
+<td>Integer</td>
+<td>编辑状态：0 未编辑 / 1 已编辑（区分计划来源）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>isPushed</td>
+<td>Integer</td>
+<td>推送状态：0 未推送 / 1 已推送</td>
+<td>是，推送状态</td>
+</tr>
+<tr>
+<td>guardStatus</td>
+<td>String</td>
+<td>守门状态：NOT_GUARDED 未守门 / GUARDED 已守门</td>
+<td>是，守门状态</td>
+</tr>
+<tr>
+<td>guardType</td>
+<td>String</td>
+<td>守门类型：SILICON_GUARDED 硅基守门 / CARBON_GUARDED 碳基守门</td>
+<td>是，守门类型</td>
+</tr>
+<tr>
+<td>taskStatus</td>
+<td>String</td>
+<td>任务状态：NOT_STARTED 未开始 / PROCESSING 进行中 / COMPLETED 已完成 / BLOCKED 阻塞</td>
+<td>—</td>
+</tr>
+<tr>
+<td>taskPlatformTaskId</td>
+<td>String</td>
+<td>第三方任务平台上的任务ID（用于跳转任务详情；为空时表示未推送）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>annotation</td>
+<td>String</td>
+<td>标记备注（如「任意版本」、「硅基版本」）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>createBy</td>
+<td>String</td>
+<td>创建人域账号</td>
+<td>—</td>
+</tr>
+<tr>
+<td>createTime</td>
+<td>Date</td>
+<td>创建时间</td>
+<td>—</td>
+</tr>
+<tr>
+<td>updateBy</td>
+<td>String</td>
+<td>更新人域账号</td>
+<td>—</td>
+</tr>
+<tr>
+<td>updateTime</td>
+<td>Date</td>
+<td>更新时间</td>
+<td>—</td>
+</tr>
+<tr>
+<td>isDeleted</td>
+<td>Boolean</td>
+<td>逻辑删除标记</td>
+<td>—</td>
+</tr>
+<tr>
+<td>version</td>
+<td>Integer</td>
+<td>乐观锁版本号</td>
+<td>—</td>
+</tr>
+<tr>
+<td>operationLogs</td>
+<td>Array of OpsActivityActionPlanLogVo</td>
+<td>操作日志数组（每次新增/编辑/删除生成一条记录，afterValue 保存完整快照 JSON，operationType：CREATE/UPDATE/DELETE）</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>返回示例：</strong></p>
+<pre class="code-figure" data-label="代码"><code class="language-json">{
+  "code": 200,
+  "data": [
+    {
+      "activityId": 14,
+      "category": "应急恢复",
+      "createBy": "zhaoyue.zy",
+      "createTime": "2026-08-31 17:35:32",
+      "expectedCompletionTime": "2026-09-02 17:35:06",
+      "guardStatus": "NOT_GUARDED",
+      "id": 9,
+      "isAnnotated": 0,
+      "isDeleted": false,
+      "isEdited": 0,
+      "isPushed": 0,
+      "measure": "1. 10月31日前完成T-7/T-3/T-1变更冻结确认，核心系统禁止非紧急发版\n2. 必要变更需经产品&amp;技术经理双审批，并制定秒级回退方案\n3. 完成电信/联通/移动主备线路切换演练\n4. 完成DMZ带宽扩容及国内线路扩容流程确认\n5. 检查DNS解析、CDN配置与回源、公网证书有效期、域名备案和访问策略\n6. 完成全链路压测（目标TPS=预估峰值×1.5，成功率&gt;99.9%，P99&lt;3s）\n7. 形成网络、电源、数据库、终端风险清单，活动前确认所有风险关闭\n8. 确认备机数量及到场时限，完成电商中心、直播间现场巡检及网络接入确认\n9. 完成软件封装与紧急报修入口测试",
+      "objective": "确保GOMS-国内系统在双11大促前完成所有必要准备工作，满足重大活动保障要求",
+      "operationLogs": [],
+      "responsiblePerson": "黄腾龙",
+      "responsiblePersonId": "brian.huang",
+      "taskStatus": "NOT_STARTED",
+      "title": "完成GOMS-国内系统双11大促保障事前准备工作",
+      "updateBy": "zhaoyue.zy",
+      "updateTime": "2026-08-31 17:35:32",
+      "version": 0
+    }
+  ],
+  "message": "success"
+}
+</code></pre>
+<hr>
+<h3 id="重新生成行动计划">重新生成行动计划</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>项目</td>
+<td>内容</td>
+</tr>
+<tr>
+<td>接口地址</td>
+<td>/api/activityAssurance/regenerateActionPlan</td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>GET</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>查询参数：</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>必填</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Long</td>
+<td>是</td>
+<td>活动ID</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="readable-blockquote quote-block">
+<p>传入活动ID，重新调用 AI 覆盖生成行动计划：删除该活动已有的全部行动计划，重置其守门/推送/标记等状态（guardStatus、taskStatus、isPushed、isAnnotated、isEdited 等回到初始值），再生成一份全新计划列表。与「方案生成行动计划」不同，本接口不是增量追加，而是整体覆盖重来。</p>
+</blockquote>
+<p><strong>返回字段说明：</strong></p>
+<p>外层响应同前（code / msg / message /data）。<strong>data 为重新生成后的行动计划列表（OpsActivityActionPlanVo 数组）</strong>，字段同「方案生成行动计划」一节（id、activityId、title、category、objective、measure、responsiblePerson、responsiblePersonId、expectedCompletionTime、isAnnotated、isEdited、isPushed、guardStatus、guardType、taskStatus、taskPlatformTaskId、annotation、创建/更新信息、operationLogs、version 等）。重新生成后所有计划的 <code>guardStatus</code>=NOT_GUARDED、<code>isPushed</code>=0、<code>taskStatus</code>=NOT_STARTED（即全部回到未守门、未推送、未开始状态），且返回的计划 ID 为本次新生成（与历史计划 ID 不同）。</p>
+<p><strong>返回示例：</strong></p>
+<pre class="code-figure" data-label="代码"><code class="language-json">{
+  "code": 200,
+  "data": [
+    {
+      "activityId": 14,
+      "category": "应急恢复",
+      "createBy": "zhaoyue.zy",
+      "createTime": "2026-09-01 15:00:00",
+      "expectedCompletionTime": "2026-09-02 17:35:06",
+      "guardStatus": "NOT_GUARDED",
+      "id": 18,
+      "isAnnotated": 0,
+      "isDeleted": false,
+      "isEdited": 0,
+      "isPushed": 0,
+      "measure": "1. 10月31日前完成T-7/T-3/T-1变更冻结确认，核心系统禁止非紧急发版\n2. 必要变更需经产品&amp;技术经理双审批，并制定秒级回退方案\n3. 完成电信/联通/移动主备线路切换演练\n4. 完成DMZ带宽扩容及国内线路扩容流程确认\n5. 检查DNS解析、CDN配置与回源、公网证书有效期、域名备案和访问策略\n6. 完成全链路压测（目标TPS=预估峰值×1.5，成功率&gt;99.9%，P99&lt;3s）\n7. 形成网络、电源、数据库、终端风险清单，活动前确认所有风险关闭\n8. 确认备机数量及到场时限，完成电商中心、直播间现场巡检及网络接入确认\n9. 完成软件封装与紧急报修入口测试",
+      "objective": "确保GOMS-国内系统在双11大促前完成所有必要准备工作，满足重大活动保障要求",
+      "operationLogs": [],
+      "responsiblePerson": "黄腾龙",
+      "responsiblePersonId": "brian.huang",
+      "taskStatus": "NOT_STARTED",
+      "title": "完成GOMS-国内系统双11大促保障事前准备工作",
+      "updateBy": "zhaoyue.zy",
+      "updateTime": "2026-09-01 15:00:00",
+      "version": 0
+    }
+  ],
+  "message": "success"
+}
+</code></pre>
+<hr>
+<h3 id="查询行动计划">查询行动计划</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>项目</td>
+<td>内容</td>
+</tr>
+<tr>
+<td>接口地址</td>
+<td>/api/activityAssurance/action/list</td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>GET</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>查询参数：</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>必填</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>activityId</td>
+<td>Long</td>
+<td>是</td>
+<td>活动ID</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="readable-blockquote quote-block">
+<p>根据活动ID查询该活动的全部行动计划列表（含每条计划的操作日志 operationLogs）。与「方案生成行动计划」「重新生成行动计划」返回结构相同，但本接口只查询已落库的行动计划，不触发 AI 生成。</p>
+</blockquote>
+<p><strong>返回字段说明：</strong></p>
+<p>外层响应同前（code / msg / message /data）。<strong>data 为行动计划列表（OpsActivityActionPlanVo 数组）</strong>，字段同「方案生成行动计划」一节（id、activityId、title、category、objective、measure、responsiblePerson、responsiblePersonId、expectedCompletionTime、isAnnotated、isEdited、isPushed、guardStatus、guardType、taskStatus、taskPlatformTaskId、annotation、创建/更新信息、version 等）。</p>
+<p>其中每条计划的 <strong>operationLogs 元素（OpsActivityActionPlanLogVo）</strong> 字段如下：</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Long</td>
+<td>操作日志ID</td>
+</tr>
+<tr>
+<td>actionPlanId</td>
+<td>Long</td>
+<td>关联行动计划ID</td>
+</tr>
+<tr>
+<td>activityId</td>
+<td>Long</td>
+<td>关联活动ID</td>
+</tr>
+<tr>
+<td>operationType</td>
+<td>String</td>
+<td>操作类型：CREATE 新增 / UPDATE 编辑 / DELETE 删除</td>
+</tr>
+<tr>
+<td>operationDesc</td>
+<td>String</td>
+<td>操作描述（如「新增行动计划：数据库主备切换」）</td>
+</tr>
+<tr>
+<td>afterValue</td>
+<td>String</td>
+<td>操作后完整快照 JSON（含 title/category/objective/measure/responsiblePerson/responsiblePersonId 等）</td>
+</tr>
+<tr>
+<td>operatorAccount</td>
+<td>String</td>
+<td>操作人域账号</td>
+</tr>
+<tr>
+<td>operatorName</td>
+<td>String</td>
+<td>操作人姓名</td>
+</tr>
+<tr>
+<td>createBy</td>
+<td>String</td>
+<td>创建人域账号</td>
+</tr>
+<tr>
+<td>createTime</td>
+<td>Date</td>
+<td>创建时间</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>返回示例：</strong></p>
+<pre class="code-figure" data-label="代码"><code class="language-json">{
+  "code": 200,
+  "data": [
+    {
+      "activityId": 14,
+      "category": "应急恢复",
+      "createBy": "zhaoyue.zy",
+      "createTime": "2026-08-31 17:36:50",
+      "expectedCompletionTime": "2026-09-02 17:36:18",
+      "guardStatus": "NOT_GUARDED",
+      "id": 13,
+      "isAnnotated": 0,
+      "isDeleted": false,
+      "isEdited": 0,
+      "isPushed": 0,
+      "measure": "1. 确认10月31日前完成T-7/T-3/T-1变更冻结，核心系统非紧急变更禁止发版\n2. 完成电信/联通/移动主备线路切换演练，确认DMZ带宽及国内线路扩容流程\n3. 检查DNS解析、CDN配置与回源、公网证书有效期、域名备案和访问策略\n4. 完成全链路压测，验证目标TPS达到预估峰值×1.5、成功率&gt;99.9%、P99&lt;3s\n5. 梳理网络、电源、数据库、终端风险清单，活动前确认所有风险关闭\n6. 确认备机数量及到场时限，完成电商中心、直播间现场巡检及网络接入确认",
+      "objective": "按时完成双11大促所有事前准备工作，关闭所有已知风险",
+      "operationLogs": [],
+      "responsiblePerson": "黄腾龙",
+      "responsiblePersonId": "brian.huang",
+      "taskStatus": "NOT_STARTED",
+      "title": "【紧急】落实GOMS-国内双11大促保障事前准备工作",
+      "updateBy": "zhaoyue.zy",
+      "updateTime": "2026-08-31 17:36:50",
+      "version": 0
+    },
+    {
+      "activityId": 14,
+      "category": "原因排查",
+      "createBy": "zhaoyue.zy",
+      "createTime": "2026-08-31 17:36:50",
+      "expectedCompletionTime": "2026-09-03 17:36:18",
+      "guardStatus": "NOT_GUARDED",
+      "id": 14,
+      "isAnnotated": 0,
+      "isDeleted": false,
+      "isEdited": 0,
+      "isPushed": 0,
+      "measure": "1. 拉取近3个月内部交易订单模块的接口响应时间、错误率监控数据，分析趋势\n2. 针对核心下单流程进行单点性能测试，定位潜在瓶颈点\n3. 检查数据库索引、慢查询日志，优化存在性能问题的SQL语句\n4. 输出风险排查报告，明确优化点和改进计划",
+      "objective": "提前识别内部交易订单模块在大促峰值下的潜在性能瓶颈，输出风险排查报告",
+      "operationLogs": [],
+      "responsiblePerson": "李强",
+      "responsiblePersonId": "ares.li",
+      "taskStatus": "NOT_STARTED",
+      "title": "排查GOMS-国内内部交易订单模块潜在性能风险",
+      "updateBy": "zhaoyue.zy",
+      "updateTime": "2026-08-31 17:36:50",
+      "version": 0
+    },
+    {
+      "activityId": 14,
+      "category": "根本解决",
+      "createBy": "zhaoyue.zy",
+      "createTime": "2026-08-31 17:36:50",
+      "expectedCompletionTime": "2026-09-04 17:36:18",
+      "guardStatus": "NOT_GUARDED",
+      "id": 15,
+      "isAnnotated": 0,
+      "isDeleted": false,
+      "isEdited": 0,
+      "isPushed": 0,
+      "measure": "1. 确认核心系统现场值班安排，11月1日、11月11日重要节点现场值守到位\n2. 按SLA要求演练故障升级流程，验证5分钟响应、15分钟介入、30分钟升级时效\n3. 制定11月1日及11日流量爆发期小时级状态播报机制，明确播报内容和渠道\n4. 确认每30分钟核心订单链路巡检机制，明确巡检节点和异常上报流程\n5. 演练主备线路切换、DNS/CDN异常处置流程，验证人工兜底作业审批流程",
+      "objective": "确保大促期间各环节按SLA响应，故障及时处置不扩大",
+      "operationLogs": [],
+      "responsiblePerson": "黄腾龙",
+      "responsiblePersonId": "brian.huang",
+      "taskStatus": "NOT_STARTED",
+      "title": "完善双11大促事中保障机制与应急响应流程",
+      "updateBy": "zhaoyue.zy",
+      "updateTime": "2026-08-31 17:36:50",
+      "version": 0
+    },
+    {
+      "activityId": 14,
+      "category": "根本解决",
+      "createBy": "zhaoyue.zy",
+      "createTime": "2026-08-31 17:36:50",
+      "expectedCompletionTime": "2026-09-04 17:36:18",
+      "guardStatus": "NOT_GUARDED",
+      "id": 16,
+      "isAnnotated": 0,
+      "isDeleted": false,
+      "isEdited": 0,
+      "isPushed": 0,
+      "measure": "1. 制定订单、库存、退款、发货及资损场景的数据一致性核对规则\n2. 明确活动结束后3个工作日内完成数据核对，72小时内输出复盘报告\n3. 制定临时权限回收、备机回收、运营商保障项关闭流程\n4. 预复盘过往大促常见问题，更新保障预案和故障知识库",
+      "objective": "确保大促结束后按时完成数据核对与复盘，沉淀经验更新保障预案",
+      "operationLogs": [],
+      "responsiblePerson": "黄腾龙",
+      "responsiblePersonId": "brian.huang",
+      "taskStatus": "NOT_STARTED",
+      "title": "准备双11大促事后复盘流程与数据核对方案",
+      "updateBy": "zhaoyue.zy",
+      "updateTime": "2026-08-31 17:36:50",
+      "version": 0
+    },
+    {
+      "activityId": 14,
+      "category": "应急恢复",
+      "createBy": "zhaoyue.zy",
+      "createTime": "2026-08-31 17:40:54",
+      "expectedCompletionTime": "2026-11-01 02:00:00",
+      "guardStatus": "NOT_GUARDED",
+      "id": 17,
+      "isAnnotated": 0,
+      "isDeleted": false,
+      "isEdited": 1,
+      "isPushed": 0,
+      "measure": "1. 监控主库状态\n2. 触发主备切换\n3. 验证切换结果",
+      "objective": "确保数据库高可用",
+      "operationLogs": [
+        {
+          "actionPlanId": 17,
+          "activityId": 14,
+          "afterValue": "{\"responsiblePerson\":\"赵六\",\"measure\":\"1. 监控主库状态\\n2. 触发主备切换\\n3. 验证切换结果\",\"responsiblePersonId\":\"zhaoliu\",\"category\":\"应急恢复\",\"title\":\"数据库主备切换\",\"objective\":\"确保数据库高可用\"}",
+          "createBy": "zhaoyue.zy",
+          "createTime": "2026-08-31 17:40:54",
+          "id": 1,
+          "operationDesc": "新增行动计划：数据库主备切换",
+          "operationType": "CREATE",
+          "operatorAccount": "zhaoyue.zy",
+          "operatorName": "赵越"
+        }
+      ],
+      "responsiblePerson": "赵六",
+      "responsiblePersonId": "zhaoliu",
+      "taskStatus": "NOT_STARTED",
+      "title": "数据库主备切换",
+      "updateBy": "zhaoyue.zy",
+      "updateTime": "2026-08-31 17:40:54",
+      "version": 0
+    }
+  ],
+  "message": "success"
+}
+</code></pre>
+<hr>
+<h3 id="手动新增行动计划">手动新增行动计划</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>项目</td>
+<td>内容</td>
+</tr>
+<tr>
+<td>接口地址</td>
+<td>/api/activityAssurance/action/add</td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>POST</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>入参说明（依据后端 OpsActivityActionPlanDto）：</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>必填</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>activityId</td>
+<td>Long</td>
+<td>是</td>
+<td>关联活动ID</td>
+</tr>
+<tr>
+<td>title</td>
+<td>String</td>
+<td>是</td>
+<td>标题</td>
+</tr>
+<tr>
+<td>objective</td>
+<td>String</td>
+<td>是</td>
+<td>目标</td>
+</tr>
+<tr>
+<td>measure</td>
+<td>String</td>
+<td>是</td>
+<td>措施</td>
+</tr>
+<tr>
+<td>responsiblePerson</td>
+<td>String</td>
+<td>是</td>
+<td>责任人姓名</td>
+</tr>
+<tr>
+<td>responsiblePersonId</td>
+<td>String</td>
+<td>是</td>
+<td>责任人域账号</td>
+</tr>
+<tr>
+<td>expectedCompletionTime</td>
+<td>String</td>
+<td>是</td>
+<td>预计完成时间（入参传 ISO 格式，如 <code>2026-11-01T02:00:00</code>；返回时统一转为 <code>yyyy-MM-dd HH:mm:ss</code> 格式）</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="readable-blockquote quote-block">
+<p>用户手动新增一条行动计划，新增后记录一条 operationLogs（operationType=CREATE）。新增的计划 <code>isEdited</code>=1（标记为人工编辑来源）、<code>guardStatus</code>=NOT_GUARDED、<code>isPushed</code>=0、<code>taskStatus</code>=NOT_STARTED（回到未守门、未推送、未开始初始状态）。</p>
+</blockquote>
+<p><strong>入参示例：</strong></p>
+<pre class="code-figure" data-label="代码"><code class="language-json">{
+  "activityId": 14,
+  "category": "应急恢复",
+  "title": "数据库主备切换",
+  "objective": "确保数据库高可用",
+  "measure": "1. 监控主库状态\n2. 触发主备切换\n3. 验证切换结果",
+  "responsiblePerson": "赵六",
+  "responsiblePersonId": "zhaoliu",
+  "expectedCompletionTime": "2026-11-01T02:00:00"
+}
+</code></pre>
+<p><strong>返回字段说明：</strong></p>
+<p>外层响应同前（code / msg / message /data）。<strong>data 为新增后的行动计划对象（OpsActivityActionPlanVo）</strong>，字段同「方案生成行动计划」一节（id、activityId、title、category、objective、measure、responsiblePerson、responsiblePersonId、expectedCompletionTime、isAnnotated、isEdited、isPushed、guardStatus、guardType、taskStatus、taskPlatformTaskId、annotation、创建/更新信息、version 等）。新增后默认 <code>guardStatus</code>=NOT_GUARDED、<code>isPushed</code>=0、<code>taskStatus</code>=NOT_STARTED、<code>isEdited</code>=1。</p>
+<p><strong>返回示例：</strong></p>
+<pre class="code-figure" data-label="代码"><code class="language-json">{
+  "code": 200,
+  "data": {
+    "activityId": 14,
+    "category": "应急恢复",
+    "createBy": "zhaoyue.zy",
+    "createTime": "2026-08-31 17:40:54",
+    "expectedCompletionTime": "2026-11-01 02:00:00",
+    "guardStatus": "NOT_GUARDED",
+    "id": 17,
+    "isAnnotated": 0,
+    "isDeleted": false,
+    "isEdited": 1,
+    "isPushed": 0,
+    "measure": "1. 监控主库状态\n2. 触发主备切换\n3. 验证切换结果",
+    "objective": "确保数据库高可用",
+    "responsiblePerson": "赵六",
+    "responsiblePersonId": "zhaoliu",
+    "taskStatus": "NOT_STARTED",
+      "title": "数据库主备切换",
+      "updateBy": "zhaoyue.zy",
+      "updateTime": "2026-08-31 17:40:54",
+      "version": 0
+  },
+  "message": "success"
+}
+</code></pre>
+<hr>
+<h3 id="编辑行动计划">编辑行动计划</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>项目</td>
+<td>内容</td>
+</tr>
+<tr>
+<td>接口地址</td>
+<td>/api/activityAssurance/action/edit</td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>POST</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>入参说明（依据后端 OpsActivityActionPlanDto，与「手动新增行动计划」同结构）：</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>必填</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Long</td>
+<td>是</td>
+<td>要编辑的行动计划ID</td>
+</tr>
+<tr>
+<td>activityId</td>
+<td>Long</td>
+<td>是</td>
+<td>关联活动ID</td>
+</tr>
+<tr>
+<td>title</td>
+<td>String</td>
+<td>是</td>
+<td>标题</td>
+</tr>
+<tr>
+<td>objective</td>
+<td>String</td>
+<td>是</td>
+<td>目标</td>
+</tr>
+<tr>
+<td>measure</td>
+<td>String</td>
+<td>是</td>
+<td>措施</td>
+</tr>
+<tr>
+<td>responsiblePerson</td>
+<td>String</td>
+<td>是</td>
+<td>责任人姓名</td>
+</tr>
+<tr>
+<td>responsiblePersonId</td>
+<td>String</td>
+<td>是</td>
+<td>责任人域账号</td>
+</tr>
+<tr>
+<td>expectedCompletionTime</td>
+<td>String</td>
+<td>是</td>
+<td>预计完成时间（ISO 格式入参，如 <code>2026-11-01T02:00:00</code>；返回统一转 <code>yyyy-MM-dd HH:mm:ss</code>）</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="readable-blockquote quote-block">
+<p>修改指定行动计划内容，标记该计划为人工编辑来源（<code>isEdited</code>=1），并重置守门状态（<code>guardStatus</code>=NOT_GUARDED）。每次编辑乐观锁 <code>version</code> +1，并记录一条 operationLogs（operationType=UPDATE）。</p>
+</blockquote>
+<p><strong>入参示例：</strong></p>
+<pre class="code-figure" data-label="代码"><code class="language-json">{
+  "id": 15,
+  "activityId": 14,
+  "title": "数据库主备切换",
+  "objective": "确保数据库高可用",
+  "measure": "1. 监控主库状态\n2. 触发主备切换\n3. 验证切换结果",
+  "responsiblePerson": "赵六",
+  "responsiblePersonId": "zhaoliu",
+  "expectedCompletionTime": "2026-11-01T02:00:00"
+}
+</code></pre>
+<p><strong>返回字段说明：</strong></p>
+<p>外层响应同前（code / msg / message /data）。<strong>data 为编辑后的行动计划对象（OpsActivityActionPlanVo）</strong>，字段同「方案生成行动计划」一节。编辑后 <code>isEdited</code>=1、<code>guardStatus</code>=NOT_GUARDED、<code>version</code> 较编辑前 +1（示例中由 0 变为 1）、<code>updateTime</code> 更新为本次编辑时间。</p>
+<p><strong>返回示例：</strong></p>
+<pre class="code-figure" data-label="代码"><code class="language-json">{
+  "code": 200,
+  "data": {
+    "activityId": 14,
+    "category": "根本解决",
+    "createBy": "zhaoyue.zy",
+    "createTime": "2026-08-31 17:36:50",
+    "expectedCompletionTime": "2026-11-01 02:00:00",
+    "guardStatus": "NOT_GUARDED",
+    "id": 15,
+    "isAnnotated": 0,
+    "isDeleted": false,
+    "isEdited": 1,
+    "isPushed": 0,
+    "measure": "1. 监控主库状态\n2. 触发主备切换\n3. 验证切换结果",
+    "objective": "确保数据库高可用",
+    "responsiblePerson": "赵六",
+    "responsiblePersonId": "zhaoliu",
+    "taskStatus": "NOT_STARTED",
+      "title": "数据库主备切换",
+      "updateBy": "zhaoyue.zy",
+      "updateTime": "2026-09-01 14:20:35",
+      "version": 1
+  },
+  "message": "success"
+}
+</code></pre>
+<hr>
+<h3 id="行动计划批注">行动计划批注</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>项目</td>
+<td>内容</td>
+</tr>
+<tr>
+<td>接口地址</td>
+<td>/api/activityAssurance/action/annotate</td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>POST</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>入参说明（依据后端 OpsActivityActionPlanAnnotateVO）：</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>必填</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Long</td>
+<td>是</td>
+<td>行动计划ID</td>
+</tr>
+<tr>
+<td>annotation</td>
+<td>String</td>
+<td>是</td>
+<td>批注内容</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="readable-blockquote quote-block" data-label="已守门">
+<p>为指定行动计划添加批注，直接将计划状态改为<strong>已守门</strong>（guardStatus=GUARDED、guardType=CARBON_GUARDED，即碳基守门），并标记 <code>isAnnotated</code>=1（已标记）。每次批注乐观锁 <code>version</code> +1，并记录一条 operationLogs（operationType=UPDATE）。</p>
+</blockquote>
+<p><strong>入参示例：</strong></p>
+<pre class="code-figure" data-label="代码"><code class="language-json">{
+  "id": 15,
+  "annotation": "无需理会"
+}
+</code></pre>
+<p><strong>返回字段说明：</strong></p>
+<p>外层响应同前（code / msg / message /data）。<strong>data 为批注后的行动计划对象（OpsActivityActionPlanVo）</strong>，字段同「方案生成行动计划」一节。批注后 <code>isAnnotated</code>=1、<code>guardStatus</code>=GUARDED、<code>guardType</code>=CARBON_GUARDED、<code>version</code> 较批注前 +1（示例中由 1 变为 2）、<code>updateTime</code> 更新为本次批注时间。</p>
+<p><strong>返回示例：</strong></p>
+<pre class="code-figure" data-label="代码"><code class="language-json">{
+  "code": 200,
+  "data": {
+    "activityId": 14,
+    "annotation": "无需理会",
+    "category": "根本解决",
+    "createBy": "zhaoyue.zy",
+    "createTime": "2026-08-31 17:36:50",
+    "expectedCompletionTime": "2026-11-01 02:00:00",
+    "guardStatus": "GUARDED",
+    "guardType": "CARBON_GUARDED",
+    "id": 15,
+    "isAnnotated": 1,
+    "isDeleted": false,
+    "isEdited": 1,
+    "isPushed": 0,
+    "measure": "1. 监控主库状态\n2. 触发主备切换\n3. 验证切换结果",
+    "objective": "确保数据库高可用",
+    "responsiblePerson": "赵六",
+    "responsiblePersonId": "zhaoliu",
+    "taskStatus": "NOT_STARTED",
+      "title": "数据库主备切换",
+      "updateBy": "zhaoyue.zy",
+      "updateTime": "2026-09-01 14:20:45",
+      "version": 2
+  },
+  "message": "success"
+}
+</code></pre>
+<hr>
+<h3 id="行动计划推送任务中心">行动计划推送任务中心</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>项目</td>
+<td>内容</td>
+</tr>
+<tr>
+<td>接口地址</td>
+<td>/api/activityAssurance/action/pushTask</td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>GET</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>查询参数：</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>必填</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Long</td>
+<td>是</td>
+<td>活动ID</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="readable-blockquote quote-block" data-label="全部行动计划均已守门">
+<p>将指定活动的行动计划推送执行任务至责任人任务中心。后端逻辑（结合 service 实现）：</p>
+<ul>
+<li>校验活动存在，且当前登录用户为提报人直属上级（<code>submitterSupervisorAdCode</code>）；</li>
+<li>校验行动计划「责任人域账号（responsiblePersonId）」不为空，否则报错「行动计划责任人域账号缺失，无法推送执行任务」；</li>
+<li>调用任务中心接口（submitFaultTask007）创建执行任务，回填 <code>taskPlatformTaskId</code>；</li>
+<li>更新计划状态：<code>isPushed</code>=1（已推送）、<code>taskStatus</code>=IN_PROGRESS（进行中）；</li>
+<li>重算该计划守门状态（<code>recomputeGuardStatus</code>）；</li>
+<li>记录一条 operationLogs（operationType=PUSH_TASK，描述「推送执行任务至任务中心」）；</li>
+<li>若活动下<strong>全部行动计划均已守门</strong>，则活动状态置为已完成（<code>resolveActivityIfAllGuarded</code>）。</li>
+</ul>
+</blockquote>
+<p><strong>返回字段说明：</strong></p>
+<p>返回 <code>Result&lt;Void&gt;</code>，<strong>data 字段为空（无业务返回体）</strong>，仅包含外层响应 code / msg / message。</p>
+<p><strong>返回示例：</strong></p>
+<pre class="code-figure" data-label="代码"><code class="language-json">{
+  "code": 200,
+  "message": "success"
+}
+</code></pre>
+<blockquote class="readable-blockquote quote-block">
+<p>推送成功后如需查看最新计划状态，可调用「查询行动计划」（<code>/api/activityAssurance/action/list?activityId=xx</code>）接口，被推送的计划 <code>isPushed</code>=1、<code>taskStatus</code>=IN_PROGRESS、<code>taskPlatformTaskId</code> 有值。</p>
+</blockquote>
+<hr>
+<h3 id="活动发起复盘">活动发起复盘</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>项目</td>
+<td>内容</td>
+</tr>
+<tr>
+<td>接口地址</td>
+<td>/api/activityAssurance/review/start</td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>POST</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>入参说明（依据后端 OpsActivityReviewStartVO）：</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>必填</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>activityId</td>
+<td>Long</td>
+<td>是</td>
+<td>活动ID</td>
+</tr>
+<tr>
+<td>relatedFaultIds</td>
+<td>String</td>
+<td>否</td>
+<td>关联故障/问题ID列表（多个以英文逗号分隔，如 <code>231,232</code>）</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="readable-blockquote quote-block">
+<p>发起活动复盘：查询关联故障并触发 AI 复盘工作流。发起后活动复盘状态置为 <code>REVIEWING</code>（复盘进行中），并回填 <code>reviewFaultIds</code>（关联故障ID）。返回活动对象。</p>
+</blockquote>
+<p><strong>入参示例：</strong></p>
+<pre class="code-figure" data-label="代码"><code class="language-json">{
+  "activityId": "14",
+  "relatedFaultIds": "231,232"
+}
+</code></pre>
+<p><strong>返回字段说明：</strong></p>
+<p>外层响应同前（code / msg / message /data）。<strong>data 为复盘发起后的活动对象（OpsActivityAssurance，与「查询活动详情」同结构）</strong>，字段同「查询活动详情」一节（含 id、activityNo、activityName、activityDesc、activityStatus、aiActivityLevel、assuranceDept、assuranceLeader、startTime、endTime、planGuardStatus 等）。发起复盘后主要关注：</p>
+<ul>
+<li><code>reviewStatus</code>=REVIEWING（复盘进行中）</li>
+<li><code>reviewFaultIds</code>=关联故障ID（回填入参值）</li>
+<li><code>reviewGuardFlag</code>=NOT_GUARDED（复盘报告尚未守门）</li>
+<li><code>activityStatus</code>（示例中为 COMPLETED，即活动已置为已完成，转入复盘阶段）</li>
+</ul>
+<p><strong>返回示例：</strong></p>
+<pre class="code-figure" data-label="代码"><code class="language-json">{
+  "code": 200,
+  "data": {
+    "activityDesc": "双11大促期间系统全链路保障",
+    "activityName": "双11大促保障",
+    "activityNo": "ATHB2026083100003",
+    "activityStatus": "COMPLETED",
+    "aiActionStatus": "NOT_GENERATED",
+    "aiActivityLevel": "MAJOR_SUPPORT",
+    "aiAnalysisStatus": "SUCCESS",
+    "aiPlanStatus": "GENERATED",
+    "assuranceDept": "国内营销智能部,智能运维部,数据决策智能部,供应链智能部",
+    "assuranceDeptAi": "国内营销智能部,智能运维部,数据决策智能部,供应链智能部",
+    "assuranceLeader": "丁青",
+    "assuranceLeaderAi": "丁青",
+    "assuranceLeaderId": "丁青",
+    "assuranceLeaderIdAi": "丁青",
+    "createBy": "zhaoyue.zy",
+    "createTime": "2026-08-31 14:38:10",
+    "endTime": "2026-11-12 00:00:00",
+    "id": 14,
+    "isDeleted": false,
+    "planGuardFlag": "SILICON_GUARDED",
+    "planGuardStatus": "GUARDED",
+    "reviewFaultIds": "231,232",
+    "reviewGuardFlag": "NOT_GUARDED",
+    "reviewStatus": "REVIEWING",
+    "startTime": "2026-11-01 00:00:00",
+    "submitterAccount": "zhaoyue.zy",
+    "submitterName": "赵越",
+    "updateBy": "zhaoyue.zy",
+    "updateTime": "2026-08-31 16:23:32",
+    "version": 3
+  },
+  "message": "success"
+}
+</code></pre>
+<hr>
+<h3 id="查询复盘版本列表">查询复盘版本列表</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>项目</td>
+<td>内容</td>
+</tr>
+<tr>
+<td>接口地址</td>
+<td>/api/activityAssurance/review/versions</td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>GET</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>查询参数：</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>必填</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>activityId</td>
+<td>Long</td>
+<td>是</td>
+<td>活动ID</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="readable-blockquote quote-block">
+<p>根据活动ID查询该活动的复盘报告历史版本列表（含 AI 生成与人工编辑版本）。与「查询活动方案版本记录」对应，本接口针对复盘报告。</p>
+</blockquote>
+<p><strong>返回字段说明：</strong></p>
+<p>外层响应同前（code / msg / message /data）。<strong>data 为复盘版本记录数组（List of OpsActivityReviewVersionVo）</strong>，每条记录字段如下：</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Long</td>
+<td>版本记录ID</td>
+</tr>
+<tr>
+<td>activityId</td>
+<td>Long</td>
+<td>关联活动主表ID</td>
+</tr>
+<tr>
+<td>versionNo</td>
+<td>String</td>
+<td>版本号（如 V1、V2、V3…，序号越大版本越新）</td>
+</tr>
+<tr>
+<td>reviewReport</td>
+<td>String</td>
+<td>复盘报告内容（Markdown 格式，含模块一活动整体回顾、模块二保障效果评估、模块三问题与不足、模块四改进建议等完整复盘文本）</td>
+</tr>
+<tr>
+<td>isGuard</td>
+<td>Integer</td>
+<td>是否守门：0 否 / 1 是</td>
+</tr>
+<tr>
+<td>source</td>
+<td>String</td>
+<td>来源：AI（AI 生成）/ MANUAL_EDITED（人工编辑）。注：VO 注释标注为 AI_GENERATED/MANUAL_EDITED，实际接口返回短值 AI / MANUAL_EDITED</td>
+</tr>
+<tr>
+<td>operatorAccount</td>
+<td>String</td>
+<td>操作人域账号</td>
+</tr>
+<tr>
+<td>operatorName</td>
+<td>String</td>
+<td>操作人姓名</td>
+</tr>
+<tr>
+<td>createTime</td>
+<td>Date</td>
+<td>创建时间</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>返回示例：</strong></p>
+<pre class="code-figure" data-label="代码"><code class="language-json">{
+  "code": 200,
+  "data": [
+    {
+      "activityId": 14,
+      "createTime": "2026-08-31 16:11:56",
+      "id": 1,
+      "isGuard": 1,
+      "operatorAccount": "zhaoyue.zy",
+      "operatorName": "赵越",
+      "reviewReport": "### 模块一：活动整体回顾（基础信息复盘）\n\n1. **活动基本信息** \n   - 活动全称：双11大促期间系统全链路保障\n   - 核心业务场景：国内营销APP业务运营及全链路访问\n   - 活动完整周期：未提供（依据现有数据无法确认具体起止时间，发生故障时间为2026-08-28 00:00:00）\n   - 活动保障定级：重大活动（MAJOR_SUPPORT）\n\n2. **整体保障过程**: \n   依据提供的行动计划执行情况显示“无行动计划”，且关联故障记录中P0故障状态为“PENDING”（持续中），表明本次保障在前置巡检、预案准备、实时监控及应急响应等关键环节均未有效落地或存在严重缺失，未能阻止故障发生且未能完成有效恢复。\n\n3. **核心链路运行情况**: \n   核心业务系统运行状态严重异常。国内营销APP系统级登录功能完全不可用，核心业务入口阻断，所有依赖该APP进行业务操作的营销人员受影响。登录服务及其依赖的认证中心、SSO、网关或数据库等关键资源存在异常（疑似单点故障或服务宕机），核心业务流程完全中断。\n\n4. **重大故障核查**: \n   活动期间发生P0级故障。\n   - 发生时间：2026-08-28 00:00:00\n   - 影响范围：国内营销APP全部用户无法登录，营销业务链路完全中断，影响范围覆盖所有使用该APP的业务人员，属于核心入口阻断。\n   - 处置时长：至今未恢复（故障状态持续中，实际故障恢复时间缺失）。\n\n5. **保障目标达成情况**: \n   未达成。依据：活动期间发生P0级核心入口阻断故障，且故障持续未恢复，严重违背“高可用、零重大故障、零中断”的保障目标。\n\n---\n\n### 模块二：保障效果评估\n\n1. **保障核心成效**: \n   系统稳定性严重失效，核心入口阻断；资源承载力在故障点完全丧失；应急响应速度与故障处置能力严重不足，P0故障持续待恢复；值守落地与监控拦截失效，未能实现故障的快速自愈或人工干预恢复。\n\n2. **本次保障亮点**: \n   无。\n\n3. **综合评估结论**: \n   待改进。依据：活动期间出现P0级重大故障且未能有效恢复，核心业务链路中断，保障预案与行动计划缺失，未达成任何核心保障目标。\n\n---\n\n### 模块三：问题与不足\n\n1. **系统运行层面**: \n   - 国内营销APP登录功能完全不可用，系统级入口阻断。\n   - 登录链路（含认证中心、SSO、网关及数据库连接）存在单点故障或服务宕机，未实现多节点负载均衡与自动故障切换。\n   - 监控告警存在盲区或熔断策略失效，未能实现故障发生时的自动阻断与恢复。\n\n2. **保障执行层面**: \n   - 应急响应与处置严重滞后，P0故障发生至今状态仍为PENDING，未实际恢复。\n   - 无行动计划执行，保障值守、预案演练、故障排查等执行流程缺失。\n   - 跨团队协同（运维、开发、DBA等）联动不畅，未能快速定位并执行回滚或切换操作。\n\n3. **风险预判层面**: \n   - 未识别登录链路作为核心入口的单点风险，高可用容灾设计缺失。\n   - 峰值压力与容量预估缺失，未对核心链路进行压测与风险排查。\n   - 变更管理风险预判不足，未建立针对近期变更的快速回滚或灰度预案。\n\n---\n\n### 模块四：改进建议\n\n1. **系统优化改进**: \n   - 针对登录链路单点故障，立即实施高可用改造，建立多节点负载均衡和自动故障切换机制，消除认证中心、网关等单点风险。\n   - 完善实时监控与告警体系，覆盖登录成功率、平均响应时长、错误码分布及依赖组件健康状态，设置阈值告警与自动熔断策略。\n\n2. **保障流程优化**: \n   - 制定并演练登录故障等核心链路的应急预案，明确故障分级、响应角色、恢复步骤和通知模板，确保P0故障发生时10分钟内升级并启动跨团队应急响应。\n   - 完善变更管理流程，对登录链路相关的配置、代码和基础设施变更实施严格审批、灰度发布，并强制具备快速回滚机制。\n\n3. **风险管控优化**: \n   - 建立核心业务链路分级风险评估机制，重点排查类似登录入口的单点故障与容量瓶颈。\n   - 开展全场景推演与极限压测，验证应急切换和容量承载能力，补充特殊场景（如认证中心宕机、DB连接耗尽）的降级或备用入口预案。\n\n4. **能力建设优化**: \n   - 定期开展故障演练（混沌工程），提升运维、开发、DBA等跨团队应急协同与处置技能。\n   - 沉淀本次P0故障案例，形成知识库与标准化SOP，避免同类问题复发。\n\n5. **常态化保障优化**: \n   - 针对本次暴露的保障体系缺失，后续重大活动保障必须前置输出全量巡检报告、压测报告与行动计划，并实施7×24值守与分钟级故障上报机制，持续提升系统稳定性与保障专业性。",
+      "source": "AI",
+      "versionNo": "V1"
+    },
+    {
+      "activityId": 14,
+      "createTime": "2026-08-31 16:25:30",
+      "id": 3,
+      "isGuard": 0,
+      "operatorAccount": "zhaoyue.zy",
+      "operatorName": "赵越",
+      "reviewReport": "3432432400000000000000000000000000000000000000000000000",
+      "source": "MANUAL_EDITED",
+      "versionNo": "V3"
+    },
+    {
+      "activityId": 14,
+      "createTime": "2026-08-31 16:23:32",
+      "id": 2,
+      "isGuard": 0,
+      "operatorAccount": "zhaoyue.zy",
+      "operatorName": "赵越",
+      "reviewReport": "### 模块一：活动整体回顾（基础信息复盘）\n\n1. **活动基本信息**:\n   - 活动全称：双11大促期间系统全链路保障\n   - 核心业务场景：双11大促期间国内营销APP全链路业务支撑\n   - 活动完整周期：未提供（依据故障记录推断，至少涵盖2026-08-28 00:00:00至今）\n   - 活动保障定级：重大活动（MAJOR_SUPPORT）\n\n2. **整体保障过程**: \n   因未提供系统运行数据与行动计划执行情况，前期巡检、资源扩容、预案准备等具体执行数据缺失。从故障处于PENDING状态及无行动计划推断，值守监控与应急处置流程未有效闭环，应急待命与故障恢复机制未发挥预期作用。\n\n3. **核心链路运行情况**: \n   核心业务系统运行出现严重异常。国内营销APP登录链路发生阻断，系统级登录功能完全不可用，存在核心入口阻断现象。所有依赖该APP进行业务操作的营销人员受影响，核心业务流程严重受阻。\n\n4. **重大故障核查**: \n   活动周期内发生P0级故障。\n   - 发生时间：2026-08-28 00:00:00\n   - 影响范围：国内营销APP全部用户无法登录，营销业务链路完全中断，影响范围覆盖所有使用该APP的业务人员。\n   - 处置时长：故障当前状态为PENDING（持续中），实际故障恢复时间缺失，处置未闭环。\n\n5. **保障目标达成情况**: \n   未达成。依据：核心业务入口发生P0级阻断故障且当前未恢复，不符合“高可用”及“零重大故障”的保障目标。\n\n---\n\n### 模块二：保障效果评估\n\n1. **保障核心成效**: \n   系统稳定性与资源承载力出现严重短板；应急响应速度与故障处置能力未达预期，P0级故障持续至今未恢复；值守落地与实时监控未能有效拦截或快速消除故障影响，整体保障成效严重失效。\n\n2. **本次保障亮点**: \n   无。\n\n3. **综合评估结论**: \n   待改进。依据：活动期间发生P0级核心入口阻断故障，且故障状态持续未恢复，暴露出系统高可用架构缺失与应急处置机制的严重失灵。\n\n---\n\n### 模块三：问题与不足\n\n1. **系统运行层面**: \n   - 核心链路单点故障：国内营销APP登录功能完全不可用，暴露出认证中心、网关或登录服务存在单点故障风险，未实现多节点负载均衡与自动容灾切换。\n   - 资源与服务异常：登录服务进程存在宕机或无响应风险，依赖中间件（数据库/缓存/SSO）可能存在连接状态异常或网络策略阻断。\n\n2. **保障执行层面**: \n   - 应急处置失效：P0级故障发生至今处于PENDING状态，无实际故障恢复时间，无行动计划执行记录，故障恢复流程严重停滞。\n   - 故障流转异常：同一P0故障存在两次高度相似的提报记录，反映出故障协同与流转机制可能存在冗余或信息未对齐。\n   - 监控告警滞后：全量用户无法登录的严重阻断发生且持续，未见有效自动熔断或快速切换动作，监控粒度与告警响应存在盲区。\n\n3. **风险预判层面**: \n   - 核心入口风险漏判：未识别出登录链路作为核心入口的极高故障影响面，未建立降级或临时替代入口预案。\n   - 容灾能力预判不足：未提前识别认证中心与SSO服务单点风险，极端情况下无法实现快速容灾切换。\n\n---\n\n### 模块四：改进建议\n\n1. **系统优化改进**: \n   - 针对登录链路单点故障：对国内营销APP登录服务及认证链路实施高可用改造，消除单点依赖，关键组件（认证中心、SSO、网关）实现双活或主备自动切换机制。\n   - 针对服务与资源异常：建立登录服务实时监控体系，覆盖登录成功率、平均响应时长、错误码分布及依赖组件健康状态，设置阈值告警与自动熔断策略。\n\n2. **保障流程优化**: \n   - 针对应急处置失效：规范故障上报与升级机制，明确P0故障10分钟内必须升级至部门负责人并启动跨团队应急响应；固化故障恢复SOP，确保服务宕机时优先执行重启或备用节点切换，变更引发时立即回滚。\n   - 针对故障流转异常：优化故障工单流转逻辑，避免同一故障重复提报导致响应资源分散，确保信息集中与协同高效。\n\n3. **风险管控优化**: \n   - 针对核心入口风险漏判：补充登录故障专项应急预案，明确故障分级、响应角色、恢复步骤和通知模板，并提供受影响用户的临时替代入口方案。\n   - 针对容灾能力预判不足：建立分级风险评估机制，对核心入口链路强制要求容灾切换预案评审；完善变更管理流程，对登录链路相关的配置、代码和基础设施变更实施严格审批、灰度发布与快速回滚机制。\n\n4. **能力建设优化**: \n   - 针对预案与容灾缺失：定期开展登录链路的故障演练与压测，验证应急切换和容量承载能力，确保极端情况下能够快速恢复。\n   - 针对响应处置不熟练：强化运维、开发、DBA三方联合排查的常态化演练与技能培训，提升复杂链路下的故障定位效率。\n\n5. **常态化保障优化**: \n   沉淀本次P0故障案例，将登录链路高可用改造与监控补全纳入常态化技术债消纳计划；持续完善核心业务入口的兜底保障能力，提升整体系统架构的韧性与保障团队的专业处置水平。",
+      "source": "AI",
+      "versionNo": "V2"
+    }
+  ],
+  "message": "success"
+}
+</code></pre>
+<hr>
+<h3 id="复盘报告人工纠偏">复盘报告人工纠偏</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>项目</td>
+<td>内容</td>
+</tr>
+<tr>
+<td>接口地址</td>
+<td>/api/activityAssurance/review/correct</td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>POST</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="readable-blockquote quote-block">
+<p>基于指定活动，保存一条人工编辑后的复盘报告新版本（source=人工编辑）。与「方案人工纠偏」类似，不修改原版本，新增的复盘版本默认守门（reviewGuardFlag=GUARDED、reviewGuardType=CARBON_GUARDED，即碳基守门）。</p>
+</blockquote>
+<p><strong>入参说明（依据后端 OpsActivityReviewEditVO）：</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>必填</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>activityId</td>
+<td>Long</td>
+<td>是</td>
+<td>活动保障ID</td>
+</tr>
+<tr>
+<td>reviewReport</td>
+<td>String</td>
+<td>是</td>
+<td>人工纠偏后的复盘报告内容（Markdown）</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>入参示例：</strong></p>
+<pre class="code-figure" data-label="代码"><code class="language-json">{
+  "activityId": "14",
+  "reviewReport": "3432432400000000000000000000000000000000000000000000000"
+}
+</code></pre>
+<p><strong>返回字段说明：</strong></p>
+<p>外层响应同前（code / msg / message / data）。<strong>data 为纠偏后的活动对象（OpsActivityAssuranceVo，与「查询活动详情」字段一致）</strong>，并特别标注复盘派生字段（纠偏行为产生的副作用）：</p>
+<ul>
+<li><code>reviewStatus</code>=REVIEWING（复盘进行中）</li>
+<li><code>reviewFaultIds</code>=回填报活动关联故障ID</li>
+<li><code>reviewGuardFlag</code>=GUARDED（复盘报告已守门）</li>
+<li><code>reviewGuardType</code>=CARBON_GUARDED（碳基守门，人工纠偏来源）</li>
+<li><code>version</code>+1（示例中由 8→9）、<code>updateTime</code> 更新为操作时间</li>
+</ul>
+<blockquote class="readable-blockquote quote-block">
+<p>reviewReport 文本内容本身通过「查询复盘版本列表」接口（<code>/api/activityAssurance/review/versions?activityId=xx</code>）查看，本接口返回的是活动主对象而非报告文本。</p>
+</blockquote>
+<p><strong>返回示例：</strong></p>
+<pre class="code-figure" data-label="代码"><code class="language-json">{
+  "code": 200,
+  "data": {
+    "activityDesc": "双11大促期间系统全链路保障",
+    "activityName": "双11大促保障",
+    "activityNo": "ATHB2026083100003",
+    "activityStatus": "PROCESSING",
+    "aiActionStatus": "REGENERATED",
+    "aiActivityLevel": "MAJOR_SUPPORT",
+    "aiAnalysisStatus": "SUCCESS",
+    "aiPlanStatus": "GENERATED",
+    "assuranceDept": "国内营销智能部,智能运维部,数据决策智能部,供应链智能部",
+    "assuranceDeptAi": "国内营销智能部,智能运维部,数据决策智能部,供应链智能部",
+    "assuranceLeader": "丁青",
+    "assuranceLeaderAi": "丁青",
+    "assuranceLeaderId": "丁青",
+    "assuranceLeaderIdAi": "丁青",
+    "createBy": "zhaoyue.zy",
+    "createTime": "2026-08-31 14:38:10",
+    "endTime": "2026-11-12 00:00:00",
+    "id": 14,
+    "isDeleted": false,
+    "planGuardFlag": "SILICON_GUARDED",
+    "planGuardStatus": "GUARDED",
+    "reviewFaultIds": "231,232",
+    "reviewGuardFlag": "GUARDED",
+    "reviewGuardType": "CARBON_GUARDED",
+    "reviewStatus": "REVIEWING",
+    "startTime": "2026-11-01 00:00:00",
+    "submitterAccount": "zhaoyue.zy",
+    "submitterName": "赵越",
+    "updateBy": "zhaoyue.zy",
+    "updateTime": "2026-09-01 15:26:55",
+    "version": 9
+  },
+  "message": "success"
+}
+</code></pre>
+<hr>
+<h3 id="复盘报告守门">复盘报告守门</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>项目</td>
+<td>内容</td>
+</tr>
+<tr>
+<td>接口地址</td>
+<td>/api/activityAssurance/review/guard</td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>GET</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="readable-blockquote quote-block">
+<p>标记指定复盘版本为守门（硅基/碳基由版本来源决定：AI 生成版本→SILICON_GUARDED，人工编辑版本→CARBON_GUARDED），更新活动复盘守门状态（reviewGuardFlag=GUARDED），同活动其他复盘版本取消守门。与「活动方案守门」逻辑对应，复盘守门通过即完成复盘环节闭环。</p>
+</blockquote>
+<p><strong>查询参数：</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>必填</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>versionId</td>
+<td>Long</td>
+<td>是</td>
+<td>要守门的复盘版本ID</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>返回字段说明：</strong></p>
+<p>外层响应同前（code / msg / message / data）。<strong>data 为守门后的活动对象（OpsActivityAssuranceVo，与「查询活动详情」字段一致）</strong>，并特别标注复盘守门派生字段：</p>
+<ul>
+<li><code>reviewGuardFlag</code>=GUARDED（复盘报告已守门）</li>
+<li><code>reviewGuardType</code>=守门类型：AI 生成的复盘版本守门为 SILICON_GUARDED（硅基），人工编辑版本守门为 CARBON_GUARDED（碳基）——示例中 versionId=1 为 AI 生成的 V1，故为 SILICON_GUARDED</li>
+<li><code>reviewStatus</code>=REVIEWING（复盘进行中）</li>
+<li><code>version</code>+1（示例中由 9→10）、<code>updateTime</code> 更新为操作时间</li>
+</ul>
+<p><strong>返回示例：</strong></p>
+<pre class="code-figure" data-label="代码"><code class="language-json">{
+  "code": 200,
+  "data": {
+    "activityDesc": "双11大促期间系统全链路保障",
+    "activityName": "双11大促保障",
+    "activityNo": "ATHB2026083100003",
+    "activityStatus": "PROCESSING",
+    "aiActionStatus": "REGENERATED",
+    "aiActivityLevel": "MAJOR_SUPPORT",
+    "aiAnalysisStatus": "SUCCESS",
+    "aiPlanStatus": "GENERATED",
+    "assuranceDept": "国内营销智能部,智能运维部,数据决策智能部,供应链智能部",
+    "assuranceDeptAi": "国内营销智能部,智能运维部,数据决策智能部,供应链智能部",
+    "assuranceLeader": "丁青",
+    "assuranceLeaderAi": "丁青",
+    "assuranceLeaderId": "丁青",
+    "assuranceLeaderIdAi": "丁青",
+    "createBy": "zhaoyue.zy",
+    "createTime": "2026-08-31 14:38:10",
+    "endTime": "2026-11-12 00:00:00",
+    "id": 14,
+    "isDeleted": false,
+    "planGuardFlag": "SILICON_GUARDED",
+    "planGuardStatus": "GUARDED",
+    "reviewFaultIds": "231,232",
+    "reviewGuardFlag": "GUARDED",
+    "reviewGuardType": "SILICON_GUARDED",
+    "reviewStatus": "REVIEWING",
+    "startTime": "2026-11-01 00:00:00",
+    "submitterAccount": "zhaoyue.zy",
+    "submitterName": "赵越",
+    "updateBy": "zhaoyue.zy",
+    "updateTime": "2026-09-01 15:29:41",
+    "version": 10
+  },
+  "message": "success"
+}
+</code></pre>
+</article>
+</main>
+<div id="reader-controls" aria-label="阅读工具" data-copied-text="已复制  条" data-empty-text="暂无划线" data-failed-text="复制失败" data-note-label="备注"><button type="button" class="reader-control-button reader-control-copy" data-action="copy-highlights" title="复制所有划线" aria-label="复制所有划线"><span class="reader-control-glyph" aria-hidden="true">⧉</span><span class="reader-control-label">复制所有划线</span></button></div>
+<script type="application/json" id="notes-to-html-pages-config">{"sourcePath":"data/添可项目/海豚/2026年/0827活动保障需求/活动保障接口对接文档.md","syncAnnotationsToSource":true,"text":{"annotationToolbarUnderline":"划线","annotationInlinePlaceholder":"这里可以写备注...","annotationInlineSave":"保存","annotationCardPlaceholder":"添加批注...","annotationComposerSave":"保存","annotationDelete":"删除","annotationPanelTitle":"批注","annotationQuoteLabel":"原文","annotationNoteLabel":"批注","annotationSyncDisabled":"仅保存在当前页面"}}</script>
+<script type="application/json" id="notes-to-html-pages-annotations">[]</script>
+<script>(() => {
+	"use strict";
+
+	const config = readJson("notes-to-html-pages-config", {});
+	const savedAnnotations = readJson("notes-to-html-pages-annotations", []);
+	const text = Object.assign(
+		{
+			annotationToolbarUnderline: "Underline",
+			annotationInlinePlaceholder: "Write a note here...",
+			annotationInlineSave: "Save note",
+			annotationComposerSave: "Save",
+			annotationDelete: "Delete",
+			annotationPanelTitle: "Annotations",
+			annotationCardPlaceholder: "Add a note...",
+			annotationSyncDisabled: "Saved in this page only"
+		},
+		config.text || {}
+	);
+	const article = document.querySelector(".article-body");
+	if (!article) return;
+
+	const state = {
+		range: null,
+		annotations: []
+	};
+	const popover = createPopover();
+	const panel = createPanel();
+
+	document.body.append(popover, panel);
+	window.addEventListener("resize", () => {
+		scheduleAnnotationLayout();
+		if (!usesInlineAnnotations()) {
+			closeInlineAnnotations();
+		}
+	});
+	if (document.fonts && document.fonts.ready) {
+		document.fonts.ready.then(scheduleAnnotationLayout);
+		}
+	document.addEventListener("mouseup", (event) => {
+		if (isInsideAnnotationUi(event.target)) {
+			return;
+		}
+		window.setTimeout(updateSelectionUi, 0);
+	});
+	document.addEventListener("keyup", (event) => {
+		if (event.key === "Escape") {
+			hidePopover();
+			return;
+		}
+		if (isEditableTarget(event.target)) {
+			return;
+		}
+		window.setTimeout(updateSelectionUi, 0);
+	});
+	document.addEventListener("mousedown", (event) => {
+		const target = event.target;
+		if (popover.contains(target) || isEditableTarget(target)) {
+			return;
+		}
+		cancelAnnotationEditors();
+		if (target instanceof Node && !article.contains(target) && !panel.contains(target)) {
+			hidePopover();
+		}
+	});
+
+	for (const annotation of Array.isArray(savedAnnotations) ? savedAnnotations : []) {
+		if (isAnnotation(annotation)) {
+			addAnnotation(annotation, true);
+		}
+	}
+	updatePanelVisibility();
+	scheduleAnnotationLayout();
+
+	function readJson(id, fallback) {
+		const element = document.getElementById(id);
+		if (!element || !element.textContent) return fallback;
+		try {
+			return JSON.parse(element.textContent);
+		} catch (_error) {
+			return fallback;
+		}
+	}
+
+	function isInsideAnnotationUi(target) {
+		return target instanceof Node && (popover.contains(target) || panel.contains(target));
+	}
+
+	function isEditableTarget(target) {
+		return target instanceof Element && Boolean(target.closest("input, textarea, button"));
+	}
+
+	function createPopover() {
+		const element = document.createElement("div");
+		element.className = "annotation-popover";
+		element.hidden = true;
+
+		const actions = document.createElement("div");
+		actions.className = "annotation-popover-actions";
+
+		const underline = document.createElement("button");
+		underline.type = "button";
+		underline.className = "annotation-underline-button";
+		underline.textContent = text.annotationToolbarUnderline;
+		underline.addEventListener("click", () => saveCurrentAnnotation(""));
+		actions.append(underline);
+
+		const noteRow = document.createElement("div");
+		noteRow.className = "annotation-note-row";
+
+		const input = document.createElement("input");
+		input.type = "text";
+		input.className = "annotation-note-input";
+		input.placeholder = text.annotationInlinePlaceholder;
+		input.setAttribute("aria-label", text.annotationInlinePlaceholder);
+		input.addEventListener("keydown", (event) => {
+			if (event.key === "Enter") {
+				event.preventDefault();
+				saveCurrentAnnotation(input.value);
+			}
+		});
+
+		const save = document.createElement("button");
+		save.type = "button";
+		save.className = "annotation-mini-save";
+		save.textContent = text.annotationInlineSave;
+		save.addEventListener("click", () => saveCurrentAnnotation(input.value));
+
+		noteRow.append(input, save);
+		element.append(actions, noteRow);
+		return element;
+	}
+
+	function createPanel() {
+		const element = document.createElement("aside");
+		element.className = "annotation-panel";
+		element.hidden = true;
+
+		const title = document.createElement("div");
+		title.className = "annotation-panel-title";
+		title.textContent = text.annotationPanelTitle;
+
+		const list = document.createElement("div");
+		list.className = "annotation-list";
+
+		element.append(title, list);
+		return element;
+	}
+
+	function updateSelectionUi() {
+		const selection = window.getSelection();
+		if (!selection || selection.rangeCount === 0 || selection.isCollapsed) {
+			hidePopover();
+			return;
+		}
+
+		const range = selection.getRangeAt(0);
+		const selectedText = compactText(range.toString());
+		if (!selectedText || !article.contains(range.startContainer) || !article.contains(range.endContainer)) {
+			hidePopover();
+			return;
+		}
+
+		const rect = getRangeAnchorRect(range);
+		if (!rect) {
+			hidePopover();
+			return;
+		}
+
+		state.range = range.cloneRange();
+		positionPopover(rect);
+		const input = popover.querySelector(".annotation-note-input");
+		if (input) input.value = "";
+		popover.hidden = false;
+	}
+
+	function getRangeAnchorRect(range) {
+		const rects = Array.from(range.getClientRects()).filter((rect) => rect.width && rect.height);
+		return rects[rects.length - 1] || null;
+	}
+
+	function positionPopover(rect) {
+		popover.style.left = "0px";
+		popover.style.top = "0px";
+		const width = popover.offsetWidth || 280;
+		const left = Math.min(
+			window.scrollX + window.innerWidth - width - 14,
+			Math.max(14 + window.scrollX, window.scrollX + rect.left)
+		);
+		const top = window.scrollY + rect.bottom + 8;
+		popover.style.left = left + "px";
+		popover.style.top = top + "px";
+	}
+
+	function hidePopover() {
+		popover.hidden = true;
+	}
+
+	function saveCurrentAnnotation(note) {
+		if (!state.range) return;
+
+		const selectedText = compactText(state.range.toString());
+		if (!selectedText) return;
+
+		const annotation = {
+			id: "ntoh-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 8),
+			selectedText,
+			note: compactText(note),
+			createdAt: new Date().toISOString(),
+			sourcePath: typeof config.sourcePath === "string" ? config.sourcePath : ""
+		};
+
+		addAnnotation(annotation, false);
+		hidePopover();
+		const selection = window.getSelection();
+		if (selection) selection.removeAllRanges();
+		state.range = null;
+	}
+
+	function addAnnotation(annotation, fromSaved) {
+		const normalized = {
+			id: String(annotation.id || ""),
+			selectedText: compactText(String(annotation.selectedText || "")),
+			note: compactText(String(annotation.note || "")),
+			createdAt: String(annotation.createdAt || new Date().toISOString()),
+			sourcePath: String(annotation.sourcePath || config.sourcePath || "")
+		};
+		if (!normalized.id || !normalized.selectedText) return;
+
+		const marked = markAnnotation(normalized, fromSaved);
+		state.annotations.push(normalized);
+		const annotationIndex = state.annotations.length;
+		renderAnnotationCard(normalized, annotationIndex, marked);
+		renderInlineAnnotation(normalized, annotationIndex, marked);
+		updatePanelVisibility();
+		scheduleAnnotationLayout();
+
+		if (!fromSaved) {
+			syncAnnotation(normalized);
+		}
+	}
+
+	function markAnnotation(annotation, fromSaved) {
+		const range = fromSaved ? findTextRange(article, annotation.selectedText) : state.range;
+		if (!range) return false;
+		return wrapRangeWithMarks(range, annotation);
+	}
+
+	function wrapRangeWithMarks(range, annotation) {
+		const nodes = getTextNodesInRange(range);
+		if (nodes.length === 0) return false;
+
+		for (const item of nodes.reverse()) {
+			const mark = createMark(annotation);
+			const segmentRange = document.createRange();
+			try {
+				segmentRange.setStart(item.node, item.start);
+				segmentRange.setEnd(item.node, item.end);
+				segmentRange.surroundContents(mark);
+			} catch (_error) {
+				continue;
+			}
+		}
+
+		return true;
+	}
+
+	function getTextNodesInRange(range) {
+		const walker = document.createTreeWalker(article, NodeFilter.SHOW_TEXT, {
+			acceptNode(node) {
+				if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+				if (node.parentElement && node.parentElement.closest(".annotation-inline-disclosure")) {
+					return NodeFilter.FILTER_REJECT;
+				}
+				try {
+					return range.intersectsNode(node) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+				} catch (_error) {
+					return NodeFilter.FILTER_REJECT;
+				}
+			}
+		});
+		const nodes = [];
+		while (walker.nextNode()) {
+			const node = walker.currentNode;
+			const length = node.nodeValue ? node.nodeValue.length : 0;
+			let start = node === range.startContainer ? range.startOffset : 0;
+			let end = node === range.endContainer ? range.endOffset : length;
+			start = Math.max(0, Math.min(start, length));
+			end = Math.max(0, Math.min(end, length));
+			if (start < end) {
+				nodes.push({ node, start, end });
+			}
+		}
+		return nodes;
+	}
+
+	function createMark(annotation) {
+		const mark = document.createElement("mark");
+		mark.className = "annotation-mark";
+		mark.dataset.annotationId = annotation.id;
+		if (annotation.note) mark.title = annotation.note;
+		mark.addEventListener("click", () => {
+			if (usesInlineAnnotations()) {
+				toggleInlineAnnotation(annotation.id);
+				return;
+			}
+			openAnnotationEditor(annotation.id);
+		});
+		mark.addEventListener("contextmenu", (event) => {
+			event.preventDefault();
+			removeAnnotation(annotation);
+		});
+		return mark;
+	}
+
+	function usesInlineAnnotations() {
+		return window.matchMedia("(max-width: 1023px)").matches;
+	}
+
+	function findTextRange(root, quote) {
+		const needle = compactText(quote);
+		if (!needle) return null;
+
+		const map = [];
+		let normalized = "";
+		let lastWasSpace = false;
+		const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+
+		while (walker.nextNode()) {
+			const node = walker.currentNode;
+			if (node.parentElement && node.parentElement.closest(".annotation-inline-disclosure")) {
+				continue;
+			}
+			const value = node.nodeValue || "";
+			for (let index = 0; index < value.length; index += 1) {
+				const character = value[index];
+				if (/\s/.test(character)) {
+					if (!lastWasSpace) {
+						normalized += " ";
+						map.push({ node, offset: index });
+						lastWasSpace = true;
+					}
+				} else {
+					normalized += character;
+					map.push({ node, offset: index });
+					lastWasSpace = false;
+				}
+			}
+		}
+
+		const startIndex = normalized.indexOf(needle);
+		if (startIndex < 0) return null;
+		const endIndex = startIndex + needle.length - 1;
+		const startPoint = map[startIndex];
+		const endPoint = map[endIndex];
+		if (!startPoint || !endPoint) return null;
+
+		const range = document.createRange();
+		range.setStart(startPoint.node, startPoint.offset);
+		range.setEnd(endPoint.node, endPoint.offset + 1);
+		return range;
+	}
+
+	function renderAnnotationCard(annotation, index, marked) {
+		const list = panel.querySelector(".annotation-list");
+		if (!list) return;
+
+		const card = document.createElement("div");
+		card.tabIndex = 0;
+		card.className = "annotation-card";
+		card.classList.toggle("has-note", Boolean(annotation.note));
+		card.dataset.annotationId = annotation.id;
+		card.addEventListener("click", (event) => {
+			const target = event.target;
+			if (target instanceof Element && target.closest("textarea, button")) return;
+			openAnnotationEditor(annotation.id);
+		});
+		card.addEventListener("keydown", (event) => {
+			const target = event.target;
+			if (target instanceof Element && target.closest("textarea, button")) return;
+			if (event.key === "Enter" || event.key === " ") {
+				event.preventDefault();
+				openAnnotationEditor(annotation.id);
+			}
+		});
+		card.addEventListener("contextmenu", (event) => {
+			event.preventDefault();
+			removeAnnotation(annotation);
+		});
+
+		const number = document.createElement("span");
+		number.className = "annotation-number";
+		number.textContent = String(index);
+
+		const quote = document.createElement("p");
+		quote.className = "annotation-quote";
+		quote.textContent = annotation.selectedText;
+
+		const body = document.createElement("div");
+		body.className = "annotation-card-body";
+
+		const note = document.createElement("p");
+		note.className = "annotation-note";
+		note.textContent = annotation.note;
+		note.hidden = !annotation.note;
+
+		const editor = document.createElement("div");
+		editor.className = "annotation-card-editor";
+		editor.hidden = true;
+
+		const textarea = document.createElement("textarea");
+		textarea.rows = 3;
+		textarea.placeholder = text.annotationCardPlaceholder;
+		textarea.setAttribute("aria-label", text.annotationCardPlaceholder);
+		textarea.value = annotation.note;
+
+		const save = document.createElement("button");
+		save.type = "button";
+		save.className = "annotation-card-save";
+		save.textContent = text.annotationComposerSave;
+		save.addEventListener("click", () => {
+			annotation.note = compactText(textarea.value);
+			note.textContent = annotation.note;
+			note.hidden = !annotation.note;
+			card.classList.toggle("has-note", Boolean(annotation.note));
+			syncAnnotation(annotation);
+			updateMarkTitles(annotation);
+			editor.hidden = true;
+			card.classList.remove("is-editing");
+			scheduleAnnotationLayout();
+		});
+
+		const remove = document.createElement("button");
+		remove.type = "button";
+		remove.className = "annotation-card-delete";
+		remove.textContent = text.annotationDelete;
+		remove.addEventListener("click", () => removeAnnotation(annotation));
+
+		const actions = document.createElement("div");
+		actions.className = "annotation-card-actions";
+		actions.append(remove, save);
+
+		textarea.addEventListener("keydown", (event) => {
+			if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
+				event.preventDefault();
+				save.click();
+			}
+			if (event.key === "Escape") {
+				event.preventDefault();
+				cancelAnnotationEditors();
+			}
+		});
+
+		editor.append(textarea, actions);
+		body.append(number, quote, note, editor);
+		card.append(body);
+
+		if ((!config.syncAnnotationsToSource || !annotation.sourcePath) && !marked) {
+			const status = document.createElement("div");
+			status.className = "annotation-status";
+			status.textContent = text.annotationSyncDisabled;
+			body.append(status);
+		}
+
+		list.append(card);
+	}
+
+	function renderInlineAnnotation(annotation, index, marked) {
+		if (!marked || !annotation.note) return;
+		if (
+			document.querySelector(
+				'.annotation-inline-disclosure[data-annotation-id="' + cssEscape(annotation.id) + '"]'
+			)
+		) {
+			return;
+		}
+		const marks = Array.from(
+			document.querySelectorAll('.annotation-mark[data-annotation-id="' + cssEscape(annotation.id) + '"]')
+		);
+		const lastMark = marks[marks.length - 1];
+		if (!lastMark) return;
+
+		const disclosure = document.createElement("span");
+		disclosure.className = "annotation-inline-disclosure";
+		disclosure.dataset.annotationId = annotation.id;
+
+		const trigger = document.createElement("button");
+		trigger.type = "button";
+		trigger.className = "annotation-inline-trigger";
+		trigger.setAttribute("aria-expanded", "false");
+		trigger.setAttribute("aria-label", text.annotationPanelTitle + " " + index);
+
+		const icon = document.createElement("span");
+		icon.className = "annotation-inline-icon";
+		icon.setAttribute("aria-hidden", "true");
+
+		const count = document.createElement("span");
+		count.className = "annotation-inline-count";
+		count.textContent = String(index);
+
+		const content = document.createElement("span");
+		content.className = "annotation-inline-content";
+		content.hidden = true;
+
+		const note = document.createElement("span");
+		note.className = "annotation-inline-note";
+		note.textContent = annotation.note;
+		content.append(note);
+
+		trigger.append(icon, count);
+		trigger.addEventListener("click", (event) => {
+			event.preventDefault();
+			toggleInlineAnnotation(annotation.id);
+		});
+		disclosure.append(trigger, content);
+
+		const paragraphEnd = findParagraphEnd(lastMark);
+		if (paragraphEnd && paragraphEnd.node) {
+			const range = document.createRange();
+			range.setStart(paragraphEnd.node, paragraphEnd.offset);
+			range.collapse(true);
+			range.insertNode(disclosure);
+			return;
+		}
+
+		lastMark.insertAdjacentElement("afterend", disclosure);
+	}
+
+	function findParagraphEnd(lastMark) {
+		const block = lastMark.closest("p, li, blockquote");
+		if (!block) return null;
+
+		const walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT, {
+			acceptNode(node) {
+				return node.parentElement && node.parentElement.closest(".annotation-inline-disclosure")
+					? NodeFilter.FILTER_REJECT
+					: NodeFilter.FILTER_ACCEPT;
+			}
+		});
+		const nodes = [];
+		while (walker.nextNode()) {
+			nodes.push(walker.currentNode);
+		}
+
+		const lastNode = nodes[nodes.length - 1];
+		if (!lastNode || !lastNode.nodeValue) return null;
+		return {
+			node: lastNode,
+			offset: lastNode.nodeValue.length
+		};
+	}
+
+	function toggleInlineAnnotation(annotationId) {
+		const disclosure = document.querySelector(
+			'.annotation-inline-disclosure[data-annotation-id="' + cssEscape(annotationId) + '"]'
+		);
+		if (!disclosure) return;
+		const content = disclosure.querySelector(".annotation-inline-content");
+		const trigger = disclosure.querySelector(".annotation-inline-trigger");
+		if (!content || !trigger) return;
+
+		const shouldOpen = content.hidden;
+		closeInlineAnnotations(disclosure);
+		content.hidden = !shouldOpen;
+		trigger.setAttribute("aria-expanded", String(shouldOpen));
+		if (shouldOpen) {
+			activateAnnotation(annotationId, false);
+		}
+	}
+
+	function closeInlineAnnotations(exceptDisclosure) {
+		document.querySelectorAll(".annotation-inline-content:not([hidden])").forEach((content) => {
+			const disclosure = content.closest(".annotation-inline-disclosure");
+			if (disclosure === exceptDisclosure) return;
+			content.hidden = true;
+			const trigger = disclosure ? disclosure.querySelector(".annotation-inline-trigger") : null;
+			if (trigger) trigger.setAttribute("aria-expanded", "false");
+		});
+	}
+
+	function removeAnnotation(annotation) {
+		hidePopover();
+		removeAnnotationMarks(annotation.id);
+		state.annotations = state.annotations.filter((item) => item.id !== annotation.id);
+		document
+			.querySelectorAll('.annotation-inline-disclosure[data-annotation-id="' + cssEscape(annotation.id) + '"]')
+			.forEach((disclosure) => disclosure.remove());
+		const card = panel.querySelector('.annotation-card[data-annotation-id="' + cssEscape(annotation.id) + '"]');
+		if (card) card.remove();
+		updateAnnotationNumbers();
+		updatePanelVisibility();
+		syncAnnotationDeletion(annotation);
+		scheduleAnnotationLayout();
+	}
+
+	function removeAnnotationMarks(annotationId) {
+		document
+			.querySelectorAll('.annotation-mark[data-annotation-id="' + cssEscape(annotationId) + '"]')
+			.forEach((mark) => {
+				const parent = mark.parentNode;
+				mark.replaceWith(...Array.from(mark.childNodes));
+				if (parent && typeof parent.normalize === "function") {
+					parent.normalize();
+				}
+			});
+	}
+
+	function syncAnnotation(annotation) {
+		if (!config.syncAnnotationsToSource || !annotation.sourcePath || !window.parent || window.parent === window) {
+			return;
+		}
+
+		window.parent.postMessage(
+			{
+				plugin: "notes-to-html-pages",
+				type: "annotation-created",
+				annotation
+			},
+			"*"
+		);
+	}
+
+	function syncAnnotationDeletion(annotation) {
+		if (!config.syncAnnotationsToSource || !annotation.sourcePath || !window.parent || window.parent === window) {
+			return;
+		}
+
+		window.parent.postMessage(
+			{
+				plugin: "notes-to-html-pages",
+				type: "annotation-deleted",
+				annotationId: annotation.id,
+				sourcePath: annotation.sourcePath
+			},
+			"*"
+		);
+	}
+
+	function scheduleAnnotationLayout() {
+		window.requestAnimationFrame(positionAnnotationCards);
+	}
+
+	function positionAnnotationCards() {
+		const cards = Array.from(panel.querySelectorAll(".annotation-card"));
+		if (window.innerWidth < 1024) {
+			cards.forEach((card) => {
+				card.style.top = "";
+			});
+			const list = panel.querySelector(".annotation-list");
+			if (list) list.style.height = "";
+			return;
+		}
+
+		const list = panel.querySelector(".annotation-list");
+		if (!list) return;
+		const cardsWithAnchors = cards
+			.map((card) => {
+				const id = card.dataset.annotationId || "";
+				const mark = document.querySelector('.annotation-mark[data-annotation-id="' + cssEscape(id) + '"]');
+				const fallbackTop = article.getBoundingClientRect().top + window.scrollY;
+				const anchorTop = mark
+					? mark.getBoundingClientRect().top + window.scrollY + 12
+					: Number(card.dataset.annotationTop || fallbackTop);
+				card.dataset.annotationTop = String(anchorTop);
+				return { card, anchorTop };
+			})
+			.sort((first, second) => first.anchorTop - second.anchorTop);
+
+		let nextTop = 0;
+		for (const item of cardsWithAnchors) {
+			const top = Math.max(item.anchorTop, nextTop);
+			item.card.style.top = Math.round(top) + "px";
+			nextTop = top + item.card.offsetHeight + 10;
+		}
+		list.style.height = Math.ceil(nextTop) + "px";
+	}
+
+	function updateMarkTitles(annotation) {
+		document
+			.querySelectorAll('.annotation-mark[data-annotation-id="' + cssEscape(annotation.id) + '"]')
+			.forEach((mark) => {
+				if (annotation.note) {
+					mark.setAttribute("title", annotation.note);
+				} else {
+					mark.removeAttribute("title");
+				}
+			});
+		syncInlineAnnotation(annotation);
+	}
+
+	function syncInlineAnnotation(annotation) {
+		const selector =
+			'.annotation-inline-disclosure[data-annotation-id="' + cssEscape(annotation.id) + '"]';
+		const disclosure = document.querySelector(selector);
+		if (!annotation.note) {
+			if (disclosure) disclosure.remove();
+			return;
+		}
+
+		if (!disclosure) {
+			const index = state.annotations.findIndex((item) => item.id === annotation.id);
+			const hasMark = Boolean(
+				document.querySelector('.annotation-mark[data-annotation-id="' + cssEscape(annotation.id) + '"]')
+			);
+			renderInlineAnnotation(annotation, index + 1, hasMark);
+			return;
+		}
+
+		const inlineNote = disclosure.querySelector(".annotation-inline-note");
+		if (inlineNote) inlineNote.textContent = annotation.note;
+	}
+
+	function updateAnnotationNumbers() {
+		state.annotations.forEach((annotation, index) => {
+			const number = panel.querySelector(
+				'.annotation-card[data-annotation-id="' + cssEscape(annotation.id) + '"] .annotation-number'
+			);
+			if (number) number.textContent = String(index + 1);
+			const count = document.querySelector(
+				'.annotation-inline-disclosure[data-annotation-id="' + cssEscape(annotation.id) + '"] .annotation-inline-count'
+			);
+			if (count) count.textContent = String(index + 1);
+		});
+	}
+
+	function activateAnnotation(id, shouldScroll = true) {
+		const marks = document.querySelectorAll('.annotation-mark[data-annotation-id="' + cssEscape(id) + '"]');
+		document.querySelectorAll(".annotation-card.is-active, .annotation-mark.is-active").forEach((element) => {
+			element.classList.remove("is-active");
+		});
+		const card = document.querySelector('.annotation-card[data-annotation-id="' + cssEscape(id) + '"]');
+		if (card) card.classList.add("is-active");
+		marks.forEach((mark) => mark.classList.add("is-active"));
+		const firstMark = marks[0];
+		if (shouldScroll && firstMark) {
+			firstMark.scrollIntoView({ block: "center", behavior: "smooth" });
+		}
+	}
+
+	function openAnnotationEditor(id) {
+		const card = document.querySelector('.annotation-card[data-annotation-id="' + cssEscape(id) + '"]');
+		if (!card) return;
+		activateAnnotation(id, false);
+		cancelAnnotationEditors(card);
+		const editor = card.querySelector(".annotation-card-editor");
+		const textarea = card.querySelector("textarea");
+		if (editor) editor.hidden = false;
+		card.classList.add("is-editing");
+		if (textarea) {
+			textarea.focus({ preventScroll: true });
+			textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+		}
+		scheduleAnnotationLayout();
+	}
+
+	function cancelAnnotationEditors(exceptCard) {
+		let changed = false;
+		panel.querySelectorAll(".annotation-card.is-editing").forEach((card) => {
+			if (card === exceptCard) return;
+			const editor = card.querySelector(".annotation-card-editor");
+			const textarea = card.querySelector("textarea");
+			const note = card.querySelector(".annotation-note");
+			if (textarea) {
+				textarea.value = note && !note.hidden ? note.textContent || "" : "";
+			}
+			if (editor) editor.hidden = true;
+			card.classList.remove("is-editing");
+			changed = true;
+		});
+		if (changed) scheduleAnnotationLayout();
+	}
+
+	function updatePanelVisibility() {
+		panel.hidden = state.annotations.length === 0;
+	}
+
+	function compactText(value) {
+		return String(value || "").replace(/\s+/g, " ").trim();
+	}
+
+	function formatDate(value) {
+		const date = new Date(value);
+		if (Number.isNaN(date.getTime())) return value;
+		const pad = (part) => String(part).padStart(2, "0");
+		return pad(date.getMonth() + 1) + "-" + pad(date.getDate()) + " " + pad(date.getHours()) + ":" + pad(date.getMinutes());
+	}
+
+	function cssEscape(value) {
+		if (window.CSS && typeof window.CSS.escape === "function") {
+			return window.CSS.escape(value);
+		}
+		return String(value).replace(/"/g, "\\22 ");
+	}
+
+	function isAnnotation(value) {
+		return (
+			value &&
+			typeof value === "object" &&
+			typeof value.id === "string" &&
+			typeof value.selectedText === "string"
+		);
+	}
+})();</script>
+<script>(() => {
+	"use strict";
+
+	var controls = document.getElementById("reader-controls");
+	if (!controls) return;
+
+	function gatherHighlights() {
+		var seen = {};
+		var order = [];
+		var marks = document.querySelectorAll(".annotation-mark");
+		for (var i = 0; i < marks.length; i++) {
+			var id = marks[i].getAttribute("data-annotation-id") || ("_" + i);
+			if (!Object.prototype.hasOwnProperty.call(seen, id)) { seen[id] = ""; order.push(id); }
+			seen[id] += marks[i].textContent || "";
+		}
+		var notes = {};
+		var cards = document.querySelectorAll(".annotation-card");
+		for (var j = 0; j < cards.length; j++) {
+			var cid = cards[j].getAttribute("data-annotation-id");
+			if (!cid) continue;
+			var noteEl = cards[j].querySelector(".annotation-note");
+			var noteText = noteEl ? (noteEl.textContent || "").trim() : "";
+			if (noteText) notes[cid] = noteText;
+		}
+		var noteLabel = controls.getAttribute("data-note-label") || "Note";
+		var lines = [];
+		for (var k = 0; k < order.length; k++) {
+			var oid = order[k];
+			var quote = (seen[oid] || "").replace(/\s+/g, " ").trim();
+			if (!quote) continue;
+			var block = (k + 1) + ". " + quote;
+			if (notes[oid]) block += "\n   " + noteLabel + "： " + notes[oid];
+			lines.push(block);
+		}
+		return lines;
+	}
+
+	function flash(button, cls, message) {
+		var labelEl = button.querySelector(".reader-control-label");
+		var original = labelEl ? labelEl.textContent : null;
+		button.classList.add(cls);
+		if (labelEl && message != null) labelEl.textContent = message;
+		window.setTimeout(function () {
+			button.classList.remove(cls);
+			if (labelEl && original != null) labelEl.textContent = original;
+		}, 1600);
+	}
+
+	function fallbackCopy(text) {
+		try {
+			var ta = document.createElement("textarea");
+			ta.value = text;
+			ta.style.position = "fixed";
+			ta.style.opacity = "0";
+			document.body.appendChild(ta);
+			ta.focus();
+			ta.select();
+			var ok = document.execCommand("copy");
+			document.body.removeChild(ta);
+			return ok;
+		} catch (e) { return false; }
+	}
+
+	function copyText(text) {
+		if (navigator.clipboard && navigator.clipboard.writeText) {
+			return navigator.clipboard.writeText(text);
+		}
+		return new Promise(function (resolve, reject) {
+			fallbackCopy(text) ? resolve() : reject(new Error("copy failed"));
+		});
+	}
+
+	function onCopy(button) {
+		var lines = gatherHighlights();
+		if (!lines.length) {
+			flash(button, "is-empty", controls.getAttribute("data-empty-text"));
+			return;
+		}
+		var text = lines.join("\n\n");
+		var doneText = (controls.getAttribute("data-copied-text") || "{count}").replace("{count}", String(lines.length));
+		copyText(text).then(function () {
+			flash(button, "is-done", doneText);
+		}).catch(function () {
+			if (fallbackCopy(text)) flash(button, "is-done", doneText);
+			else flash(button, "is-empty", controls.getAttribute("data-failed-text"));
+		});
+	}
+
+	controls.addEventListener("click", function (event) {
+		var target = event.target instanceof Element ? event.target.closest("[data-action]") : null;
+		if (!target) return;
+		if (target.getAttribute("data-action") === "copy-highlights") onCopy(target);
+	});
+})();</script><!--N2HP_LIGHTBOX_START--><style>.n2hp-lightbox{position:fixed;inset:0;background:rgba(15,15,20,.88);display:none;align-items:center;justify-content:center;z-index:2147483647;cursor:zoom-out}.n2hp-lightbox.open{display:flex}.n2hp-lightbox img{max-width:94vw;max-height:94vh;box-shadow:0 8px 50px rgba(0,0,0,.6);cursor:default;background:#fff;border-radius:4px}.n2hp-lightbox .n2hp-close{position:absolute;top:14px;right:20px;color:#fff;font-size:34px;line-height:1;cursor:pointer;opacity:.8}.n2hp-lightbox .n2hp-close:hover{opacity:1}.n2hp-lightbox .n2hp-cap{position:absolute;left:0;right:0;bottom:14px;text-align:center;color:#cfcfd8;font-size:13px;padding:0 20px;word-break:break-all}.n2hp-zoomable{cursor:zoom-in}</style><script>(function(){function isContentImage(img){if(!img||img.tagName!=="IMG"||!img.getAttribute("src"))return false;if(img.closest&&img.closest("#n2hp-lightbox"))return false;var p=img;while(p&&p!==document.body){if(p.classList){var c=p.className||"";if(typeof c==="string"&&/(sidebar|graph|reader-control|callout|avatar|icon|logo)/i.test(c))return false;}p=p.parentElement;}return true;}function init(){if(document.getElementById("n2hp-lightbox"))return;var lb=document.createElement("div");lb.id="n2hp-lightbox";lb.className="n2hp-lightbox";lb.innerHTML='<span class="n2hp-close" aria-label="close">&#215;</span><img alt=""><div class="n2hp-cap"></div>';document.body.appendChild(lb);var limg=lb.querySelector("img");var cap=lb.querySelector(".n2hp-cap");function closeLb(){lb.classList.remove("open");}lb.addEventListener("click",function(e){if(e.target===lb||(e.target.classList&&e.target.classList.contains("n2hp-close")))closeLb();});document.addEventListener("keydown",function(e){if(e.key==="Escape")closeLb();});document.addEventListener("click",function(e){var t=e.target;if(t&&t.tagName==="IMG"&&isContentImage(t)){e.preventDefault();e.stopPropagation();limg.src=t.currentSrc||t.src;limg.alt=t.alt||"";cap.textContent=t.alt||"";lb.classList.add("open");}},true);}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();})();</script><!--N2HP_LIGHTBOX_END-->
+</body>
+</html>
