@@ -1,0 +1,3770 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="notes-to-html-pages-style" content="clean">
+<meta name="notes-to-html-pages-source" content="data/添可项目/海豚/2026年/0827活动保障需求/活动保障模块-功能与技术设计文档.md">
+<meta name="notes-to-html-pages-sync-annotations" content="true">
+<title>活动保障功能设计文档</title>
+<style>:root {
+	color-scheme: light;
+	--page-bg: #f3f0e8;
+	--paper: #fbf8f1;
+	--ink: #20201d;
+	--muted: #77736a;
+	--line: #d8d1c6;
+	--line-soft: #ebe6dd;
+	--accent: #c7352b;
+	--accent-soft: #f8ede9;
+	--quote-bg: #f8f4eb;
+	--code-bg: #eee9df;
+	--link: #2f7a4b;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	background: var(--page-bg);
+	font-size: 16px;
+	scroll-behavior: smooth;
+	scroll-padding-top: 1.4rem;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+body {
+	position: relative;
+	margin: 0;
+	color: var(--ink);
+	background: var(--page-bg);
+	font-family: Georgia, "Times New Roman", "Noto Serif SC", "Songti SC", SimSun, serif;
+	line-height: 1.76;
+	letter-spacing: 0;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+}
+
+.page {
+	width: min(100%, 860px);
+	margin: 0 auto;
+	padding: 2.8rem 1.6rem 5rem;
+}
+
+.article-hero {
+	width: 100%;
+	max-width: 720px;
+	margin: 0 auto 2.4rem;
+	padding: 1.4rem 0 2rem;
+	text-align: center;
+	border-bottom: 1px solid var(--line);
+	background: transparent;
+}
+
+.article-hero h1 {
+	max-width: 720px;
+	margin: 0 auto;
+	color: #1f1f1d;
+	font-size: 2.25rem;
+	font-weight: 700;
+	line-height: 1.25;
+	letter-spacing: 0;
+	text-align: center;
+	text-wrap: balance;
+}
+
+.article-hero h1 span {
+	display: block;
+}
+
+.article-deck {
+	max-width: 680px;
+	margin: 0.95rem auto 0;
+	color: var(--muted);
+	font-size: 1rem;
+	font-style: italic;
+	line-height: 1.72;
+	text-wrap: pretty;
+}
+
+.article-deck p {
+	margin: 0;
+}
+
+.article-deck strong {
+	color: inherit;
+	font-weight: 600;
+}
+
+.hero-rule {
+	width: 3.4rem;
+	height: 2px;
+	margin: 1.55rem auto 0;
+	background: var(--accent);
+}
+
+.table-of-contents {
+	max-width: 720px;
+	margin: 0 auto 3.2rem;
+	padding: 1.35rem 1.45rem 1.25rem;
+	border: 1px solid var(--line);
+	border-radius: 8px;
+	background: rgba(251, 248, 241, 0.86);
+}
+
+.table-of-contents h2 {
+	margin: 0 0 0.85rem;
+	padding: 0;
+	border: 0;
+	color: var(--muted);
+	font-size: 0.9rem;
+	font-weight: 700;
+	line-height: 1.3;
+}
+
+.table-of-contents h2::before {
+	content: none;
+}
+
+.table-of-contents ol {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0.32rem 1.35rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	counter-reset: toc;
+	font-size: 0.86rem;
+	line-height: 1.48;
+}
+
+.table-of-contents li {
+	margin: 0;
+	padding: 0;
+	counter-increment: toc;
+	break-inside: avoid;
+}
+
+.table-of-contents a {
+	display: grid;
+	grid-template-columns: 1.9em minmax(0, 1fr);
+	gap: 0.3rem;
+	margin: 0 -0.35rem;
+	padding: 0.1rem 0.35rem;
+	border-radius: 5px;
+	color: var(--ink);
+	text-decoration: none;
+	cursor: pointer;
+	transition: color 160ms ease, background-color 160ms ease;
+}
+
+.table-of-contents a::before {
+	content: counter(toc) ".";
+	color: var(--muted);
+	text-align: right;
+	transition: color 160ms ease;
+}
+
+.table-of-contents a:hover,
+.table-of-contents a:focus-visible {
+	background: var(--accent-soft);
+	color: var(--accent);
+}
+
+.table-of-contents a:hover::before,
+.table-of-contents a:focus-visible::before {
+	color: var(--accent);
+}
+
+.side-table-of-contents {
+	display: none;
+}
+
+.side-toc-title {
+	margin: 0 0 0.75rem;
+	color: var(--muted);
+	font-size: 0.72rem;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.side-table-of-contents ol {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	counter-reset: side-toc;
+	font-size: 0.76rem;
+	line-height: 1.36;
+}
+
+.side-table-of-contents li {
+	margin: 0;
+	padding: 0;
+	counter-increment: side-toc;
+}
+
+.side-table-of-contents a {
+	display: grid;
+	grid-template-columns: 2em minmax(0, 1fr);
+	gap: 0.28rem;
+	margin: 0 -0.35rem;
+	padding: 0.22rem 0.35rem;
+	border-radius: 5px;
+	color: var(--muted);
+	text-decoration: none;
+	cursor: pointer;
+	transition: color 160ms ease, background-color 160ms ease;
+}
+
+.side-table-of-contents a::before {
+	content: counter(side-toc) ".";
+	color: #aaa39a;
+	text-align: right;
+	transition: color 160ms ease;
+}
+
+.side-table-of-contents a:hover,
+.side-table-of-contents a:focus-visible {
+	background: var(--accent-soft);
+	color: var(--accent);
+}
+
+.side-table-of-contents a:hover::before,
+.side-table-of-contents a:focus-visible::before {
+	color: var(--accent);
+}
+
+.article-body {
+	counter-reset: section;
+	width: 100%;
+	max-width: 720px;
+	margin: 0 auto;
+	font-size: 1rem;
+}
+
+.article-body > * {
+	max-width: 100%;
+}
+
+.article-body h2,
+.article-body h3,
+.article-body h4 {
+	color: #20201d;
+	letter-spacing: 0;
+	line-height: 1.32;
+	text-wrap: balance;
+}
+
+.article-body h2 {
+	counter-increment: section;
+	position: relative;
+	margin: 2.85rem 0 1rem;
+	padding: 0;
+	border: 0;
+	font-size: 1.55rem;
+	font-weight: 700;
+}
+
+.article-body h2:target {
+	color: var(--accent);
+}
+
+.article-body h2::before {
+	content: counter(section, cjk-ideographic) "、";
+	display: inline-block;
+	min-width: 2.35em;
+	margin-right: 0.2rem;
+	color: var(--accent);
+	font-weight: 500;
+}
+
+.article-body h3 {
+	margin: 2.1rem 0 0.72rem;
+	font-size: 1.25rem;
+	font-weight: 700;
+}
+
+.article-body h4 {
+	margin: 1.65rem 0 0.58rem;
+	font-size: 1.08rem;
+	font-weight: 700;
+}
+
+p {
+	margin: 0.9rem 0;
+}
+
+a {
+	color: var(--link);
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.18em;
+}
+
+[hidden] {
+	display: none !important;
+}
+
+.annotation-mark {
+	margin: 0 0.01em;
+	padding: 0.02em 0.08em 0.03em;
+	border-bottom: 1px solid rgba(199, 53, 43, 0.34);
+	background: rgba(199, 53, 43, 0.1);
+	cursor: pointer;
+	transition: background-color 160ms ease, box-shadow 160ms ease;
+}
+
+.annotation-mark:hover,
+.annotation-mark.is-active {
+	background: rgba(199, 53, 43, 0.16);
+	box-shadow: 0 0 0 2px rgba(199, 53, 43, 0.08);
+}
+
+.annotation-inline-disclosure {
+	display: none;
+}
+
+.annotation-popover {
+	position: absolute;
+	z-index: 30;
+	width: min(20rem, calc(100vw - 1.75rem));
+	padding: 0.5rem;
+	border: 1px solid rgba(92, 75, 56, 0.16);
+	border-radius: 10px;
+	background: rgba(255, 252, 246, 0.98);
+	box-shadow: 0 12px 30px rgba(60, 45, 30, 0.14);
+	backdrop-filter: blur(10px);
+}
+
+.annotation-popover::before {
+	content: "";
+	position: absolute;
+	top: -6px;
+	left: 1.2rem;
+	width: 10px;
+	height: 10px;
+	border-top: 1px solid rgba(92, 75, 56, 0.16);
+	border-left: 1px solid rgba(92, 75, 56, 0.16);
+	background: rgba(255, 252, 246, 0.98);
+	transform: rotate(45deg);
+}
+
+.annotation-popover-actions {
+	display: flex;
+	align-items: center;
+	margin-bottom: 0.42rem;
+}
+
+.annotation-popover button,
+.annotation-card button {
+	appearance: none;
+	border: 0;
+	border-radius: 5px;
+	background: transparent;
+	color: var(--ink);
+	font: inherit;
+	font-size: 0.78rem;
+	line-height: 1;
+	cursor: pointer;
+}
+
+.annotation-underline-button {
+	width: 100%;
+	padding: 0.5rem 0.68rem;
+	border: 1px solid rgba(199, 53, 43, 0.18) !important;
+	background: rgba(199, 53, 43, 0.08) !important;
+	color: var(--accent) !important;
+	font-weight: 700 !important;
+	text-align: center;
+}
+
+.annotation-popover button:hover,
+.annotation-popover button:focus-visible,
+.annotation-card button:hover,
+.annotation-card button:focus-visible {
+	background: var(--accent-soft);
+	color: var(--accent);
+	outline: none;
+}
+
+.annotation-note-row {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	gap: 0.4rem;
+	align-items: center;
+	padding: 0.28rem;
+	border: 1px solid rgba(216, 209, 198, 0.9);
+	border-radius: 8px;
+	background: rgba(251, 248, 241, 0.92);
+}
+
+.annotation-note-input {
+	width: 100%;
+	min-width: 0;
+	padding: 0.46rem 0.5rem;
+	border: 0;
+	border-radius: 6px;
+	background: transparent;
+	color: var(--ink);
+	font: inherit;
+	font-size: 0.8rem;
+	line-height: 1.2;
+}
+
+.annotation-note-row:focus-within {
+	border-color: rgba(199, 53, 43, 0.44);
+	box-shadow: 0 0 0 2px rgba(199, 53, 43, 0.08);
+}
+
+.annotation-note-input:focus {
+	outline: none;
+}
+
+.annotation-card textarea:focus {
+	border-color: rgba(199, 53, 43, 0.52);
+	outline: 2px solid rgba(199, 53, 43, 0.12);
+}
+
+.annotation-mini-save,
+.annotation-card-save {
+	padding: 0.42rem 0.58rem;
+	border-radius: 6px !important;
+	background: var(--accent) !important;
+	color: #fff !important;
+}
+
+.annotation-panel {
+	position: absolute;
+	top: 0;
+	right: max(1.25rem, calc(50% - 360px - 17rem));
+	width: 15.8rem;
+	z-index: 20;
+	padding-left: 0.8rem;
+	border-left: 1px solid var(--line-soft);
+	overflow: visible;
+}
+
+.annotation-panel-title {
+	display: none;
+}
+
+.annotation-list {
+	position: relative;
+	width: 100%;
+}
+
+.annotation-card {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	padding: 0;
+	border: 0;
+	border-radius: 10px;
+	background: transparent;
+	color: var(--ink);
+	font: inherit;
+	text-align: left;
+	box-shadow: none;
+	cursor: pointer;
+	transition-property: background-color, box-shadow;
+	transition-duration: 180ms;
+	transition-timing-function: ease-out;
+}
+
+.annotation-card:hover,
+.annotation-card.is-active {
+	background: transparent;
+	box-shadow: none;
+}
+
+.annotation-card.is-editing {
+	background: transparent;
+	box-shadow: none;
+}
+
+.annotation-card-body {
+	position: relative;
+	padding: 0.18rem 0.5rem 0.42rem 1.55rem;
+}
+
+.annotation-number {
+	position: absolute;
+	top: 0.18rem;
+	left: 0.12rem;
+	min-width: 1rem;
+	color: var(--accent);
+	font-size: 0.88rem;
+	font-weight: 700;
+	font-variant-numeric: tabular-nums;
+}
+
+.annotation-quote,
+.annotation-status {
+	margin: 0;
+}
+
+.annotation-quote {
+	margin: 0;
+	color: #625d54;
+	font-size: 0.78rem;
+	line-height: 1.46;
+	border-left: 2px solid rgba(199, 53, 43, 0.34);
+	background: rgba(199, 53, 43, 0.045);
+	padding: 0.36rem 0.48rem;
+	text-wrap: pretty;
+}
+
+.annotation-note {
+	margin: 0.62rem 0 0;
+	padding: 0;
+	border: 0;
+	color: var(--ink);
+	font-size: 0.86rem;
+	line-height: 1.52;
+	text-wrap: pretty;
+}
+
+.annotation-status {
+	margin-top: 0.45rem;
+	color: var(--muted);
+	font-size: 0.7rem;
+}
+
+.annotation-card-editor {
+	display: grid;
+	gap: 0.42rem;
+	margin-top: 0.86rem;
+	padding-top: 0.74rem;
+	border-top: 1px solid var(--line-soft);
+}
+
+.annotation-card textarea {
+	display: block;
+	width: 100%;
+	resize: vertical;
+	min-height: 4.5rem;
+	padding: 0.58rem 0.62rem;
+	border: 1px solid var(--line);
+	border-radius: 6px;
+	background: var(--paper);
+	color: var(--ink);
+	font: inherit;
+	font-size: 0.78rem;
+	line-height: 1.48;
+}
+
+.annotation-card-save {
+	font-size: 0.72rem !important;
+}
+
+.annotation-card-actions {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 0.38rem;
+	margin-top: 0.06rem;
+}
+
+.annotation-card-delete,
+.annotation-card-save {
+	min-width: auto;
+	min-height: 2.1rem;
+	padding: 0.36rem 0.58rem !important;
+	font-size: 0.72rem !important;
+	transition-property: background-color, border-color, box-shadow, color, scale;
+	transition-duration: 150ms;
+	transition-timing-function: ease-out;
+}
+
+.annotation-card-delete {
+	border-color: transparent !important;
+	background: transparent !important;
+	color: var(--accent) !important;
+	box-shadow: none !important;
+}
+
+.annotation-card .annotation-card-delete:hover,
+.annotation-card .annotation-card-delete:focus-visible {
+	background: rgba(199, 53, 43, 0.075) !important;
+	color: var(--accent) !important;
+	box-shadow: none !important;
+	outline: none;
+}
+
+.annotation-card .annotation-card-save:hover,
+.annotation-card .annotation-card-save:focus-visible {
+	background: #ae2e26 !important;
+	box-shadow: 0 2px 5px rgba(152, 43, 35, 0.22) !important;
+	outline: none;
+}
+
+.annotation-card-delete:active,
+.annotation-card-save:active {
+	scale: 0.96;
+}
+
+strong {
+	color: var(--accent);
+	font-weight: 700;
+}
+
+em {
+	color: var(--muted);
+}
+
+blockquote {
+	position: relative;
+	margin: 1.55rem 0;
+	padding: 0.95rem 1.15rem 0.95rem 1.25rem;
+	border: 0;
+	border-left: 3px solid var(--line);
+	border-radius: 6px;
+	background: var(--quote-bg);
+	color: #272622;
+}
+
+blockquote.quote-block {
+	color: #3c3932;
+}
+
+blockquote.callout-block {
+	border: 1px solid var(--line);
+	border-left: 4px solid var(--accent);
+	background: #f9f2eb;
+}
+
+blockquote.callout-highlight {
+	box-shadow: inset 0 0 0 1px rgba(199, 53, 43, 0.05);
+}
+
+blockquote.callout-conclusion {
+	padding: 1.05rem 1.25rem;
+	border: 1px solid #d9cdc0;
+	border-top: 3px solid var(--accent);
+	border-left-color: #d9cdc0;
+	background: var(--paper);
+	box-shadow: 0 10px 28px rgba(70, 48, 26, 0.06);
+}
+
+blockquote p:first-child {
+	margin-top: 0;
+}
+
+blockquote p:last-child {
+	margin-bottom: 0;
+}
+
+blockquote strong {
+	color: var(--accent);
+}
+
+blockquote.callout-block p:first-child strong:first-child {
+	display: inline-block;
+	margin-bottom: 0.25rem;
+	padding: 0.06rem 0.42rem;
+	border-radius: 999px;
+	background: var(--accent-soft);
+	color: var(--accent);
+	font-size: 0.78rem;
+	line-height: 1.45;
+}
+
+ul,
+ol {
+	margin: 0.9rem 0 1.05rem 1.35rem;
+	padding: 0;
+}
+
+li {
+	margin: 0.35rem 0;
+	padding-left: 0.25rem;
+}
+
+li::marker {
+	color: #151513;
+	font-weight: 600;
+}
+
+hr {
+	margin: 2.2rem 0;
+	border: 0;
+	border-top: 1px solid var(--line-soft);
+}
+
+.table-scroll {
+	max-width: 100%;
+	margin: 1.45rem 0;
+	border: 1px solid var(--line);
+	border-radius: 6px;
+	background: var(--paper);
+	overflow-x: auto;
+}
+
+table {
+	width: max-content;
+	min-width: 100%;
+	border-collapse: separate;
+	border-spacing: 0;
+	background: var(--paper);
+	font-size: 0.84rem;
+	line-height: 1.55;
+}
+
+thead {
+	background: transparent;
+}
+
+th {
+	background: #ebe6dc;
+	color: #4a463f;
+	font-weight: 700;
+	white-space: nowrap;
+}
+
+th,
+td {
+	padding: 0.55rem 0.66rem;
+	border: 0;
+	border-right: 1px solid var(--line);
+	border-bottom: 1px solid var(--line);
+	text-align: left;
+	vertical-align: top;
+}
+
+tr > :last-child {
+	border-right: 0;
+}
+
+tbody tr:last-child td {
+	border-bottom: 0;
+}
+
+tbody tr:nth-child(even) {
+	background: #f7f3ea;
+}
+
+tbody tr:hover {
+	background: #f4eadc;
+}
+
+pre,
+code {
+	font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+code {
+	padding: 0.08rem 0.28rem;
+	border-radius: 4px;
+	background: var(--code-bg);
+	font-size: 0.82em;
+}
+
+pre {
+	position: relative;
+	margin: 1.6rem 0;
+	padding: 2rem 1rem 1rem;
+	border: 1px solid var(--line);
+	border-left: 4px solid #bbb3a8;
+	border-radius: 6px;
+	background: var(--code-bg);
+	overflow-x: auto;
+	line-height: 1.5;
+}
+
+pre::before {
+	content: "代码 / 图示";
+	position: absolute;
+	top: 0.55rem;
+	left: 0.9rem;
+	color: var(--muted);
+	font-family: Georgia, "Times New Roman", "Noto Serif SC", "Songti SC", SimSun, serif;
+	font-size: 0.72rem;
+	font-weight: 700;
+	line-height: 1;
+}
+
+pre.code-figure::before {
+	content: attr(data-label);
+}
+
+pre.code-figure.ascii-figure {
+	border-left-color: var(--accent);
+	background: #f1ece3;
+}
+
+pre.code-figure.ascii-figure::before {
+	color: var(--accent);
+}
+
+pre code {
+	padding: 0;
+	background: transparent;
+	font-size: 0.78rem;
+}
+
+img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+	margin: 1.5rem auto;
+	outline: 1px solid rgba(0, 0, 0, 0.1);
+	outline-offset: -1px;
+}
+
+sup {
+	line-height: 0;
+}
+
+@media (min-width: 1280px) {
+	.side-table-of-contents {
+		display: block;
+		position: fixed;
+		top: 5rem;
+		left: max(1.25rem, calc(50% - 360px - 14.5rem));
+		right: auto;
+		width: 12.75rem;
+		max-height: calc(100vh - 6rem);
+		padding: 0.2rem 0.75rem 0.5rem 0;
+		border-right: 1px solid var(--line-soft);
+		border-left: 0;
+		background: transparent;
+		overflow: auto;
+	}
+}
+
+@media (min-width: 1024px) and (max-width: 1179px) {
+	.article-body {
+		max-width: 640px;
+	}
+
+	.annotation-panel {
+		right: max(1rem, calc(50% - 320px - 11.5rem));
+		width: 10.5rem;
+		padding-left: 0.58rem;
+	}
+
+	.annotation-card-body {
+		padding-right: 0.25rem;
+		padding-left: 1.28rem;
+	}
+
+	.annotation-number {
+		left: 0.06rem;
+		font-size: 0.78rem;
+	}
+
+	.annotation-quote {
+		font-size: 0.72rem;
+	}
+
+	.annotation-note {
+		font-size: 0.8rem;
+	}
+}
+
+@media (min-width: 1180px) and (max-width: 1359px) {
+	.article-body {
+		max-width: 680px;
+	}
+
+	.annotation-panel {
+		right: max(1rem, calc(50% - 340px - 13.5rem));
+		width: 12.5rem;
+		padding-left: 0.68rem;
+	}
+}
+
+@media (max-width: 1023px) {
+	.annotation-panel {
+		display: none !important;
+	}
+
+	.annotation-popover {
+		width: min(22rem, calc(100vw - 1.5rem));
+	}
+
+	.annotation-inline-disclosure {
+		display: inline;
+		margin-left: 0.22em;
+		vertical-align: baseline;
+	}
+
+	.annotation-inline-trigger {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.24rem;
+		min-height: 1.3rem;
+		padding: 0.12rem 0.28rem;
+		border: 0;
+		border-radius: 4px;
+		background: rgba(92, 75, 56, 0.055);
+		color: var(--muted);
+		font: inherit;
+		font-size: 0.64rem;
+		font-variant-numeric: tabular-nums;
+		line-height: 1;
+		vertical-align: 0.08em;
+		cursor: pointer;
+		transition-property: background-color, color, scale;
+		transition-duration: 150ms;
+		transition-timing-function: ease-out;
+	}
+
+	.annotation-inline-trigger:hover,
+	.annotation-inline-trigger:focus-visible,
+	.annotation-inline-trigger[aria-expanded="true"] {
+		background: rgba(199, 53, 43, 0.09);
+		color: var(--accent);
+		outline: none;
+	}
+
+	.annotation-inline-trigger:active {
+		scale: 0.96;
+	}
+
+	.annotation-inline-icon {
+		position: relative;
+		display: inline-block;
+		width: 0.62rem;
+		height: 0.48rem;
+		border: 1px solid currentColor;
+		border-radius: 2px;
+	}
+
+	.annotation-inline-icon::after {
+		content: "";
+		position: absolute;
+		bottom: -0.17rem;
+		left: 0.12rem;
+		width: 0.2rem;
+		height: 0.2rem;
+		border-bottom: 1px solid currentColor;
+		border-left: 1px solid currentColor;
+		background: transparent;
+		transform: skewY(-36deg);
+	}
+
+	.annotation-inline-content {
+		margin-left: 0.3em;
+		padding: 0.08em 0.34em 0.1em;
+		border-left: 1px solid rgba(199, 53, 43, 0.3);
+		background: rgba(199, 53, 43, 0.038);
+		color: var(--ink);
+		font-size: 0.78rem;
+		line-height: 1.52;
+		text-wrap: pretty;
+		vertical-align: baseline;
+	}
+
+	.annotation-inline-note {
+		margin: 0;
+	}
+}
+
+@media (max-width: 780px) {
+	html {
+		font-size: 16px;
+	}
+
+	.page {
+		padding: 1.8rem 1rem 3.2rem;
+	}
+
+	.article-hero {
+		margin-bottom: 1.9rem;
+		padding-top: 0.8rem;
+		padding-bottom: 1.55rem;
+	}
+
+	.article-hero h1 {
+		font-size: 1.75rem;
+	}
+
+	.article-deck {
+		font-size: 0.95rem;
+	}
+
+	.table-of-contents {
+		margin-bottom: 2.5rem;
+		padding: 1.1rem 1rem;
+	}
+
+	.table-of-contents ol {
+		grid-template-columns: 1fr;
+		gap: 0.45rem;
+	}
+
+	.article-body h2 {
+		margin-top: 2.45rem;
+		font-size: 1.35rem;
+	}
+
+	.article-body h2::before {
+		min-width: 0;
+		margin-right: 0.15rem;
+	}
+
+	blockquote {
+		padding: 0.85rem 0.95rem;
+	}
+
+	table {
+		font-size: 0.8rem;
+	}
+
+	.annotation-popover {
+		max-width: calc(100vw - 1.5rem);
+	}
+}
+
+@media print {
+	html,
+	body {
+		background: #fff;
+	}
+
+	.page {
+		width: 100%;
+		padding: 0;
+	}
+
+	.article-hero {
+		margin-inline: 0;
+		padding-inline: 0;
+	}
+
+	a {
+		color: inherit;
+	}
+
+	.annotation-popover,
+	.annotation-panel {
+		display: none !important;
+	}
+}</style>
+<style>#reader-controls {
+	position: fixed;
+	right: 1.4rem;
+	bottom: 1.4rem;
+	z-index: 40;
+	display: flex;
+	gap: 0.4rem;
+}
+
+.reader-control-button {
+	appearance: none;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.42rem;
+	min-height: 1.9rem;
+	padding: 0.34rem 0.82rem;
+	border: 1px solid var(--line, #d8d1c6);
+	border-radius: 999px;
+	background: var(--paper, #fbf8f1);
+	color: var(--muted, #77736a);
+	font-family: inherit;
+	font-size: 0.8rem;
+	font-weight: 500;
+	line-height: 1;
+	letter-spacing: 0.01em;
+	cursor: pointer;
+	opacity: 0.78;
+	box-shadow: 0 2px 10px rgba(60, 45, 30, 0.07);
+	transition: opacity 180ms ease, color 180ms ease, background-color 180ms ease,
+		border-color 180ms ease, box-shadow 180ms ease, transform 120ms ease;
+}
+
+.reader-control-button:hover,
+.reader-control-button:focus-visible {
+	opacity: 1;
+	color: var(--accent, #c7352b);
+	background: var(--accent-soft, #f8ede9);
+	border-color: var(--accent, #c7352b);
+	box-shadow: 0 5px 18px rgba(60, 45, 30, 0.12);
+	outline: none;
+}
+
+.reader-control-button:active {
+	transform: translateY(1px);
+}
+
+.reader-control-glyph {
+	display: inline-flex;
+	font-size: 0.9rem;
+	line-height: 1;
+	opacity: 0.85;
+}
+
+.reader-control-label {
+	white-space: nowrap;
+}
+
+.reader-control-copy.is-done {
+	opacity: 1;
+	color: #2f7a4b;
+	background: rgba(47, 122, 75, 0.1);
+	border-color: rgba(47, 122, 75, 0.42);
+}
+
+.reader-control-copy.is-empty {
+	opacity: 1;
+	color: var(--muted, #77736a);
+	background: var(--paper, #fbf8f1);
+}
+
+@media (max-width: 1023px) {
+	#reader-controls {
+		right: 0.95rem;
+		bottom: 0.95rem;
+	}
+}
+
+@media (max-width: 600px) {
+	.reader-control-label {
+		display: none;
+	}
+
+	.reader-control-button {
+		min-width: 1.9rem;
+		padding: 0.4rem;
+		justify-content: center;
+	}
+}
+
+@media print {
+	#reader-controls {
+		display: none !important;
+	}
+}</style>
+</head>
+<body class="style-clean">
+<main class="page">
+<header class="article-hero">
+<h1><span>活动保障功能设计文档</span></h1>
+<div class="article-deck">
+<p><strong>版本</strong>: 1.0<br>
+<strong>模块</strong>: ops（运营运维域）  &gt; <strong>分支</strong>: dev_活动保障  &gt; <strong>最后更新</strong>: 2026-08-28</p>
+</div>
+<div class="hero-rule" aria-hidden="true"></div>
+</header>
+<nav class="table-of-contents" aria-label="目录">
+<h2>目录</h2>
+<ol>
+<li><a href="#一模块概述">模块概述</a></li>
+<li><a href="#二核心数据模型">核心数据模型</a></li>
+<li><a href="#三状态流转设计">状态流转设计</a></li>
+<li><a href="#四api-接口设计">API 接口设计</a></li>
+<li><a href="#五核心业务流程">核心业务流程</a></li>
+<li><a href="#十代码文件清单">代码文件清单</a></li>
+<li><a href="#十一数据库迁移脚本flyway">数据库迁移脚本（Flyway）</a></li>
+<li><a href="#十二架构依赖关系">架构依赖关系</a></li>
+<li><a href="#十三列表页设计">列表页设计</a></li>
+<li><a href="#十四权限控制">权限控制</a></li>
+<li><a href="#十五与系统问题与故障模块的对照">与系统问题与故障模块的对照</a></li>
+<li><a href="#十六关键业务规则总结">关键业务规则总结</a></li>
+</ol>
+</nav>
+<aside class="side-table-of-contents" aria-label="章节目录">
+<div class="side-toc-title">目录</div>
+<ol>
+<li><a href="#一模块概述">模块概述</a></li>
+<li><a href="#二核心数据模型">核心数据模型</a></li>
+<li><a href="#三状态流转设计">状态流转设计</a></li>
+<li><a href="#四api-接口设计">API 接口设计</a></li>
+<li><a href="#五核心业务流程">核心业务流程</a></li>
+<li><a href="#十代码文件清单">代码文件清单</a></li>
+<li><a href="#十一数据库迁移脚本flyway">数据库迁移脚本（Flyway）</a></li>
+<li><a href="#十二架构依赖关系">架构依赖关系</a></li>
+<li><a href="#十三列表页设计">列表页设计</a></li>
+<li><a href="#十四权限控制">权限控制</a></li>
+<li><a href="#十五与系统问题与故障模块的对照">与系统问题与故障模块的对照</a></li>
+<li><a href="#十六关键业务规则总结">关键业务规则总结</a></li>
+</ol>
+</aside>
+<article class="article-body">
+
+
+<h2 id="一模块概述">模块概述</h2>
+<p>"活动保障"是 ops 运营运维域下的新功能模块，参照"系统问题与故障"模块的架构模式设计，负责活动保障的全生命周期管理。该模块实现从活动提报、AI 活动方案生成与守门、AI 行动计划生成与闭环、到活动复盘的完整流程。</p>
+<h3 id="核心能力">核心能力</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>能力</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>活动提报</td>
+<td>人工填报活动信息，支持多时间轴，自动生成活动编号（ATHB）</td>
+</tr>
+<tr>
+<td>AI 活动方案</td>
+<td>调用珊瑚 AI 工作流自动生成活动等级、保障部门、保障负责人、方案文本</td>
+</tr>
+<tr>
+<td>方案纠偏与守门</td>
+<td>AI 活动方案支持人工纠偏，硅基/碳基两级守门</td>
+</tr>
+<tr>
+<td>AI 行动计划</td>
+<td>AI 活动方案触发珊瑚 AI 行动计划流程，生成行动计划</td>
+</tr>
+<tr>
+<td>行动计划闭环</td>
+<td>行动计划支持编辑、守门、推送任务中心、新增计划、重新生成</td>
+</tr>
+<tr>
+<td>活动复盘</td>
+<td>关联活动时间内故障/问题，调用珊瑚复盘工作流，支持版本切换、守门、提交</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2 id="二核心数据模型">核心数据模型</h2>
+<h3 id="21-活动保障主表-opsactivityassurance">2.1 活动保障主表 <code>ops_activity_assurance</code></h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint</td>
+<td>主键（自增）</td>
+</tr>
+<tr>
+<td><code>activity_no</code></td>
+<td>varchar(100)</td>
+<td>活动编号（ATHB + yyyyMMdd + 5位序号）</td>
+</tr>
+<tr>
+<td><code>activity_name</code></td>
+<td>varchar(200)</td>
+<td>活动名称</td>
+</tr>
+<tr>
+<td><code>activity_desc</code></td>
+<td>text</td>
+<td>活动描述</td>
+</tr>
+<tr>
+<td><code>ai_activity_level</code></td>
+<td>varchar(20)</td>
+<td>AI 活动等级（MAJOR_SUPPORT=重大保障 / REGULAR_SUPPORT=常规保障，复用 <code>ActivityLevel</code> 枚举）</td>
+</tr>
+<tr>
+<td><code>activity_level</code></td>
+<td>varchar(20)</td>
+<td>人工活动等级（纠偏后）</td>
+</tr>
+<tr>
+<td><code>assurance_dept</code></td>
+<td>varchar(100)</td>
+<td>保障部门</td>
+</tr>
+<tr>
+<td><code>assurance_dept_ai</code></td>
+<td>varchar(100)</td>
+<td>AI 保障部门</td>
+</tr>
+<tr>
+<td><code>assurance_leader</code></td>
+<td>varchar(100)</td>
+<td>保障负责人（姓名）</td>
+</tr>
+<tr>
+<td><code>assurance_leader_id</code></td>
+<td>varchar(100)</td>
+<td>保障负责人域账号</td>
+</tr>
+<tr>
+<td><code>assurance_leader_ai</code></td>
+<td>varchar(100)</td>
+<td>AI 保障负责人</td>
+</tr>
+<tr>
+<td><code>assurance_leader_id_ai</code></td>
+<td>varchar(100)</td>
+<td>AI 保障负责人域账号</td>
+</tr>
+<tr>
+<td><code>activity_status</code></td>
+<td>varchar(20)</td>
+<td>活动状态（PENDING=待保障 / PROCESSING=保障中 / COMPLETED=已完成 / REVIEWED=已复盘）</td>
+</tr>
+<tr>
+<td><code>submitter_name</code></td>
+<td>varchar(100)</td>
+<td>提报人名称</td>
+</tr>
+<tr>
+<td><code>submitter_account</code></td>
+<td>varchar(100)</td>
+<td>提报人域账号</td>
+</tr>
+<tr>
+<td><code>start_time</code></td>
+<td>datetime</td>
+<td>活动开始时间</td>
+</tr>
+<tr>
+<td><code>end_time</code></td>
+<td>datetime</td>
+<td>活动结束时间</td>
+</tr>
+<tr>
+<td><code>review_time</code></td>
+<td>datetime</td>
+<td>复盘时间</td>
+</tr>
+<tr>
+<td><code>ai_plan_text</code></td>
+<td>longtext</td>
+<td>AI 活动方案文本</td>
+</tr>
+<tr>
+<td><code>manual_plan_text</code></td>
+<td>longtext</td>
+<td>人工纠偏方案文本</td>
+</tr>
+<tr>
+<td><code>ai_plan_status</code></td>
+<td>varchar(20)</td>
+<td>AI 方案状态（NOT_GENERATED / GENERATED / REGENERATED）</td>
+</tr>
+<tr>
+<td><code>ai_analysis_status</code></td>
+<td>varchar(20)</td>
+<td>AI 分析状态（PENDING / SUCCESS / FAILED）</td>
+</tr>
+<tr>
+<td><code>plan_guard_flag</code></td>
+<td>varchar(20)</td>
+<td>方案守门标识（NOT_GUARDED / SILICON_GUARDED / CARBON_GUARDED）</td>
+</tr>
+<tr>
+<td><code>plan_guard_status</code></td>
+<td>varchar(20)</td>
+<td>方案守门状态（NOT_GUARDED / GUARDED）</td>
+</tr>
+<tr>
+<td><code>ai_action_status</code></td>
+<td>varchar(20)</td>
+<td>AI 行动计划状态（NOT_GENERATED / GENERATED / REGENERATED）</td>
+</tr>
+<tr>
+<td><code>task_platform_task_id</code></td>
+<td>varchar(100)</td>
+<td>任务中心守门任务 ID</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>int</td>
+<td>版本号（乐观锁，默认 0）</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="readable-blockquote quote-block" data-label="继承 BaseEntity">
+<p><strong>继承 BaseEntity</strong>：包含 <code>create_time</code>, <code>create_by</code>, <code>update_time</code>, <code>update_by</code>, <code>is_deleted</code></p>
+</blockquote>
+<h3 id="22-活动时间轴表-opsactivitytimeline">2.2 活动时间轴表 <code>ops_activity_timeline</code></h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint</td>
+<td>主键（自增）</td>
+</tr>
+<tr>
+<td><code>activity_id</code></td>
+<td>bigint</td>
+<td>关联活动主表 ID</td>
+</tr>
+<tr>
+<td><code>start_time</code></td>
+<td>datetime</td>
+<td>开始时间</td>
+</tr>
+<tr>
+<td><code>end_time</code></td>
+<td>datetime</td>
+<td>结束时间</td>
+</tr>
+<tr>
+<td><code>core_task_desc</code></td>
+<td>varchar(500)</td>
+<td>核心任务说明</td>
+</tr>
+<tr>
+<td><code>timeline_type</code></td>
+<td>varchar(20)</td>
+<td>类型（STARTUP=启动 / STRESS_TEST=压测 / WARMUP=预热 / BURST=爆发）</td>
+</tr>
+<tr>
+<td><code>sort_order</code></td>
+<td>int</td>
+<td>排序序号</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="23-活动行动计划表-opsactivityactionplan">2.3 活动行动计划表 <code>ops_activity_action_plan</code></h3>
+<blockquote class="readable-blockquote quote-block">
+<p>表结构参照 <code>ops_system_fault_action_plan</code>，字段一致。</p>
+</blockquote>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint</td>
+<td>主键（自增）</td>
+</tr>
+<tr>
+<td><code>activity_id</code></td>
+<td>bigint</td>
+<td>关联活动主表 ID</td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td>varchar(200)</td>
+<td>标题</td>
+</tr>
+<tr>
+<td><code>category</code></td>
+<td>varchar(50)</td>
+<td>计划分类：应急恢复 / 原因排查 / 根本解决</td>
+</tr>
+<tr>
+<td><code>objective</code></td>
+<td>text</td>
+<td>目标</td>
+</tr>
+<tr>
+<td><code>measure</code></td>
+<td>text</td>
+<td>措施</td>
+</tr>
+<tr>
+<td><code>responsible_person</code></td>
+<td>varchar(100)</td>
+<td>责任人姓名</td>
+</tr>
+<tr>
+<td><code>responsible_person_id</code></td>
+<td>varchar(100)</td>
+<td>责任人 ID（域账号）</td>
+</tr>
+<tr>
+<td><code>expected_completion_time</code></td>
+<td>datetime</td>
+<td>预计完成时间</td>
+</tr>
+<tr>
+<td><code>annotation</code></td>
+<td>text</td>
+<td>批注内容</td>
+</tr>
+<tr>
+<td><code>guard_status</code></td>
+<td>varchar(20)</td>
+<td>守门状态（NOT_GUARDED / GUARDED）</td>
+</tr>
+<tr>
+<td><code>guard_type</code></td>
+<td>varchar(20)</td>
+<td>守门类型（SILICON_GUARDED / CARBON_GUARDED）</td>
+</tr>
+<tr>
+<td><code>is_edited</code></td>
+<td>int</td>
+<td>是否经过人工编辑（0否 1是）</td>
+</tr>
+<tr>
+<td><code>is_pushed</code></td>
+<td>int</td>
+<td>是否已推送任务中心（0否 1是）</td>
+</tr>
+<tr>
+<td><code>is_annotated</code></td>
+<td>int</td>
+<td>是否已批注（0否 1是）</td>
+</tr>
+<tr>
+<td><code>task_platform_task_id</code></td>
+<td>varchar(100)</td>
+<td>任务中心执行任务 ID</td>
+</tr>
+<tr>
+<td><code>task_status</code></td>
+<td>varchar(20)</td>
+<td>任务中心状态（NOT_STARTED / IN_PROGRESS / COMPLETED）</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="24-行动计划操作日志表-opsactivityactionplanlog">2.4 行动计划操作日志表 <code>ops_activity_action_plan_log</code></h3>
+<blockquote class="readable-blockquote quote-block">
+<p>表结构参照 <code>ops_system_fault_action_plan_log</code>，字段一致。</p>
+</blockquote>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint</td>
+<td>主键（自增）</td>
+</tr>
+<tr>
+<td><code>action_plan_id</code></td>
+<td>bigint</td>
+<td>关联行动计划 ID</td>
+</tr>
+<tr>
+<td><code>activity_id</code></td>
+<td>bigint</td>
+<td>关联活动主表 ID</td>
+</tr>
+<tr>
+<td><code>operation_type</code></td>
+<td>varchar(20)</td>
+<td>操作类型（CREATE / EDIT / ANNOTATE / PUSH_TASK / CHANGE_RESPONSIBLE）</td>
+</tr>
+<tr>
+<td><code>operation_desc</code></td>
+<td>varchar(500)</td>
+<td>操作描述</td>
+</tr>
+<tr>
+<td><code>before_value</code></td>
+<td>text</td>
+<td>变更前值（JSON）</td>
+</tr>
+<tr>
+<td><code>after_value</code></td>
+<td>text</td>
+<td>变更后值（JSON）</td>
+</tr>
+<tr>
+<td><code>operator_account</code></td>
+<td>varchar(100)</td>
+<td>操作人域账号</td>
+</tr>
+<tr>
+<td><code>operator_name</code></td>
+<td>varchar(100)</td>
+<td>操作人姓名</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="25-活动复盘表-opsactivityreview">2.5 活动复盘表 <code>ops_activity_review</code></h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint</td>
+<td>主键（自增）</td>
+</tr>
+<tr>
+<td><code>activity_id</code></td>
+<td>bigint</td>
+<td>关联活动主表 ID</td>
+</tr>
+<tr>
+<td><code>review_status</code></td>
+<td>varchar(20)</td>
+<td>复盘状态（DRAFT=草稿 / REVIEWING=复盘中 / SUBMITTED=已提交）</td>
+</tr>
+<tr>
+<td><code>related_fault_ids</code></td>
+<td>text</td>
+<td>关联故障/问题 ID 列表（JSON 数组，逗号分隔）</td>
+</tr>
+<tr>
+<td><code>fault_detail_text</code></td>
+<td>longtext</td>
+<td>拼接后的故障详情文本（传给复盘工作流）</td>
+</tr>
+<tr>
+<td><code>ai_review_report</code></td>
+<td>longtext</td>
+<td>AI 复盘报告（珊瑚工作流返回）</td>
+</tr>
+<tr>
+<td><code>manual_review_report</code></td>
+<td>longtext</td>
+<td>人工编辑复盘报告</td>
+</tr>
+<tr>
+<td><code>current_version</code></td>
+<td>varchar(20)</td>
+<td>当前版本号</td>
+</tr>
+<tr>
+<td><code>guard_flag</code></td>
+<td>varchar(20)</td>
+<td>守门标识（NOT_GUARDED / GUARDED）</td>
+</tr>
+<tr>
+<td><code>guard_type</code></td>
+<td>varchar(20)</td>
+<td>守门类型（SILICON_GUARDED / CARBON_GUARDED）</td>
+</tr>
+<tr>
+<td><code>is_edited</code></td>
+<td>int</td>
+<td>是否经过人工编辑（0否 1是）</td>
+</tr>
+<tr>
+<td><code>review_time</code></td>
+<td>datetime</td>
+<td>复盘提交时间</td>
+</tr>
+<tr>
+<td><code>request_id</code></td>
+<td>varchar(100)</td>
+<td>AI 请求 ID（用于轮询）</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="26-活动复盘版本表-opsactivityreviewversion">2.6 活动复盘版本表 <code>ops_activity_review_version</code></h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint</td>
+<td>主键（自增）</td>
+</tr>
+<tr>
+<td><code>review_id</code></td>
+<td>bigint</td>
+<td>关联复盘记录 ID</td>
+</tr>
+<tr>
+<td><code>activity_id</code></td>
+<td>bigint</td>
+<td>关联活动主表 ID</td>
+</tr>
+<tr>
+<td><code>version_no</code></td>
+<td>varchar(20)</td>
+<td>版本号（V1, V2, ...）</td>
+</tr>
+<tr>
+<td><code>review_report</code></td>
+<td>longtext</td>
+<td>该版本复盘报告内容</td>
+</tr>
+<tr>
+<td><code>is_current</code></td>
+<td>int</td>
+<td>是否当前版本（0否 1是）</td>
+</tr>
+<tr>
+<td><code>source</code></td>
+<td>varchar(20)</td>
+<td>来源（AI_GENERATED / MANUAL_EDITED）</td>
+</tr>
+<tr>
+<td><code>operator_account</code></td>
+<td>varchar(100)</td>
+<td>操作人域账号</td>
+</tr>
+<tr>
+<td><code>operator_name</code></td>
+<td>varchar(100)</td>
+<td>操作人姓名</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="27-附件复用">2.7 附件复用</h3>
+<p>活动附件复用通用附件表 <code>rev_attachment</code>，通过 <code>business_id</code>（活动编号）和 <code>business_type</code> 关联：</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>业务类型</th>
+<th>值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>活动附件</td>
+<td>401</td>
+<td>活动提报时上传的附件</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2 id="三状态流转设计">状态流转设计</h2>
+<h3 id="31-活动状态-activitystatus">3.1 活动状态 <code>activity_status</code></h3>
+<pre class="code-figure ascii-figure" data-label="ASCII 图"><code>PENDING（待保障）  
+  │  ├── 触发 AI 行动计划生成（方案守门后）  
+  │  ▼PROCESSING（保障中）  
+  │  ├── 全部行动计划守门完成  
+  │  ▼COMPLETED（已完成）  
+  │  ├── 提交复盘  
+  │  ▼REVIEWED（已复盘）  
+</code></pre>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>状态值</th>
+<th>描述</th>
+<th>触发条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PENDING</code></td>
+<td>待保障</td>
+<td>新增活动时初始状态</td>
+</tr>
+<tr>
+<td><code>PROCESSING</code></td>
+<td>保障中</td>
+<td>AI 行动计划生成后</td>
+</tr>
+<tr>
+<td><code>COMPLETED</code></td>
+<td>已完成</td>
+<td>所有行动计划均已守门</td>
+</tr>
+<tr>
+<td><code>REVIEWED</code></td>
+<td>已复盘</td>
+<td>复盘提交后</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="32-ai-活动方案状态-aiplanstatus">3.2 AI 活动方案状态 <code>ai_plan_status</code></h3>
+<pre class="code-figure" data-label="代码"><code>NOT_GENERATED（未生成）──新增触发──&gt; GENERATED（已生成）──重新生成──&gt; REGENERATED（已重新生成）  
+</code></pre>
+<h3 id="33-ai-分析状态-aianalysisstatus">3.3 AI 分析状态 <code>ai_analysis_status</code></h3>
+<pre class="code-figure" data-label="代码"><code>PENDING（分析中）──&gt; SUCCESS（分析成功）/ FAILED（分析失败）  
+</code></pre>
+<h3 id="34-方案守门状态-planguardflag">3.4 方案守门状态 <code>plan_guard_flag</code></h3>
+<pre class="code-figure" data-label="代码"><code>NOT_GUARDED（未守门）──纠偏或守门──&gt; SILICON_GUARDED（硅基守门）/ CARBON_GUARDED（碳基守门）  
+</code></pre>
+<p><strong>守门判定规则</strong>（参照故障模块 <code>recomputeGuardStatus</code>）：</p>
+<ul>
+<li>方案生成后未经人工编辑 → <code>SILICON_GUARDED</code>（硅基守门）</li>
+<li>方案经过人工纠偏后 → <code>CARBON_GUARDED</code>（碳基守门）</li>
+<li>守门通过后方可触发 AI 行动计划生成</li>
+</ul>
+<h3 id="35-ai-行动计划状态-aiactionstatus">3.5 AI 行动计划状态 <code>ai_action_status</code></h3>
+<pre class="code-figure" data-label="代码"><code>NOT_GENERATED（未生成）──触发──&gt; GENERATED（已生成）──重新生成──&gt; REGENERATED（已重新生成）  
+</code></pre>
+<h3 id="36-行动计划守门状态同故障模块">3.6 行动计划守门状态（同故障模块）</h3>
+<pre class="code-figure" data-label="代码"><code>NOT_GUARDED ──批注或推送任务──&gt; GUARDED（SILICON_GUARDED / CARBON_GUARDED）  
+</code></pre>
+<h3 id="37-复盘状态-reviewstatus">3.7 复盘状态 <code>review_status</code></h3>
+<pre class="code-figure" data-label="代码"><code>DRAFT（草稿）──触发复盘──&gt; REVIEWING（复盘中）──提交──&gt; SUBMITTED（已提交）  
+</code></pre>
+<hr>
+<h2 id="四api-接口设计">API 接口设计</h2>
+<h3 id="41-活动保障接口-apiactivityassurance">4.1 活动保障接口 <code>/api/activityAssurance</code></h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>路径</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td><code>/pageList</code></td>
+<td>分页查询活动保障列表</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/getDetail/{id}</code></td>
+<td>查询活动详情（含时间轴、AI方案、行动计划、操作日志）</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/addOrUpdate</code></td>
+<td>保存或更新活动（新增自动触发 AI 活动方案生成）</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/plan/correct</code></td>
+<td>AI 活动方案人工纠偏（标记为碳基守门）</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/plan/guard?id=</code></td>
+<td>方案守门（守门后允许触发 AI 行动计划）</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/generateActionPlan?id=</code></td>
+<td>触发 AI 行动计划生成（待保障→保障中，推送守门任务）</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/regenerateActionPlan?id=</code></td>
+<td>重新生成 AI 行动计划（覆盖原有计划，重置守门）</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/action/add</code></td>
+<td>新增行动计划（用户手动新增）</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/action/edit</code></td>
+<td>编辑行动计划（标记为碳基守门）</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/action/annotate</code></td>
+<td>添加批注（重算守门状态）</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/action/pushTask?id=</code></td>
+<td>推送执行任务至责任人</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/action/logs?actionPlanId=</code></td>
+<td>查询行动计划操作日志</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/review/start</code></td>
+<td>发起活动复盘（查询关联故障、触发 AI 复盘工作流）</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/review/edit</code></td>
+<td>编辑复盘报告（保存版本）</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/review/versions?reviewId=</code></td>
+<td>查询复盘报告版本列表</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/review/switchVersion</code></td>
+<td>切换复盘报告版本</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/review/guard</code></td>
+<td>复盘报告守门</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/review/submit</code></td>
+<td>提交复盘（活动状态→已复盘）</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/review/getDetail?activityId=</code></td>
+<td>查询复盘详情</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/relatedFaults?activityId=</code></td>
+<td>查询活动时间内的关联故障/问题（多选）</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="42-活动时间轴接口-apiactivitytimeline">4.2 活动时间轴接口 <code>/api/activityTimeline</code></h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>路径</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>/list?activityId=</code></td>
+<td>查询活动时间轴列表</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/save</code></td>
+<td>保存时间轴（批量保存，先删后插）</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2 id="五核心业务流程">核心业务流程</h2>
+<h3 id="51-活动提报-ai-活动方案生成流程">5.1 活动提报 + AI 活动方案生成流程</h3>
+<pre class="code-figure ascii-figure" data-label="ASCII 图"><code>用户填报活动信息  
+    │  字段：活动名称、提报人、保障负责人（只读，AI 填充后回显）、  
+    │       活动描述、活动起止时间、活动附件、活动时间轴（多个）  
+    │    ▼addOrUpdate (新增)  
+    │  1. 生成活动编号：InitializeCodeUtil.generateOrderNo("ATHB")  
+    │     格式：ATHB + yyyyMMdd + 5位序号，如 ATHB2026082800001    │  2. 设置提报人信息（从登录用户获取）  
+    │  3. 活动状态 → PENDING    │  4. AI 方案状态 → NOT_GENERATED    │  5. AI 分析状态 → PENDING    │  6. 保存活动时间轴（批量插入）  
+    │  7. 保存活动附件（RevAttachmentService，businessType=401）  
+    │    ▼doActivityPlan (调用珊瑚 AI 活动方案工作流)  
+    │  构建表单：活动名称、活动描述、活动起止时间、时间轴列表、提报人、保障部门  
+    │  调用珊瑚流程：APP_NAME_ACTIVITY_PLAN  
+    │  解析 AI 返回 JSON    │    ├── 成功 → 填充 AI 字段：  
+    │     │     ai_activity_level（重大保障/常规保障）  
+    │     │     assurance_dept_ai（保障部门）  
+    │     │     assurance_leader_ai + assurance_leader_id_ai（保障负责人）  
+    │     │     ai_plan_text（方案文本）  
+    │     │     回填主表 assurance_dept / assurance_leader / assurance_leader_id    │     │     AI 分析状态 → SUCCESS    │     │     AI 方案状态 → GENERATED    │    └── 失败 → AI 分析状态 → FAILED    │    ▼落库（updateById）  
+    │    ▼返回活动详情（含 AI 方案）  
+</code></pre>
+<h3 id="52-ai-活动方案纠偏与守门流程">5.2 AI 活动方案纠偏与守门流程</h3>
+<pre class="code-figure ascii-figure" data-label="ASCII 图"><code>AI 方案生成完成  
+    │    ├── 方案守门（plan/guard）  
+    │     │  未经人工编辑 → SILICON_GUARDED（硅基守门）  
+    │     │  方案守门状态 → GUARDED    │     │  允许触发 AI 行动计划  
+    │     ▼    │    └── 方案纠偏（plan/correct）  
+          │  校验：仅提报人直属上级可纠偏  
+          │  更新人工方案字段：  
+          │     activity_level（人工活动等级）  
+          │     assurance_dept（人工保障部门）  
+          │     assurance_leader / assurance_leader_id（人工保障负责人）  
+          │     manual_plan_text（人工方案文本）  
+          │  标记 is_edited=1          │  守门类型 → CARBON_GUARDED（碳基守门）  
+          │  方案守门状态 → GUARDED          │  允许触发 AI 行动计划  
+          ▼```  
+  
+### 5.3 AI 行动计划生成流程  
+  
+</code></pre>
+<p>方案守门通过后，用户触发 generateActionPlan(id)    │    ▼校验：方案守门状态为 GUARDED    │    ▼callCoralForActionPlans (调用珊瑚 AI 行动计划流程)<br>
+│  构建表单：<br>
+│     活动名称、活动描述<br>
+│     AI 方案文本（或人工纠偏后的方案文本）<br>
+│     活动等级、保障部门、保障负责人<br>
+│     时间轴信息<br>
+│  调用珊瑚流程：APP_NAME_ACTIVITY_ACTION_PLAN<br>
+│  解析返回 JSON（兼容数组/对象包裹数组/单对象格式）<br>
+│  根据域账号查询责任人姓名<br>
+│    ▼initActionPlans (初始化行动计划：守门状态置 NOT_GUARDED)    │    ▼persistActionPlans (覆盖式持久化：先删后插)<br>
+│    ▼更新活动：活动状态 → PROCESSING，AI行动计划状态 → GENERATED    │    ▼submitGateTask (向提报人直属上级推送守门任务)<br>
+│  1. 通过域账号查询提报人 → 获取工号<br>
+│  2. 查询提报人直属上级（OrganizationService.getDirectSupervisor）<br>
+│  3. 构建守门任务（名称、描述、目标、计划完成时间 +24h）<br>
+│  4. 推送至任务中心（submitFaultTask）<br>
+│  5. 回写 task_platform_task_id```</p>
+<h3 id="54-行动计划守门闭环流程">5.4 行动计划守门闭环流程</h3>
+<blockquote class="readable-blockquote quote-block">
+<p>完全复用系统问题与故障模块的守门闭环逻辑。</p>
+</blockquote>
+<pre class="code-figure ascii-figure" data-label="ASCII 图"><code>提报人直属上级收到守门任务  
+    │    ├── 编辑行动计划 (action/edit)    │     │  校验当前用户是提报人直属上级  
+    │     │  更新计划内容 → 标记 is_edited=1    │     │  重算守门状态 → CARBON_GUARDED    │     │  记录编辑操作日志  
+    │     │  责任人变更 → 额外记录变更日志  
+    │     ▼    │    ├── 添加批注 (action/annotate)    │     │  校验当前用户是提报人直属上级  
+    │     │  更新批注 → 标记 is_annotated=1    │     │  重算守门状态  
+    │     │  检查全部守门 → 若是，活动置 COMPLETED + 关闭守门任务  
+    │     │  记录批注操作日志  
+    │     ▼    │    └── 推送执行任务 (action/pushTask)          │  校验当前用户是提报人直属上级  
+          │  校验责任人域账号存在  
+          │  构建执行任务 → 推送至任务中心  
+          │  标记 is_pushed=1，task_status → IN_PROGRESS  
+          │  重算守门状态  
+          │  检查全部守门 → 若是，活动置 COMPLETED + 关闭守门任务  
+          │  记录推送任务操作日志  
+          ▼  
+全部行动计划守门完成  
+    │    ▼resolveActivityIfAllGuarded  
+    │  统计：total = 行动计划总数，guarded = 已守门数  
+    │  若 total &gt; 0 且 guarded == total    │  → 活动状态置 COMPLETED    │  → completeOrderTask (关闭任务中心守门任务)  
+</code></pre>
+<h3 id="55-重新生成-ai-行动计划流程">5.5 重新生成 AI 行动计划流程</h3>
+<pre class="code-figure ascii-figure" data-label="ASCII 图"><code>用户触发 regenerateActionPlan(id)    │    ▼校验：已复盘状态不可重新生成  
+    │    ▼callCoralForActionPlans → initActionPlans → persistActionPlans (覆盖)  
+    │    ▼更新活动：AI行动计划状态 → REGENERATED    │    ▼返回最新详情（守门状态已重置）  
+</code></pre>
+<h3 id="56-活动复盘流程">5.6 活动复盘流程</h3>
+<pre class="code-figure ascii-figure" data-label="ASCII 图"><code>活动状态为 COMPLETED，用户点击"复盘"按钮  
+    │    ▼进入复盘页面（字段带出）：  
+    │  活动名称（只读）、活动开始时间（只读）、活动结束时间（只读）  
+    │  AI 活动等级（只读）、活动描述（只读）  
+    │    ▼查询关联故障/问题 (relatedFaults)    │  根据活动起止时间查询 ops_system_fault_submission 表  
+    │  条件：occurrenc_time BETWEEN activity.start_time AND activity.end_time  
+    │  返回故障列表供用户多选  
+    │    ▼用户选择关联故障，点击"发起复盘" (review/start)  
+    │  1. 保存关联故障 ID 列表到 review.related_fault_ids    │  2. 根据故障 ID 列表查询 ops_system_fault_submission 表，获取故障详情  
+    │  3. 将每个故障的以下字段拼接成一个字符串，保存到 review.fault_detail_text：  
+    │     产品模块(product_module)、产品名称(product_name)、提报人(submitter_name)、  
+    │     所属部门(department)、故障描述(problem_description)、等级(fault_level)、  
+    │     状态(handling_status)、AI故障恢复方案(recovery_plan_ai)、  
+    │     AI根本解决方案(fundamental_solution_ai)、故障时长(fault_duration)、  
+    │     影响范围(impact_scope)、发生时间(occurrenc_time)、  
+    │     实际故障恢复时间(actual_recovery_time)  
+    │     多个故障以分隔符拼接  
+    │  4. 复盘状态 → REVIEWING    │  5. 生成 requestId（UUID）  
+    │  6. 构建珊瑚复盘表单：  
+    │     活动名称、活动描述、活动等级、活动起止时间  
+    │     fault_detail_text（拼接后的故障详情文本）  
+    │     行动计划执行情况  
+    │  7. 调用珊瑚复盘工作流（APP_NAME_ACTIVITY_REVIEW）  
+    │  8. AI 返回复盘报告  
+    │  9. 保存为 V1 版本（ops_activity_review_version）  
+    │  10. 回填 ai_review_report    │    ▼复盘报告可操作：  
+    │    ├── 编辑复盘报告 (review/edit)    │     │  保存为新版本（V2, V3, ...）  
+    │     │  标记 is_edited=1    │     │  守门类型 → CARBON_GUARDED    │     │  当前版本标记 is_current=1，其他版本置 0    │     ▼    │    ├── 切换版本 (review/switchVersion)    │     │  指定版本号，将该版本标记 is_current=1    │     │  回填当前复盘报告内容  
+    │     ▼    │    ├── 守门 (review/guard)    │     │  未经编辑 → SILICON_GUARDED    │     │  经过编辑 → CARBON_GUARDED    │     │  guard_flag → GUARDED    │     ▼    │    └── 提交复盘 (review/submit)          │  校验：守门状态为 GUARDED          │  复盘状态 → SUBMITTED          │  活动状态 → REVIEWED          │  记录复盘提交时间  
+          │  关闭任务中心任务（如有）  
+          ▼```  
+  
+---  
+  
+## 六、AI 流程集成说明  
+  
+### 6.1 珊瑚 AI 活动方案工作流  
+  
+- **应用名**: `invoke_activity_plan`（需在 `OpsCoralConstants` 中新增）  
+- **调用工具**: `CoralUtil.invokeCoralProcess`（同故障模块）  
+- **配置方式**: `coralAiProperties.getApps().get(APP_NAME_ACTIVITY_PLAN)` 获取 appId 和 accessKey  
+- **输入表单字段**:  
+  
+| 字段键 | 说明 |  
+|--------|------|  
+| `activityName` | 活动名称 |  
+| `activityDesc` | 活动描述 |  
+| `startTime` | 活动开始时间 |  
+| `endTime` | 活动结束时间 |  
+| `timelines` | 时间轴列表（JSON 数组：开始时间、结束时间、核心任务说明、类型） |  
+| `submitter` | 提报人 |  
+| `department` | 保障部门 |  
+  
+- **AI 输出字段（JSON）**:  
+  
+| 字段 | 说明 |  
+|------|------|  
+| `activityLevel` | 活动等级（MAJOR_SUPPORT=重大保障 / REGULAR_SUPPORT=常规保障，复用 `ActivityLevel` 枚举） |  
+| `assuranceDept` | 保障部门（枚举：职能智能部、ERP智能部、智能运维部、国内营销智能部、国际营销智能部、数据决策智能部、供应链智能部） |  
+| `assuranceLeader` | 保障负责人（域账号） |  
+| `planText` | 方案文本 |  
+  
+### 6.2 珊瑚 AI 行动计划工作流  
+  
+- **应用名**: `invoke_activity_action_plan`（需在 `OpsCoralConstants` 中新增）  
+- **调用工具**: `CoralUtil.invokeCoralProcess`  
+- **输入表单字段**:  
+  
+| 字段键 | 说明 |  
+|--------|------|  
+| `activityName` | 活动名称 |  
+| `activityDesc` | 活动描述 |  
+| `planText` | 活动方案文本（AI 或人工纠偏后） |  
+| `activityLevel` | 活动等级 |  
+| `assuranceDept` | 保障部门 |  
+| `assuranceLeader` | 保障负责人 |  
+| `timelines` | 时间轴信息 |  
+  
+- **AI 输出格式**（JSON 数组，兼容格式同故障模块）:  
+  
+| 字段 | 说明 |  
+|------|------|  
+| `actionTitle` / `title` | 行动计划标题 |  
+| `category` | 计划分类 |  
+| `objective` | 目标 |  
+| `measures` / `measure` | 措施 |  
+| `responsiblePerson` | 责任人域账号 |  
+| `estimatedCompletionTime` | 预计完成时间 |  
+  
+### 6.3 珊瑚 AI 活动复盘工作流  
+  
+- **应用名**: `invoke_activity_review`（需在 `OpsCoralConstants` 中新增）  
+- **调用工具**: `CoralUtil.invokeCoralProcess`  
+- **输入表单字段**:  
+  
+| 字段键 | 说明 |  
+|--------|------|  
+| `activityName` | 活动名称 |  
+| `activityDesc` | 活动描述 |  
+| `activityLevel` | 活动等级 |  
+| `startTime` | 活动开始时间 |  
+| `endTime` | 活动结束时间 |  
+| `faultDetailText` | 拼接后的故障详情文本（包含产品模块、产品名称、提报人、所属部门、故障描述、等级、状态、AI故障恢复方案、AI根本解决方案、故障时长、影响范围、发生时间、实际故障恢复时间） |  
+| `actionPlanSummary` | 行动计划执行情况摘要 |  
+  
+- **AI 输出字段**:  
+  
+| 字段 | 说明 |  
+|------|------|  
+| `reviewReport` | 复盘报告（长文本） |  
+  
+---  
+  
+## 七、任务中心集成  
+  
+&gt; 完全复用系统问题与故障模块的任务中心集成模式。  
+  
+### 7.1 守门任务（GATE 任务）  
+  
+- **触发时机**: AI 行动计划生成后  
+- **推送对象**: 提报人直属上级  
+- **任务名称**: `请关注活动保障 {活动编号}，由 {提报人} 创建，AI行动计划已生成，需进行守门`  
+- **任务目标**: `完成活动保障，AI行动计划守门，并推送任务给责任人`  
+- **计划完成时间**: 当前时间 + 24 小时  
+- **任务前缀**: `GATE_`  
+- **关闭条件**: 活动下所有行动计划均已守门  
+  
+### 7.2 执行任务（EXEC 任务）  
+  
+- **触发时机**: 提报人直属上级推送执行任务  
+- **推送对象**: 行动计划责任人  
+- **任务名称**: 行动计划标题  
+- **任务目标**: `{活动编号}行动计划执行落地完成 {目标}`  
+- **计划完成时间**: 行动计划的预计完成时间  
+- **任务前缀**: `EXEC_`  
+- **调用方法**: `submitFaultTask007`（使用 `accessKey_007`）  
+  
+### 7.3 任务中心调用参数（同故障模块）  
+  
+| 参数 | 值 |  
+|------|-----|  
+| `company` | TINECO |  
+| `taskSourceType` | AGENT |  
+| `taskSource` | dolphin |  
+| `executeAgent` | dolphin |  
+| `planExecuteMethod` | CARBON |  
+| `hasScreen` | 0 |  
+| `createCode` | dolphin |  
+| `createName` | 海豚 |  
+  
+---  
+  
+## 八、枚举定义设计  
+  
+### 8.1 需新增的枚举类  
+  
+| 枚举类 | 路径 | 枚举值 | 说明 |  
+|--------|------|--------|------|  
+| `OpsActivityStatusEnum` | `enums/ops/` | PENDING / PROCESSING / COMPLETED / REVIEWED | 活动状态 |  
+| `OpsAiPlanStatusEnum` | `enums/ops/` | NOT_GENERATED / GENERATED / REGENERATED | AI 方案状态 |  
+| `OpsActivityGuardStatusEnum` | `enums/ops/` | NOT_GUARDED / SILICON_GUARDED / CARBON_GUARDED / GUARDED | 守门状态 |  
+| `OpsActivityTimelineTypeEnum` | `enums/ops/` | STARTUP(启动) / STRESS_TEST(压测) / WARMUP(预热) / BURST(爆发) | 时间轴类型 |  
+| `OpsActivityReviewStatusEnum` | `enums/ops/` | DRAFT / REVIEWING / SUBMITTED | 复盘状态 |  
+| `OpsActivityDeptEnum` | `enums/ops/` | 职能智能部 / ERP智能部 / 智能运维部 / 国内营销智能部 / 国际营销智能部 / 数据决策智能部 / 供应链智能部 | 保障部门 |  
+  
+### 8.2 复用现有枚举  
+  
+| 枚举类 | 说明 |  
+|--------|------|  
+| `ActivityLevel` | 活动等级（MAJOR_SUPPORT=重大保障 / REGULAR_SUPPORT=常规保障） |  
+| `OpsFaultAiAnalysisStatusEnum` | AI 分析状态（PENDING/SUCCESS/FAILED） |  
+| `OpsFaultAiActionStatusEnum` | AI 行动计划状态（NOT_GENERATED/GENERATED/REGENERATED） |  
+| `OpsSystemFaultActionPlanGuardStatusEnum` | 行动计划守门状态 |  
+| `OpsSystemFaultActionPlanTaskStatusEnum` | 行动计划任务状态 |  
+| `OpsActionPlanOperationTypeEnum` | 操作日志类型 |  
+  
+---  
+  
+## 九、需新增的常量  
+  
+在 `OpsCoralConstants` 中新增：  
+  
+```java  
+// 活动编号前缀  
+public static final String ATHB = "ATHB";  
+  
+// 应用名称：AI 活动方案工作流  
+public static final String APP_NAME_ACTIVITY_PLAN = "invoke_activity_plan";  
+  
+// 应用名称：AI 活动行动计划工作流  
+public static final String APP_NAME_ACTIVITY_ACTION_PLAN = "invoke_activity_action_plan";  
+  
+// 应用名称：AI 活动复盘工作流  
+public static final String APP_NAME_ACTIVITY_REVIEW = "invoke_activity_review";  
+  
+// 附件业务类型  
+public static final Integer FOUR_HUNDRED_AND_ONE = 401; // 活动附件  
+  
+// 守门任务名称模板  
+public static final String ACTIVITY_GATE_TASK_NAME_TEMPLATE =  
+    "请关注活动保障 %s，由 %s 创建，AI行动计划已生成，需进行守门";  
+  
+// 守门任务目标  
+public static final String ACTIVITY_GATE_TASK_TARGET =  
+    "完成活动保障，AI行动计划守门，并推送任务给责任人";  
+  
+// 执行任务目标模板  
+public static final String ACTIVITY_EXEC_TASK_TARGET_TEMPLATE =  
+    "%s行动计划执行落地完成 %s";  
+</code></pre>
+<p>AI 活动方案表单字段常量类：</p>
+<pre class="code-figure" data-label="代码"><code class="language-java">public static class ACTIVITY_PLAN {  
+    public static final String ACTIVITY_NAME = "activityName";    public static final String ACTIVITY_DESC = "activityDesc";    public static final String START_TIME = "startTime";    public static final String END_TIME = "endTime";    public static final String TIMELINES = "timelines";    public static final String SUBMITTER = "submitter";    public static final String DEPARTMENT = "department";}  
+</code></pre>
+<p>AI 行动计划表单字段常量类：</p>
+<pre class="code-figure" data-label="代码"><code class="language-java">public static class ACTIVITY_ACTION_PLAN {  
+    public static final String ACTIVITY_NAME = "activityName";    public static final String ACTIVITY_DESC = "activityDesc";    public static final String PLAN_TEXT = "planText";    public static final String ACTIVITY_LEVEL = "activityLevel";    public static final String ASSURANCE_DEPT = "assuranceDept";    public static final String ASSURANCE_LEADER = "assuranceLeader";    public static final String TIMELINES = "timelines";}  
+</code></pre>
+<p>AI 复盘表单字段常量类：</p>
+<pre class="code-figure" data-label="代码"><code class="language-java">public static class ACTIVITY_REVIEW {  
+    public static final String ACTIVITY_NAME = "activityName";    public static final String ACTIVITY_DESC = "activityDesc";    public static final String ACTIVITY_LEVEL = "activityLevel";    public static final String START_TIME = "startTime";    public static final String END_TIME = "endTime";    public static final String FAULT_DETAIL_TEXT = "faultDetailText";    public static final String ACTION_PLAN_SUMMARY = "actionPlanSummary";}  
+</code></pre>
+<hr>
+<h2 id="十代码文件清单">代码文件清单</h2>
+<h3 id="101-实体类">10.1 实体类</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>entity/ops/OpsActivityAssurance.java</code></td>
+<td>活动保障主表实体</td>
+</tr>
+<tr>
+<td><code>entity/ops/OpsActivityTimeline.java</code></td>
+<td>活动时间轴实体</td>
+</tr>
+<tr>
+<td><code>entity/ops/OpsActivityActionPlan.java</code></td>
+<td>活动行动计划实体</td>
+</tr>
+<tr>
+<td><code>entity/ops/OpsActivityActionPlanLog.java</code></td>
+<td>行动计划操作日志实体</td>
+</tr>
+<tr>
+<td><code>entity/ops/OpsActivityReview.java</code></td>
+<td>活动复盘实体</td>
+</tr>
+<tr>
+<td><code>entity/ops/OpsActivityReviewVersion.java</code></td>
+<td>复盘报告版本实体</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="102-dto-vo">10.2 DTO / VO</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dto/request/ops/OpsActivityAssuranceDto.java</code></td>
+<td>活动保障保存 DTO</td>
+</tr>
+<tr>
+<td><code>dto/request/ops/OpsActivityAssuranceQuery.java</code></td>
+<td>活动保障查询条件</td>
+</tr>
+<tr>
+<td><code>dto/request/ops/OpsActivityTimelineDto.java</code></td>
+<td>时间轴 DTO</td>
+</tr>
+<tr>
+<td><code>dto/request/ops/OpsActivityActionPlanDto.java</code></td>
+<td>行动计划编辑 DTO</td>
+</tr>
+<tr>
+<td><code>dto/request/ops/OpsActivityPlanCorrectVO.java</code></td>
+<td>方案纠偏 VO</td>
+</tr>
+<tr>
+<td><code>dto/request/ops/OpsActivityReviewStartVO.java</code></td>
+<td>发起复盘 VO</td>
+</tr>
+<tr>
+<td><code>dto/request/ops/OpsActivityReviewEditVO.java</code></td>
+<td>编辑复盘 VO</td>
+</tr>
+<tr>
+<td><code>dto/request/ops/OpsActivityReviewGuardVO.java</code></td>
+<td>复盘守门 VO</td>
+</tr>
+<tr>
+<td><code>dto/request/ops/OpsActivityReviewSubmitVO.java</code></td>
+<td>提交复盘 VO</td>
+</tr>
+<tr>
+<td><code>dto/request/ops/OpsActivityReviewSwitchVersionVO.java</code></td>
+<td>切换版本 VO</td>
+</tr>
+<tr>
+<td><code>vo/ops/OpsActivityAssuranceVo.java</code></td>
+<td>活动详情 VO</td>
+</tr>
+<tr>
+<td><code>vo/ops/OpsActivityTimelineVo.java</code></td>
+<td>时间轴 VO</td>
+</tr>
+<tr>
+<td><code>vo/ops/OpsActivityActionPlanVo.java</code></td>
+<td>行动计划 VO</td>
+</tr>
+<tr>
+<td><code>vo/ops/OpsActivityActionPlanLogVo.java</code></td>
+<td>操作日志 VO</td>
+</tr>
+<tr>
+<td><code>vo/ops/OpsActivityReviewVo.java</code></td>
+<td>复盘详情 VO</td>
+</tr>
+<tr>
+<td><code>vo/ops/OpsActivityReviewVersionVo.java</code></td>
+<td>复盘版本 VO</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="103-controller">10.3 Controller</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>controller/ops/OpsActivityAssuranceController.java</code></td>
+<td>活动保障 Controller</td>
+</tr>
+<tr>
+<td><code>controller/ops/OpsActivityTimelineController.java</code></td>
+<td>活动时间轴 Controller</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="104-service">10.4 Service</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>service/ops/IOpsActivityAssuranceService.java</code></td>
+<td>活动保障服务接口</td>
+</tr>
+<tr>
+<td><code>service/impl/ops/OpsActivityAssuranceServiceImpl.java</code></td>
+<td>活动保障服务实现</td>
+</tr>
+<tr>
+<td><code>service/ops/IOpsActivityReviewService.java</code></td>
+<td>活动复盘服务接口</td>
+</tr>
+<tr>
+<td><code>service/impl/ops/OpsActivityReviewServiceImpl.java</code></td>
+<td>活动复盘服务实现</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="105-mapper">10.5 Mapper</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mapper/ops/OpsActivityAssuranceMapper.java</code></td>
+<td>活动保障 Mapper</td>
+</tr>
+<tr>
+<td><code>mapper/ops/OpsActivityTimelineMapper.java</code></td>
+<td>时间轴 Mapper</td>
+</tr>
+<tr>
+<td><code>mapper/ops/OpsActivityActionPlanMapper.java</code></td>
+<td>行动计划 Mapper</td>
+</tr>
+<tr>
+<td><code>mapper/ops/OpsActivityActionPlanLogMapper.java</code></td>
+<td>操作日志 Mapper</td>
+</tr>
+<tr>
+<td><code>mapper/ops/OpsActivityReviewMapper.java</code></td>
+<td>复盘 Mapper</td>
+</tr>
+<tr>
+<td><code>mapper/ops/OpsActivityReviewVersionMapper.java</code></td>
+<td>复盘版本 Mapper</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="106-枚举">10.6 枚举</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enums/ops/OpsActivityStatusEnum.java</code></td>
+<td>活动状态枚举</td>
+</tr>
+<tr>
+<td><code>enums/ops/OpsAiPlanStatusEnum.java</code></td>
+<td>AI 方案状态枚举</td>
+</tr>
+<tr>
+<td><code>enums/ops/OpsActivityGuardStatusEnum.java</code></td>
+<td>守门状态枚举</td>
+</tr>
+<tr>
+<td><code>enums/ops/OpsActivityTimelineTypeEnum.java</code></td>
+<td>时间轴类型枚举</td>
+</tr>
+<tr>
+<td><code>enums/ops/OpsActivityReviewStatusEnum.java</code></td>
+<td>复盘状态枚举</td>
+</tr>
+<tr>
+<td><code>enums/ops/OpsActivityDeptEnum.java</code></td>
+<td>保障部门枚举</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="107-常量与配置">10.7 常量与配置</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>constants/ops/OpsCoralConstants.java</code></td>
+<td>新增活动保障相关常量（修改现有文件）</td>
+</tr>
+<tr>
+<td><code>resources/db/migration/Vxx__create_activity_assurance_tables.sql</code></td>
+<td>Flyway 迁移脚本</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="108-mapper-xml">10.8 Mapper XML</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>resources/mapper/ops/OpsActivityAssuranceMapper.xml</code></td>
+<td>活动保障 Mapper XML</td>
+</tr>
+<tr>
+<td><code>resources/mapper/ops/OpsActivityTimelineMapper.xml</code></td>
+<td>时间轴 Mapper XML</td>
+</tr>
+<tr>
+<td><code>resources/mapper/ops/OpsActivityActionPlanMapper.xml</code></td>
+<td>行动计划 Mapper XML</td>
+</tr>
+<tr>
+<td><code>resources/mapper/ops/OpsActivityActionPlanLogMapper.xml</code></td>
+<td>操作日志 Mapper XML</td>
+</tr>
+<tr>
+<td><code>resources/mapper/ops/OpsActivityReviewMapper.xml</code></td>
+<td>复盘 Mapper XML</td>
+</tr>
+<tr>
+<td><code>resources/mapper/ops/OpsActivityReviewVersionMapper.xml</code></td>
+<td>复盘版本 Mapper XML</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2 id="十一数据库迁移脚本flyway">数据库迁移脚本（Flyway）</h2>
+<pre class="code-figure" data-label="代码"><code class="language-sql">-- 活动保障主表  
+CREATE TABLE ops_activity_assurance (  
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,    activity_no VARCHAR(100) COMMENT '活动编号（ATHB开头）',  
+    activity_name VARCHAR(200) COMMENT '活动名称',  
+    activity_desc TEXT COMMENT '活动描述',  
+    ai_activity_level VARCHAR(20) COMMENT 'AI活动等级（MAJOR_SUPPORT/REGULAR_SUPPORT）',  
+    activity_level VARCHAR(20) COMMENT '人工活动等级',  
+    assurance_dept VARCHAR(100) COMMENT '保障部门',  
+    assurance_dept_ai VARCHAR(100) COMMENT 'AI保障部门',  
+    assurance_leader VARCHAR(100) COMMENT '保障负责人',  
+    assurance_leader_id VARCHAR(100) COMMENT '保障负责人域账号',  
+    assurance_leader_ai VARCHAR(100) COMMENT 'AI保障负责人',  
+    assurance_leader_id_ai VARCHAR(100) COMMENT 'AI保障负责人域账号',  
+    activity_status VARCHAR(20) DEFAULT 'PENDING' COMMENT '活动状态',  
+    submitter_name VARCHAR(100) COMMENT '提报人名称',  
+    submitter_account VARCHAR(100) COMMENT '提报人域账号',  
+    start_time DATETIME COMMENT '活动开始时间',  
+    end_time DATETIME COMMENT '活动结束时间',  
+    review_time DATETIME COMMENT '复盘时间',  
+    ai_plan_text LONGTEXT COMMENT 'AI活动方案文本',  
+    manual_plan_text LONGTEXT COMMENT '人工纠偏方案文本',  
+    ai_plan_status VARCHAR(20) DEFAULT 'NOT_GENERATED' COMMENT 'AI方案状态',  
+    ai_analysis_status VARCHAR(20) DEFAULT 'PENDING' COMMENT 'AI分析状态',  
+    plan_guard_flag VARCHAR(20) DEFAULT 'NOT_GUARDED' COMMENT '方案守门标识',  
+    plan_guard_status VARCHAR(20) DEFAULT 'NOT_GUARDED' COMMENT '方案守门状态',  
+    ai_action_status VARCHAR(20) DEFAULT 'NOT_GENERATED' COMMENT 'AI行动计划状态',  
+    task_platform_task_id VARCHAR(100) COMMENT '任务中心守门任务ID',  
+    version INT DEFAULT 0 COMMENT '版本号（乐观锁）',  
+    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,    create_by VARCHAR(50) DEFAULT '',    update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,    update_by VARCHAR(50) DEFAULT '',    is_deleted TINYINT DEFAULT 0,    INDEX idx_activity_no (activity_no),    INDEX idx_activity_status (activity_status),    INDEX idx_submitter (submitter_account),    INDEX idx_assurance_leader (assurance_leader_id)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='活动保障主表';  
+  
+-- 活动时间轴表  
+CREATE TABLE ops_activity_timeline (  
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,    activity_id BIGINT NOT NULL COMMENT '关联活动主表ID',  
+    start_time DATETIME COMMENT '开始时间',  
+    end_time DATETIME COMMENT '结束时间',  
+    core_task_desc VARCHAR(500) COMMENT '核心任务说明',  
+    timeline_type VARCHAR(20) COMMENT '类型（STARTUP/STRESS_TEST/WARMUP/BURST）',  
+    sort_order INT DEFAULT 0 COMMENT '排序序号',  
+    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,    create_by VARCHAR(50) DEFAULT '',    update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,    update_by VARCHAR(50) DEFAULT '',    is_deleted TINYINT DEFAULT 0,    INDEX idx_activity_id (activity_id)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='活动时间轴表';  
+  
+-- 活动行动计划表  
+CREATE TABLE ops_activity_action_plan (  
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,    activity_id BIGINT NOT NULL COMMENT '关联活动主表ID',  
+    title VARCHAR(200) COMMENT '标题',  
+    category VARCHAR(50) COMMENT '计划分类',  
+    objective TEXT COMMENT '目标',  
+    measure TEXT COMMENT '措施',  
+    responsible_person VARCHAR(100) COMMENT '责任人',  
+    responsible_person_id VARCHAR(100) COMMENT '责任人ID（域账号）',  
+    expected_completion_time DATETIME COMMENT '预计完成时间',  
+    annotation TEXT COMMENT '批注内容',  
+    guard_status VARCHAR(20) DEFAULT 'NOT_GUARDED' COMMENT '守门状态',  
+    guard_type VARCHAR(20) COMMENT '守门类型（SILICON_GUARDED/CARBON_GUARDED）',  
+    is_edited INT DEFAULT 0 COMMENT '是否经过人工编辑',  
+    is_pushed INT DEFAULT 0 COMMENT '是否已推送任务中心',  
+    is_annotated INT DEFAULT 0 COMMENT '是否已批注',  
+    task_platform_task_id VARCHAR(100) COMMENT '任务中心任务ID',  
+    task_status VARCHAR(20) DEFAULT 'NOT_STARTED' COMMENT '任务中心状态',  
+    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,    create_by VARCHAR(50) DEFAULT '',    update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,    update_by VARCHAR(50) DEFAULT '',    is_deleted TINYINT DEFAULT 0,    INDEX idx_activity_id (activity_id),    INDEX idx_guard_status (guard_status)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='活动行动计划表';  
+  
+-- 行动计划操作日志表  
+CREATE TABLE ops_activity_action_plan_log (  
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,    action_plan_id BIGINT NOT NULL COMMENT '关联行动计划ID',  
+    activity_id BIGINT NOT NULL COMMENT '关联活动主表ID',  
+    operation_type VARCHAR(20) COMMENT '操作类型',  
+    operation_desc VARCHAR(500) COMMENT '操作描述',  
+    before_value TEXT COMMENT '变更前值（JSON）',  
+    after_value TEXT COMMENT '变更后值（JSON）',  
+    operator_account VARCHAR(100) COMMENT '操作人域账号',  
+    operator_name VARCHAR(100) COMMENT '操作人姓名',  
+    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,    create_by VARCHAR(50) DEFAULT '',    update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,    update_by VARCHAR(50) DEFAULT '',    is_deleted TINYINT DEFAULT 0,    INDEX idx_action_plan_id (action_plan_id),    INDEX idx_activity_id (activity_id)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='活动行动计划操作日志表';  
+  
+-- 活动复盘表  
+CREATE TABLE ops_activity_review (  
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,    activity_id BIGINT NOT NULL COMMENT '关联活动主表ID',  
+    review_status VARCHAR(20) DEFAULT 'DRAFT' COMMENT '复盘状态',  
+    related_fault_ids TEXT COMMENT '关联故障/问题ID列表（JSON数组）',  
+    fault_detail_text LONGTEXT COMMENT '拼接后的故障详情文本（传给复盘工作流）',  
+    ai_review_report LONGTEXT COMMENT 'AI复盘报告',  
+    manual_review_report LONGTEXT COMMENT '人工编辑复盘报告',  
+    current_version VARCHAR(20) COMMENT '当前版本号',  
+    guard_flag VARCHAR(20) DEFAULT 'NOT_GUARDED' COMMENT '守门标识',  
+    guard_type VARCHAR(20) COMMENT '守门类型',  
+    is_edited INT DEFAULT 0 COMMENT '是否经过人工编辑',  
+    review_time DATETIME COMMENT '复盘提交时间',  
+    request_id VARCHAR(100) COMMENT 'AI请求ID',  
+    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,    create_by VARCHAR(50) DEFAULT '',    update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,    update_by VARCHAR(50) DEFAULT '',    is_deleted TINYINT DEFAULT 0,    INDEX idx_activity_id (activity_id)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='活动复盘表';  
+  
+-- 活动复盘版本表  
+CREATE TABLE ops_activity_review_version (  
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,    review_id BIGINT NOT NULL COMMENT '关联复盘记录ID',  
+    activity_id BIGINT NOT NULL COMMENT '关联活动主表ID',  
+    version_no VARCHAR(20) COMMENT '版本号（V1, V2, ...）',  
+    review_report LONGTEXT COMMENT '该版本复盘报告内容',  
+    is_current INT DEFAULT 0 COMMENT '是否当前版本',  
+    source VARCHAR(20) COMMENT '来源（AI_GENERATED/MANUAL_EDITED）',  
+    operator_account VARCHAR(100) COMMENT '操作人域账号',  
+    operator_name VARCHAR(100) COMMENT '操作人姓名',  
+    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,    create_by VARCHAR(50) DEFAULT '',    update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,    update_by VARCHAR(50) DEFAULT '',    is_deleted TINYINT DEFAULT 0,    INDEX idx_review_id (review_id),    INDEX idx_activity_id (activity_id)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='活动复盘版本表';  
+</code></pre>
+<hr>
+<h2 id="十二架构依赖关系">架构依赖关系</h2>
+<pre class="code-figure ascii-figure" data-label="ASCII 图"><code>OpsActivityAssuranceController  
+    │    ├── IOpsActivityAssuranceService (OpsActivityAssuranceServiceImpl)    │     ├── CoralUtil (珊瑚 AI 调用)  
+    │     │     ├── invoke_activity_plan (活动方案工作流)  
+    │     │     ├── invoke_activity_action_plan (行动计划工作流)  
+    │     │     └── invoke_activity_review (复盘工作流)  
+    │     │    │     ├── OrganizationService (组织架构服务)  
+    │     │     ├── getEmployeeByRequest (根据域账号查询员工)  
+    │     │     └── getDirectSupervisor (查询直属上级)  
+    │     │    │     ├── RevAttachmentService (附件服务)  
+    │     │     └── queryByBusinessId / saveAttachments (活动附件)  
+    │     │    │     ├── TaskCenterClient (任务中心客户端)  
+    │     │     ├── submitTask (提交任务)  
+    │     │     └── completeTask (完成任务)  
+    │     │    │     ├── OpsActivityAssuranceMapper (活动保障Mapper)  
+    │     ├── OpsActivityTimelineMapper (时间轴Mapper)  
+    │     ├── OpsActivityActionPlanMapper (行动计划Mapper)  
+    │     └── OpsActivityActionPlanLogMapper (操作日志Mapper)  
+    │    ├── OpsActivityTimelineController    │     └── IOpsActivityAssuranceService (复用)  
+    │    └── IOpsActivityReviewService (OpsActivityReviewServiceImpl)          ├── CoralUtil (珊瑚复盘工作流)  
+          ├── OpsSystemFaultSubmissionMapper (查询关联故障)  
+          ├── OpsActivityReviewMapper (复盘Mapper)  
+          └── OpsActivityReviewVersionMapper (版本Mapper)  
+</code></pre>
+<hr>
+<h2 id="十三列表页设计">列表页设计</h2>
+<h3 id="131-搜索条件">13.1 搜索条件</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>活动名称</td>
+<td>输入框</td>
+<td>模糊查询 <code>activity_name LIKE</code></td>
+</tr>
+<tr>
+<td>活动状态</td>
+<td>下拉框</td>
+<td>待保障/保障中/已完成/已复盘</td>
+</tr>
+<tr>
+<td>保障负责人</td>
+<td>输入框</td>
+<td>模糊查询 <code>assurance_leader LIKE</code></td>
+</tr>
+<tr>
+<td>保障部门</td>
+<td>下拉框</td>
+<td>7个部门枚举</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="132-表头字段">13.2 表头字段</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>序号</th>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>活动编号</td>
+<td><code>activity_no</code>（ATHB 开头）</td>
+</tr>
+<tr>
+<td>2</td>
+<td>提报人</td>
+<td><code>submitter_name</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>活动名称</td>
+<td><code>activity_name</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td>AI 活动等级</td>
+<td><code>ai_activity_level</code>（重大保障/常规保障）</td>
+</tr>
+<tr>
+<td>5</td>
+<td>活动描述</td>
+<td><code>activity_desc</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td>活动状态</td>
+<td><code>activity_status</code>（待保障/保障中/已完成/已复盘）</td>
+</tr>
+<tr>
+<td>7</td>
+<td>保障负责人</td>
+<td><code>assurance_leader</code></td>
+</tr>
+<tr>
+<td>8</td>
+<td>保障部门</td>
+<td><code>assurance_dept</code></td>
+</tr>
+<tr>
+<td>9</td>
+<td>活动开始时间</td>
+<td><code>start_time</code></td>
+</tr>
+<tr>
+<td>10</td>
+<td>活动结束时间</td>
+<td><code>end_time</code></td>
+</tr>
+<tr>
+<td>11</td>
+<td>复盘时间</td>
+<td><code>review_time</code></td>
+</tr>
+<tr>
+<td>12</td>
+<td>操作</td>
+<td>编辑 / 复盘（仅已完成状态显示复盘按钮）</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2 id="十四权限控制">权限控制</h2>
+<h3 id="141-行动计划操作权限">14.1 行动计划操作权限</h3>
+<p>与系统问题与故障模块一致，行动计划编辑、批注、推送执行任务均需校验当前操作人是否为活动提报人的直属上级。</p>
+<p><strong>校验方法</strong>: <code>assertCurrentUserIsSubmitterSupervisor</code>（复用故障模块逻辑）</p>
+<h3 id="142-方案纠偏权限">14.2 方案纠偏权限</h3>
+<p>AI 活动方案纠偏操作同样需校验提报人直属上级权限。</p>
+<h3 id="143-复盘权限">14.3 复盘权限</h3>
+<ul>
+<li>发起复盘：活动状态为 COMPLETED 时可操作</li>
+<li>提交复盘：复盘守门状态为 GUARDED 时可操作</li>
+</ul>
+<hr>
+<h2 id="十五与系统问题与故障模块的对照">与系统问题与故障模块的对照</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>功能点</th>
+<th>系统问题与故障</th>
+<th>活动保障</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>编号前缀</td>
+<td>ATGZ</td>
+<td>ATHB</td>
+</tr>
+<tr>
+<td>主表</td>
+<td>ops_system_fault_submission</td>
+<td>ops_activity_assurance</td>
+</tr>
+<tr>
+<td>时间轴</td>
+<td>无</td>
+<td>ops_activity_timeline（新增）</td>
+</tr>
+<tr>
+<td>AI 方案流程</td>
+<td>invoke_fault_analysis</td>
+<td>invoke_activity_plan</td>
+</tr>
+<tr>
+<td>AI 行动计划流程</td>
+<td>invoke_fault_action_plan</td>
+<td>invoke_activity_action_plan</td>
+</tr>
+<tr>
+<td>AI 复盘流程</td>
+<td>requirement_review_workflow</td>
+<td>invoke_activity_review</td>
+</tr>
+<tr>
+<td>行动计划表</td>
+<td>ops_system_fault_action_plan</td>
+<td>ops_activity_action_plan</td>
+</tr>
+<tr>
+<td>操作日志表</td>
+<td>ops_system_fault_action_plan_log</td>
+<td>ops_activity_action_plan_log</td>
+</tr>
+<tr>
+<td>守门机制</td>
+<td>硅基/碳基守门</td>
+<td>硅基/碳基守门（复用）</td>
+</tr>
+<tr>
+<td>任务中心</td>
+<td>submitFaultTask</td>
+<td>submitFaultTask（复用）</td>
+</tr>
+<tr>
+<td>附件服务</td>
+<td>RevAttachmentService (301/302)</td>
+<td>RevAttachmentService (401)</td>
+</tr>
+<tr>
+<td>复盘</td>
+<td>无独立复盘流程</td>
+<td>独立复盘流程（含版本管理）</td>
+</tr>
+<tr>
+<td>部门</td>
+<td>自由填写</td>
+<td>枚举（7个固定部门）</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2 id="十六关键业务规则总结">关键业务规则总结</h2>
+<ol>
+<li><strong>AI 自动触发</strong>: 新增活动后自动调用珊瑚 AI 活动方案工作流</li>
+<li><strong>三级 AI 流程</strong>: 活动方案 → 行动计划 → 活动复盘</li>
+<li><strong>方案守门前置</strong>: 方案守门通过后方可触发 AI 行动计划生成</li>
+<li><strong>方案纠偏影响守门</strong>: 纠偏后守门类型从硅基变为碳基</li>
+<li><strong>行动计划完全复用</strong>: 守门、编辑、批注、推送、重新生成逻辑与故障模块一致</li>
+<li><strong>自动闭环</strong>: 所有行动计划守门完成后，活动状态自动置为已完成</li>
+<li><strong>关联故障查询与拼接</strong>: 复盘时根据活动时间范围查询 <code>ops_system_fault_submission</code> 表，选择后将故障 ID 保存，并将每个故障的产品模块、产品名称、提报人、所属部门、故障描述、等级、状态、两个 AI 方案、故障时长、影响范围、发生时间、实际故障恢复时间拼接成字符串传给复盘工作流</li>
+<li><strong>复盘无附件</strong>: 活动复盘不涉及附件上传，仅通过工作流生成报告</li>
+<li><strong>复盘版本管理</strong>: 每次 AI 生成或人工编辑均保存版本，支持切换</li>
+<li><strong>复盘守门提交</strong>: 复盘报告守门通过后方可提交，提交后活动状态置为已复盘</li>
+<li><strong>保障负责人只读</strong>: 提报时保障负责人只读，由 AI 方案自动填充</li>
+</ol>
+</article>
+</main>
+<div id="reader-controls" aria-label="阅读工具" data-copied-text="已复制  条" data-empty-text="暂无划线" data-failed-text="复制失败" data-note-label="备注"><button type="button" class="reader-control-button reader-control-copy" data-action="copy-highlights" title="复制所有划线" aria-label="复制所有划线"><span class="reader-control-glyph" aria-hidden="true">⧉</span><span class="reader-control-label">复制所有划线</span></button></div>
+<script type="application/json" id="notes-to-html-pages-config">{"sourcePath":"data/添可项目/海豚/2026年/0827活动保障需求/活动保障模块-功能与技术设计文档.md","syncAnnotationsToSource":true,"text":{"annotationToolbarUnderline":"划线","annotationInlinePlaceholder":"这里可以写备注...","annotationInlineSave":"保存","annotationCardPlaceholder":"添加批注...","annotationComposerSave":"保存","annotationDelete":"删除","annotationPanelTitle":"批注","annotationQuoteLabel":"原文","annotationNoteLabel":"批注","annotationSyncDisabled":"仅保存在当前页面"}}</script>
+<script type="application/json" id="notes-to-html-pages-annotations">[]</script>
+<script>(() => {
+	"use strict";
+
+	const config = readJson("notes-to-html-pages-config", {});
+	const savedAnnotations = readJson("notes-to-html-pages-annotations", []);
+	const text = Object.assign(
+		{
+			annotationToolbarUnderline: "Underline",
+			annotationInlinePlaceholder: "Write a note here...",
+			annotationInlineSave: "Save note",
+			annotationComposerSave: "Save",
+			annotationDelete: "Delete",
+			annotationPanelTitle: "Annotations",
+			annotationCardPlaceholder: "Add a note...",
+			annotationSyncDisabled: "Saved in this page only"
+		},
+		config.text || {}
+	);
+	const article = document.querySelector(".article-body");
+	if (!article) return;
+
+	const state = {
+		range: null,
+		annotations: []
+	};
+	const popover = createPopover();
+	const panel = createPanel();
+
+	document.body.append(popover, panel);
+	window.addEventListener("resize", () => {
+		scheduleAnnotationLayout();
+		if (!usesInlineAnnotations()) {
+			closeInlineAnnotations();
+		}
+	});
+	if (document.fonts && document.fonts.ready) {
+		document.fonts.ready.then(scheduleAnnotationLayout);
+		}
+	document.addEventListener("mouseup", (event) => {
+		if (isInsideAnnotationUi(event.target)) {
+			return;
+		}
+		window.setTimeout(updateSelectionUi, 0);
+	});
+	document.addEventListener("keyup", (event) => {
+		if (event.key === "Escape") {
+			hidePopover();
+			return;
+		}
+		if (isEditableTarget(event.target)) {
+			return;
+		}
+		window.setTimeout(updateSelectionUi, 0);
+	});
+	document.addEventListener("mousedown", (event) => {
+		const target = event.target;
+		if (popover.contains(target) || isEditableTarget(target)) {
+			return;
+		}
+		cancelAnnotationEditors();
+		if (target instanceof Node && !article.contains(target) && !panel.contains(target)) {
+			hidePopover();
+		}
+	});
+
+	for (const annotation of Array.isArray(savedAnnotations) ? savedAnnotations : []) {
+		if (isAnnotation(annotation)) {
+			addAnnotation(annotation, true);
+		}
+	}
+	updatePanelVisibility();
+	scheduleAnnotationLayout();
+
+	function readJson(id, fallback) {
+		const element = document.getElementById(id);
+		if (!element || !element.textContent) return fallback;
+		try {
+			return JSON.parse(element.textContent);
+		} catch (_error) {
+			return fallback;
+		}
+	}
+
+	function isInsideAnnotationUi(target) {
+		return target instanceof Node && (popover.contains(target) || panel.contains(target));
+	}
+
+	function isEditableTarget(target) {
+		return target instanceof Element && Boolean(target.closest("input, textarea, button"));
+	}
+
+	function createPopover() {
+		const element = document.createElement("div");
+		element.className = "annotation-popover";
+		element.hidden = true;
+
+		const actions = document.createElement("div");
+		actions.className = "annotation-popover-actions";
+
+		const underline = document.createElement("button");
+		underline.type = "button";
+		underline.className = "annotation-underline-button";
+		underline.textContent = text.annotationToolbarUnderline;
+		underline.addEventListener("click", () => saveCurrentAnnotation(""));
+		actions.append(underline);
+
+		const noteRow = document.createElement("div");
+		noteRow.className = "annotation-note-row";
+
+		const input = document.createElement("input");
+		input.type = "text";
+		input.className = "annotation-note-input";
+		input.placeholder = text.annotationInlinePlaceholder;
+		input.setAttribute("aria-label", text.annotationInlinePlaceholder);
+		input.addEventListener("keydown", (event) => {
+			if (event.key === "Enter") {
+				event.preventDefault();
+				saveCurrentAnnotation(input.value);
+			}
+		});
+
+		const save = document.createElement("button");
+		save.type = "button";
+		save.className = "annotation-mini-save";
+		save.textContent = text.annotationInlineSave;
+		save.addEventListener("click", () => saveCurrentAnnotation(input.value));
+
+		noteRow.append(input, save);
+		element.append(actions, noteRow);
+		return element;
+	}
+
+	function createPanel() {
+		const element = document.createElement("aside");
+		element.className = "annotation-panel";
+		element.hidden = true;
+
+		const title = document.createElement("div");
+		title.className = "annotation-panel-title";
+		title.textContent = text.annotationPanelTitle;
+
+		const list = document.createElement("div");
+		list.className = "annotation-list";
+
+		element.append(title, list);
+		return element;
+	}
+
+	function updateSelectionUi() {
+		const selection = window.getSelection();
+		if (!selection || selection.rangeCount === 0 || selection.isCollapsed) {
+			hidePopover();
+			return;
+		}
+
+		const range = selection.getRangeAt(0);
+		const selectedText = compactText(range.toString());
+		if (!selectedText || !article.contains(range.startContainer) || !article.contains(range.endContainer)) {
+			hidePopover();
+			return;
+		}
+
+		const rect = getRangeAnchorRect(range);
+		if (!rect) {
+			hidePopover();
+			return;
+		}
+
+		state.range = range.cloneRange();
+		positionPopover(rect);
+		const input = popover.querySelector(".annotation-note-input");
+		if (input) input.value = "";
+		popover.hidden = false;
+	}
+
+	function getRangeAnchorRect(range) {
+		const rects = Array.from(range.getClientRects()).filter((rect) => rect.width && rect.height);
+		return rects[rects.length - 1] || null;
+	}
+
+	function positionPopover(rect) {
+		popover.style.left = "0px";
+		popover.style.top = "0px";
+		const width = popover.offsetWidth || 280;
+		const left = Math.min(
+			window.scrollX + window.innerWidth - width - 14,
+			Math.max(14 + window.scrollX, window.scrollX + rect.left)
+		);
+		const top = window.scrollY + rect.bottom + 8;
+		popover.style.left = left + "px";
+		popover.style.top = top + "px";
+	}
+
+	function hidePopover() {
+		popover.hidden = true;
+	}
+
+	function saveCurrentAnnotation(note) {
+		if (!state.range) return;
+
+		const selectedText = compactText(state.range.toString());
+		if (!selectedText) return;
+
+		const annotation = {
+			id: "ntoh-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 8),
+			selectedText,
+			note: compactText(note),
+			createdAt: new Date().toISOString(),
+			sourcePath: typeof config.sourcePath === "string" ? config.sourcePath : ""
+		};
+
+		addAnnotation(annotation, false);
+		hidePopover();
+		const selection = window.getSelection();
+		if (selection) selection.removeAllRanges();
+		state.range = null;
+	}
+
+	function addAnnotation(annotation, fromSaved) {
+		const normalized = {
+			id: String(annotation.id || ""),
+			selectedText: compactText(String(annotation.selectedText || "")),
+			note: compactText(String(annotation.note || "")),
+			createdAt: String(annotation.createdAt || new Date().toISOString()),
+			sourcePath: String(annotation.sourcePath || config.sourcePath || "")
+		};
+		if (!normalized.id || !normalized.selectedText) return;
+
+		const marked = markAnnotation(normalized, fromSaved);
+		state.annotations.push(normalized);
+		const annotationIndex = state.annotations.length;
+		renderAnnotationCard(normalized, annotationIndex, marked);
+		renderInlineAnnotation(normalized, annotationIndex, marked);
+		updatePanelVisibility();
+		scheduleAnnotationLayout();
+
+		if (!fromSaved) {
+			syncAnnotation(normalized);
+		}
+	}
+
+	function markAnnotation(annotation, fromSaved) {
+		const range = fromSaved ? findTextRange(article, annotation.selectedText) : state.range;
+		if (!range) return false;
+		return wrapRangeWithMarks(range, annotation);
+	}
+
+	function wrapRangeWithMarks(range, annotation) {
+		const nodes = getTextNodesInRange(range);
+		if (nodes.length === 0) return false;
+
+		for (const item of nodes.reverse()) {
+			const mark = createMark(annotation);
+			const segmentRange = document.createRange();
+			try {
+				segmentRange.setStart(item.node, item.start);
+				segmentRange.setEnd(item.node, item.end);
+				segmentRange.surroundContents(mark);
+			} catch (_error) {
+				continue;
+			}
+		}
+
+		return true;
+	}
+
+	function getTextNodesInRange(range) {
+		const walker = document.createTreeWalker(article, NodeFilter.SHOW_TEXT, {
+			acceptNode(node) {
+				if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+				if (node.parentElement && node.parentElement.closest(".annotation-inline-disclosure")) {
+					return NodeFilter.FILTER_REJECT;
+				}
+				try {
+					return range.intersectsNode(node) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+				} catch (_error) {
+					return NodeFilter.FILTER_REJECT;
+				}
+			}
+		});
+		const nodes = [];
+		while (walker.nextNode()) {
+			const node = walker.currentNode;
+			const length = node.nodeValue ? node.nodeValue.length : 0;
+			let start = node === range.startContainer ? range.startOffset : 0;
+			let end = node === range.endContainer ? range.endOffset : length;
+			start = Math.max(0, Math.min(start, length));
+			end = Math.max(0, Math.min(end, length));
+			if (start < end) {
+				nodes.push({ node, start, end });
+			}
+		}
+		return nodes;
+	}
+
+	function createMark(annotation) {
+		const mark = document.createElement("mark");
+		mark.className = "annotation-mark";
+		mark.dataset.annotationId = annotation.id;
+		if (annotation.note) mark.title = annotation.note;
+		mark.addEventListener("click", () => {
+			if (usesInlineAnnotations()) {
+				toggleInlineAnnotation(annotation.id);
+				return;
+			}
+			openAnnotationEditor(annotation.id);
+		});
+		mark.addEventListener("contextmenu", (event) => {
+			event.preventDefault();
+			removeAnnotation(annotation);
+		});
+		return mark;
+	}
+
+	function usesInlineAnnotations() {
+		return window.matchMedia("(max-width: 1023px)").matches;
+	}
+
+	function findTextRange(root, quote) {
+		const needle = compactText(quote);
+		if (!needle) return null;
+
+		const map = [];
+		let normalized = "";
+		let lastWasSpace = false;
+		const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+
+		while (walker.nextNode()) {
+			const node = walker.currentNode;
+			if (node.parentElement && node.parentElement.closest(".annotation-inline-disclosure")) {
+				continue;
+			}
+			const value = node.nodeValue || "";
+			for (let index = 0; index < value.length; index += 1) {
+				const character = value[index];
+				if (/\s/.test(character)) {
+					if (!lastWasSpace) {
+						normalized += " ";
+						map.push({ node, offset: index });
+						lastWasSpace = true;
+					}
+				} else {
+					normalized += character;
+					map.push({ node, offset: index });
+					lastWasSpace = false;
+				}
+			}
+		}
+
+		const startIndex = normalized.indexOf(needle);
+		if (startIndex < 0) return null;
+		const endIndex = startIndex + needle.length - 1;
+		const startPoint = map[startIndex];
+		const endPoint = map[endIndex];
+		if (!startPoint || !endPoint) return null;
+
+		const range = document.createRange();
+		range.setStart(startPoint.node, startPoint.offset);
+		range.setEnd(endPoint.node, endPoint.offset + 1);
+		return range;
+	}
+
+	function renderAnnotationCard(annotation, index, marked) {
+		const list = panel.querySelector(".annotation-list");
+		if (!list) return;
+
+		const card = document.createElement("div");
+		card.tabIndex = 0;
+		card.className = "annotation-card";
+		card.classList.toggle("has-note", Boolean(annotation.note));
+		card.dataset.annotationId = annotation.id;
+		card.addEventListener("click", (event) => {
+			const target = event.target;
+			if (target instanceof Element && target.closest("textarea, button")) return;
+			openAnnotationEditor(annotation.id);
+		});
+		card.addEventListener("keydown", (event) => {
+			const target = event.target;
+			if (target instanceof Element && target.closest("textarea, button")) return;
+			if (event.key === "Enter" || event.key === " ") {
+				event.preventDefault();
+				openAnnotationEditor(annotation.id);
+			}
+		});
+		card.addEventListener("contextmenu", (event) => {
+			event.preventDefault();
+			removeAnnotation(annotation);
+		});
+
+		const number = document.createElement("span");
+		number.className = "annotation-number";
+		number.textContent = String(index);
+
+		const quote = document.createElement("p");
+		quote.className = "annotation-quote";
+		quote.textContent = annotation.selectedText;
+
+		const body = document.createElement("div");
+		body.className = "annotation-card-body";
+
+		const note = document.createElement("p");
+		note.className = "annotation-note";
+		note.textContent = annotation.note;
+		note.hidden = !annotation.note;
+
+		const editor = document.createElement("div");
+		editor.className = "annotation-card-editor";
+		editor.hidden = true;
+
+		const textarea = document.createElement("textarea");
+		textarea.rows = 3;
+		textarea.placeholder = text.annotationCardPlaceholder;
+		textarea.setAttribute("aria-label", text.annotationCardPlaceholder);
+		textarea.value = annotation.note;
+
+		const save = document.createElement("button");
+		save.type = "button";
+		save.className = "annotation-card-save";
+		save.textContent = text.annotationComposerSave;
+		save.addEventListener("click", () => {
+			annotation.note = compactText(textarea.value);
+			note.textContent = annotation.note;
+			note.hidden = !annotation.note;
+			card.classList.toggle("has-note", Boolean(annotation.note));
+			syncAnnotation(annotation);
+			updateMarkTitles(annotation);
+			editor.hidden = true;
+			card.classList.remove("is-editing");
+			scheduleAnnotationLayout();
+		});
+
+		const remove = document.createElement("button");
+		remove.type = "button";
+		remove.className = "annotation-card-delete";
+		remove.textContent = text.annotationDelete;
+		remove.addEventListener("click", () => removeAnnotation(annotation));
+
+		const actions = document.createElement("div");
+		actions.className = "annotation-card-actions";
+		actions.append(remove, save);
+
+		textarea.addEventListener("keydown", (event) => {
+			if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
+				event.preventDefault();
+				save.click();
+			}
+			if (event.key === "Escape") {
+				event.preventDefault();
+				cancelAnnotationEditors();
+			}
+		});
+
+		editor.append(textarea, actions);
+		body.append(number, quote, note, editor);
+		card.append(body);
+
+		if ((!config.syncAnnotationsToSource || !annotation.sourcePath) && !marked) {
+			const status = document.createElement("div");
+			status.className = "annotation-status";
+			status.textContent = text.annotationSyncDisabled;
+			body.append(status);
+		}
+
+		list.append(card);
+	}
+
+	function renderInlineAnnotation(annotation, index, marked) {
+		if (!marked || !annotation.note) return;
+		if (
+			document.querySelector(
+				'.annotation-inline-disclosure[data-annotation-id="' + cssEscape(annotation.id) + '"]'
+			)
+		) {
+			return;
+		}
+		const marks = Array.from(
+			document.querySelectorAll('.annotation-mark[data-annotation-id="' + cssEscape(annotation.id) + '"]')
+		);
+		const lastMark = marks[marks.length - 1];
+		if (!lastMark) return;
+
+		const disclosure = document.createElement("span");
+		disclosure.className = "annotation-inline-disclosure";
+		disclosure.dataset.annotationId = annotation.id;
+
+		const trigger = document.createElement("button");
+		trigger.type = "button";
+		trigger.className = "annotation-inline-trigger";
+		trigger.setAttribute("aria-expanded", "false");
+		trigger.setAttribute("aria-label", text.annotationPanelTitle + " " + index);
+
+		const icon = document.createElement("span");
+		icon.className = "annotation-inline-icon";
+		icon.setAttribute("aria-hidden", "true");
+
+		const count = document.createElement("span");
+		count.className = "annotation-inline-count";
+		count.textContent = String(index);
+
+		const content = document.createElement("span");
+		content.className = "annotation-inline-content";
+		content.hidden = true;
+
+		const note = document.createElement("span");
+		note.className = "annotation-inline-note";
+		note.textContent = annotation.note;
+		content.append(note);
+
+		trigger.append(icon, count);
+		trigger.addEventListener("click", (event) => {
+			event.preventDefault();
+			toggleInlineAnnotation(annotation.id);
+		});
+		disclosure.append(trigger, content);
+
+		const paragraphEnd = findParagraphEnd(lastMark);
+		if (paragraphEnd && paragraphEnd.node) {
+			const range = document.createRange();
+			range.setStart(paragraphEnd.node, paragraphEnd.offset);
+			range.collapse(true);
+			range.insertNode(disclosure);
+			return;
+		}
+
+		lastMark.insertAdjacentElement("afterend", disclosure);
+	}
+
+	function findParagraphEnd(lastMark) {
+		const block = lastMark.closest("p, li, blockquote");
+		if (!block) return null;
+
+		const walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT, {
+			acceptNode(node) {
+				return node.parentElement && node.parentElement.closest(".annotation-inline-disclosure")
+					? NodeFilter.FILTER_REJECT
+					: NodeFilter.FILTER_ACCEPT;
+			}
+		});
+		const nodes = [];
+		while (walker.nextNode()) {
+			nodes.push(walker.currentNode);
+		}
+
+		const lastNode = nodes[nodes.length - 1];
+		if (!lastNode || !lastNode.nodeValue) return null;
+		return {
+			node: lastNode,
+			offset: lastNode.nodeValue.length
+		};
+	}
+
+	function toggleInlineAnnotation(annotationId) {
+		const disclosure = document.querySelector(
+			'.annotation-inline-disclosure[data-annotation-id="' + cssEscape(annotationId) + '"]'
+		);
+		if (!disclosure) return;
+		const content = disclosure.querySelector(".annotation-inline-content");
+		const trigger = disclosure.querySelector(".annotation-inline-trigger");
+		if (!content || !trigger) return;
+
+		const shouldOpen = content.hidden;
+		closeInlineAnnotations(disclosure);
+		content.hidden = !shouldOpen;
+		trigger.setAttribute("aria-expanded", String(shouldOpen));
+		if (shouldOpen) {
+			activateAnnotation(annotationId, false);
+		}
+	}
+
+	function closeInlineAnnotations(exceptDisclosure) {
+		document.querySelectorAll(".annotation-inline-content:not([hidden])").forEach((content) => {
+			const disclosure = content.closest(".annotation-inline-disclosure");
+			if (disclosure === exceptDisclosure) return;
+			content.hidden = true;
+			const trigger = disclosure ? disclosure.querySelector(".annotation-inline-trigger") : null;
+			if (trigger) trigger.setAttribute("aria-expanded", "false");
+		});
+	}
+
+	function removeAnnotation(annotation) {
+		hidePopover();
+		removeAnnotationMarks(annotation.id);
+		state.annotations = state.annotations.filter((item) => item.id !== annotation.id);
+		document
+			.querySelectorAll('.annotation-inline-disclosure[data-annotation-id="' + cssEscape(annotation.id) + '"]')
+			.forEach((disclosure) => disclosure.remove());
+		const card = panel.querySelector('.annotation-card[data-annotation-id="' + cssEscape(annotation.id) + '"]');
+		if (card) card.remove();
+		updateAnnotationNumbers();
+		updatePanelVisibility();
+		syncAnnotationDeletion(annotation);
+		scheduleAnnotationLayout();
+	}
+
+	function removeAnnotationMarks(annotationId) {
+		document
+			.querySelectorAll('.annotation-mark[data-annotation-id="' + cssEscape(annotationId) + '"]')
+			.forEach((mark) => {
+				const parent = mark.parentNode;
+				mark.replaceWith(...Array.from(mark.childNodes));
+				if (parent && typeof parent.normalize === "function") {
+					parent.normalize();
+				}
+			});
+	}
+
+	function syncAnnotation(annotation) {
+		if (!config.syncAnnotationsToSource || !annotation.sourcePath || !window.parent || window.parent === window) {
+			return;
+		}
+
+		window.parent.postMessage(
+			{
+				plugin: "notes-to-html-pages",
+				type: "annotation-created",
+				annotation
+			},
+			"*"
+		);
+	}
+
+	function syncAnnotationDeletion(annotation) {
+		if (!config.syncAnnotationsToSource || !annotation.sourcePath || !window.parent || window.parent === window) {
+			return;
+		}
+
+		window.parent.postMessage(
+			{
+				plugin: "notes-to-html-pages",
+				type: "annotation-deleted",
+				annotationId: annotation.id,
+				sourcePath: annotation.sourcePath
+			},
+			"*"
+		);
+	}
+
+	function scheduleAnnotationLayout() {
+		window.requestAnimationFrame(positionAnnotationCards);
+	}
+
+	function positionAnnotationCards() {
+		const cards = Array.from(panel.querySelectorAll(".annotation-card"));
+		if (window.innerWidth < 1024) {
+			cards.forEach((card) => {
+				card.style.top = "";
+			});
+			const list = panel.querySelector(".annotation-list");
+			if (list) list.style.height = "";
+			return;
+		}
+
+		const list = panel.querySelector(".annotation-list");
+		if (!list) return;
+		const cardsWithAnchors = cards
+			.map((card) => {
+				const id = card.dataset.annotationId || "";
+				const mark = document.querySelector('.annotation-mark[data-annotation-id="' + cssEscape(id) + '"]');
+				const fallbackTop = article.getBoundingClientRect().top + window.scrollY;
+				const anchorTop = mark
+					? mark.getBoundingClientRect().top + window.scrollY + 12
+					: Number(card.dataset.annotationTop || fallbackTop);
+				card.dataset.annotationTop = String(anchorTop);
+				return { card, anchorTop };
+			})
+			.sort((first, second) => first.anchorTop - second.anchorTop);
+
+		let nextTop = 0;
+		for (const item of cardsWithAnchors) {
+			const top = Math.max(item.anchorTop, nextTop);
+			item.card.style.top = Math.round(top) + "px";
+			nextTop = top + item.card.offsetHeight + 10;
+		}
+		list.style.height = Math.ceil(nextTop) + "px";
+	}
+
+	function updateMarkTitles(annotation) {
+		document
+			.querySelectorAll('.annotation-mark[data-annotation-id="' + cssEscape(annotation.id) + '"]')
+			.forEach((mark) => {
+				if (annotation.note) {
+					mark.setAttribute("title", annotation.note);
+				} else {
+					mark.removeAttribute("title");
+				}
+			});
+		syncInlineAnnotation(annotation);
+	}
+
+	function syncInlineAnnotation(annotation) {
+		const selector =
+			'.annotation-inline-disclosure[data-annotation-id="' + cssEscape(annotation.id) + '"]';
+		const disclosure = document.querySelector(selector);
+		if (!annotation.note) {
+			if (disclosure) disclosure.remove();
+			return;
+		}
+
+		if (!disclosure) {
+			const index = state.annotations.findIndex((item) => item.id === annotation.id);
+			const hasMark = Boolean(
+				document.querySelector('.annotation-mark[data-annotation-id="' + cssEscape(annotation.id) + '"]')
+			);
+			renderInlineAnnotation(annotation, index + 1, hasMark);
+			return;
+		}
+
+		const inlineNote = disclosure.querySelector(".annotation-inline-note");
+		if (inlineNote) inlineNote.textContent = annotation.note;
+	}
+
+	function updateAnnotationNumbers() {
+		state.annotations.forEach((annotation, index) => {
+			const number = panel.querySelector(
+				'.annotation-card[data-annotation-id="' + cssEscape(annotation.id) + '"] .annotation-number'
+			);
+			if (number) number.textContent = String(index + 1);
+			const count = document.querySelector(
+				'.annotation-inline-disclosure[data-annotation-id="' + cssEscape(annotation.id) + '"] .annotation-inline-count'
+			);
+			if (count) count.textContent = String(index + 1);
+		});
+	}
+
+	function activateAnnotation(id, shouldScroll = true) {
+		const marks = document.querySelectorAll('.annotation-mark[data-annotation-id="' + cssEscape(id) + '"]');
+		document.querySelectorAll(".annotation-card.is-active, .annotation-mark.is-active").forEach((element) => {
+			element.classList.remove("is-active");
+		});
+		const card = document.querySelector('.annotation-card[data-annotation-id="' + cssEscape(id) + '"]');
+		if (card) card.classList.add("is-active");
+		marks.forEach((mark) => mark.classList.add("is-active"));
+		const firstMark = marks[0];
+		if (shouldScroll && firstMark) {
+			firstMark.scrollIntoView({ block: "center", behavior: "smooth" });
+		}
+	}
+
+	function openAnnotationEditor(id) {
+		const card = document.querySelector('.annotation-card[data-annotation-id="' + cssEscape(id) + '"]');
+		if (!card) return;
+		activateAnnotation(id, false);
+		cancelAnnotationEditors(card);
+		const editor = card.querySelector(".annotation-card-editor");
+		const textarea = card.querySelector("textarea");
+		if (editor) editor.hidden = false;
+		card.classList.add("is-editing");
+		if (textarea) {
+			textarea.focus({ preventScroll: true });
+			textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+		}
+		scheduleAnnotationLayout();
+	}
+
+	function cancelAnnotationEditors(exceptCard) {
+		let changed = false;
+		panel.querySelectorAll(".annotation-card.is-editing").forEach((card) => {
+			if (card === exceptCard) return;
+			const editor = card.querySelector(".annotation-card-editor");
+			const textarea = card.querySelector("textarea");
+			const note = card.querySelector(".annotation-note");
+			if (textarea) {
+				textarea.value = note && !note.hidden ? note.textContent || "" : "";
+			}
+			if (editor) editor.hidden = true;
+			card.classList.remove("is-editing");
+			changed = true;
+		});
+		if (changed) scheduleAnnotationLayout();
+	}
+
+	function updatePanelVisibility() {
+		panel.hidden = state.annotations.length === 0;
+	}
+
+	function compactText(value) {
+		return String(value || "").replace(/\s+/g, " ").trim();
+	}
+
+	function formatDate(value) {
+		const date = new Date(value);
+		if (Number.isNaN(date.getTime())) return value;
+		const pad = (part) => String(part).padStart(2, "0");
+		return pad(date.getMonth() + 1) + "-" + pad(date.getDate()) + " " + pad(date.getHours()) + ":" + pad(date.getMinutes());
+	}
+
+	function cssEscape(value) {
+		if (window.CSS && typeof window.CSS.escape === "function") {
+			return window.CSS.escape(value);
+		}
+		return String(value).replace(/"/g, "\\22 ");
+	}
+
+	function isAnnotation(value) {
+		return (
+			value &&
+			typeof value === "object" &&
+			typeof value.id === "string" &&
+			typeof value.selectedText === "string"
+		);
+	}
+})();</script>
+<script>(() => {
+	"use strict";
+
+	var controls = document.getElementById("reader-controls");
+	if (!controls) return;
+
+	function gatherHighlights() {
+		var seen = {};
+		var order = [];
+		var marks = document.querySelectorAll(".annotation-mark");
+		for (var i = 0; i < marks.length; i++) {
+			var id = marks[i].getAttribute("data-annotation-id") || ("_" + i);
+			if (!Object.prototype.hasOwnProperty.call(seen, id)) { seen[id] = ""; order.push(id); }
+			seen[id] += marks[i].textContent || "";
+		}
+		var notes = {};
+		var cards = document.querySelectorAll(".annotation-card");
+		for (var j = 0; j < cards.length; j++) {
+			var cid = cards[j].getAttribute("data-annotation-id");
+			if (!cid) continue;
+			var noteEl = cards[j].querySelector(".annotation-note");
+			var noteText = noteEl ? (noteEl.textContent || "").trim() : "";
+			if (noteText) notes[cid] = noteText;
+		}
+		var noteLabel = controls.getAttribute("data-note-label") || "Note";
+		var lines = [];
+		for (var k = 0; k < order.length; k++) {
+			var oid = order[k];
+			var quote = (seen[oid] || "").replace(/\s+/g, " ").trim();
+			if (!quote) continue;
+			var block = (k + 1) + ". " + quote;
+			if (notes[oid]) block += "\n   " + noteLabel + "： " + notes[oid];
+			lines.push(block);
+		}
+		return lines;
+	}
+
+	function flash(button, cls, message) {
+		var labelEl = button.querySelector(".reader-control-label");
+		var original = labelEl ? labelEl.textContent : null;
+		button.classList.add(cls);
+		if (labelEl && message != null) labelEl.textContent = message;
+		window.setTimeout(function () {
+			button.classList.remove(cls);
+			if (labelEl && original != null) labelEl.textContent = original;
+		}, 1600);
+	}
+
+	function fallbackCopy(text) {
+		try {
+			var ta = document.createElement("textarea");
+			ta.value = text;
+			ta.style.position = "fixed";
+			ta.style.opacity = "0";
+			document.body.appendChild(ta);
+			ta.focus();
+			ta.select();
+			var ok = document.execCommand("copy");
+			document.body.removeChild(ta);
+			return ok;
+		} catch (e) { return false; }
+	}
+
+	function copyText(text) {
+		if (navigator.clipboard && navigator.clipboard.writeText) {
+			return navigator.clipboard.writeText(text);
+		}
+		return new Promise(function (resolve, reject) {
+			fallbackCopy(text) ? resolve() : reject(new Error("copy failed"));
+		});
+	}
+
+	function onCopy(button) {
+		var lines = gatherHighlights();
+		if (!lines.length) {
+			flash(button, "is-empty", controls.getAttribute("data-empty-text"));
+			return;
+		}
+		var text = lines.join("\n\n");
+		var doneText = (controls.getAttribute("data-copied-text") || "{count}").replace("{count}", String(lines.length));
+		copyText(text).then(function () {
+			flash(button, "is-done", doneText);
+		}).catch(function () {
+			if (fallbackCopy(text)) flash(button, "is-done", doneText);
+			else flash(button, "is-empty", controls.getAttribute("data-failed-text"));
+		});
+	}
+
+	controls.addEventListener("click", function (event) {
+		var target = event.target instanceof Element ? event.target.closest("[data-action]") : null;
+		if (!target) return;
+		if (target.getAttribute("data-action") === "copy-highlights") onCopy(target);
+	});
+})();</script><!--N2HP_LIGHTBOX_START--><style>.n2hp-lightbox{position:fixed;inset:0;background:rgba(15,15,20,.88);display:none;align-items:center;justify-content:center;z-index:2147483647;cursor:zoom-out}.n2hp-lightbox.open{display:flex}.n2hp-lightbox img{max-width:94vw;max-height:94vh;box-shadow:0 8px 50px rgba(0,0,0,.6);cursor:default;background:#fff;border-radius:4px}.n2hp-lightbox .n2hp-close{position:absolute;top:14px;right:20px;color:#fff;font-size:34px;line-height:1;cursor:pointer;opacity:.8}.n2hp-lightbox .n2hp-close:hover{opacity:1}.n2hp-lightbox .n2hp-cap{position:absolute;left:0;right:0;bottom:14px;text-align:center;color:#cfcfd8;font-size:13px;padding:0 20px;word-break:break-all}.n2hp-zoomable{cursor:zoom-in}</style><script>(function(){function isContentImage(img){if(!img||img.tagName!=="IMG"||!img.getAttribute("src"))return false;if(img.closest&&img.closest("#n2hp-lightbox"))return false;var p=img;while(p&&p!==document.body){if(p.classList){var c=p.className||"";if(typeof c==="string"&&/(sidebar|graph|reader-control|callout|avatar|icon|logo)/i.test(c))return false;}p=p.parentElement;}return true;}function init(){if(document.getElementById("n2hp-lightbox"))return;var lb=document.createElement("div");lb.id="n2hp-lightbox";lb.className="n2hp-lightbox";lb.innerHTML='<span class="n2hp-close" aria-label="close">&#215;</span><img alt=""><div class="n2hp-cap"></div>';document.body.appendChild(lb);var limg=lb.querySelector("img");var cap=lb.querySelector(".n2hp-cap");function closeLb(){lb.classList.remove("open");}lb.addEventListener("click",function(e){if(e.target===lb||(e.target.classList&&e.target.classList.contains("n2hp-close")))closeLb();});document.addEventListener("keydown",function(e){if(e.key==="Escape")closeLb();});document.addEventListener("click",function(e){var t=e.target;if(t&&t.tagName==="IMG"&&isContentImage(t)){e.preventDefault();e.stopPropagation();limg.src=t.currentSrc||t.src;limg.alt=t.alt||"";cap.textContent=t.alt||"";lb.classList.add("open");}},true);}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();})();</script><!--N2HP_LIGHTBOX_END-->
+</body>
+</html>

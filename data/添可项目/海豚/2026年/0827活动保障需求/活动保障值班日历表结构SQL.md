@@ -1,3 +1,5 @@
+> HTML 页面: [[page/wiki/data/添可项目/海豚/2026年/0827活动保障需求/活动保障值班日历表结构SQL.html|打开 HTML 页面]]
+
 -- auto-generated ops_activity_assurance
 create table ops_activity_assurance
 (

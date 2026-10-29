@@ -1,0 +1,3431 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="notes-to-html-pages-style" content="clean">
+<meta name="notes-to-html-pages-source" content="data/添可项目/海豚/2026年/0827值班日历需求/值班日历开发设计文档.md">
+<meta name="notes-to-html-pages-sync-annotations" content="true">
+<title>值班日历功能开发设计文档</title>
+<style>:root {
+	color-scheme: light;
+	--page-bg: #f3f0e8;
+	--paper: #fbf8f1;
+	--ink: #20201d;
+	--muted: #77736a;
+	--line: #d8d1c6;
+	--line-soft: #ebe6dd;
+	--accent: #c7352b;
+	--accent-soft: #f8ede9;
+	--quote-bg: #f8f4eb;
+	--code-bg: #eee9df;
+	--link: #2f7a4b;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	background: var(--page-bg);
+	font-size: 16px;
+	scroll-behavior: smooth;
+	scroll-padding-top: 1.4rem;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+body {
+	position: relative;
+	margin: 0;
+	color: var(--ink);
+	background: var(--page-bg);
+	font-family: Georgia, "Times New Roman", "Noto Serif SC", "Songti SC", SimSun, serif;
+	line-height: 1.76;
+	letter-spacing: 0;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+}
+
+.page {
+	width: min(100%, 860px);
+	margin: 0 auto;
+	padding: 2.8rem 1.6rem 5rem;
+}
+
+.article-hero {
+	width: 100%;
+	max-width: 720px;
+	margin: 0 auto 2.4rem;
+	padding: 1.4rem 0 2rem;
+	text-align: center;
+	border-bottom: 1px solid var(--line);
+	background: transparent;
+}
+
+.article-hero h1 {
+	max-width: 720px;
+	margin: 0 auto;
+	color: #1f1f1d;
+	font-size: 2.25rem;
+	font-weight: 700;
+	line-height: 1.25;
+	letter-spacing: 0;
+	text-align: center;
+	text-wrap: balance;
+}
+
+.article-hero h1 span {
+	display: block;
+}
+
+.article-deck {
+	max-width: 680px;
+	margin: 0.95rem auto 0;
+	color: var(--muted);
+	font-size: 1rem;
+	font-style: italic;
+	line-height: 1.72;
+	text-wrap: pretty;
+}
+
+.article-deck p {
+	margin: 0;
+}
+
+.article-deck strong {
+	color: inherit;
+	font-weight: 600;
+}
+
+.hero-rule {
+	width: 3.4rem;
+	height: 2px;
+	margin: 1.55rem auto 0;
+	background: var(--accent);
+}
+
+.table-of-contents {
+	max-width: 720px;
+	margin: 0 auto 3.2rem;
+	padding: 1.35rem 1.45rem 1.25rem;
+	border: 1px solid var(--line);
+	border-radius: 8px;
+	background: rgba(251, 248, 241, 0.86);
+}
+
+.table-of-contents h2 {
+	margin: 0 0 0.85rem;
+	padding: 0;
+	border: 0;
+	color: var(--muted);
+	font-size: 0.9rem;
+	font-weight: 700;
+	line-height: 1.3;
+}
+
+.table-of-contents h2::before {
+	content: none;
+}
+
+.table-of-contents ol {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0.32rem 1.35rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	counter-reset: toc;
+	font-size: 0.86rem;
+	line-height: 1.48;
+}
+
+.table-of-contents li {
+	margin: 0;
+	padding: 0;
+	counter-increment: toc;
+	break-inside: avoid;
+}
+
+.table-of-contents a {
+	display: grid;
+	grid-template-columns: 1.9em minmax(0, 1fr);
+	gap: 0.3rem;
+	margin: 0 -0.35rem;
+	padding: 0.1rem 0.35rem;
+	border-radius: 5px;
+	color: var(--ink);
+	text-decoration: none;
+	cursor: pointer;
+	transition: color 160ms ease, background-color 160ms ease;
+}
+
+.table-of-contents a::before {
+	content: counter(toc) ".";
+	color: var(--muted);
+	text-align: right;
+	transition: color 160ms ease;
+}
+
+.table-of-contents a:hover,
+.table-of-contents a:focus-visible {
+	background: var(--accent-soft);
+	color: var(--accent);
+}
+
+.table-of-contents a:hover::before,
+.table-of-contents a:focus-visible::before {
+	color: var(--accent);
+}
+
+.side-table-of-contents {
+	display: none;
+}
+
+.side-toc-title {
+	margin: 0 0 0.75rem;
+	color: var(--muted);
+	font-size: 0.72rem;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.side-table-of-contents ol {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	counter-reset: side-toc;
+	font-size: 0.76rem;
+	line-height: 1.36;
+}
+
+.side-table-of-contents li {
+	margin: 0;
+	padding: 0;
+	counter-increment: side-toc;
+}
+
+.side-table-of-contents a {
+	display: grid;
+	grid-template-columns: 2em minmax(0, 1fr);
+	gap: 0.28rem;
+	margin: 0 -0.35rem;
+	padding: 0.22rem 0.35rem;
+	border-radius: 5px;
+	color: var(--muted);
+	text-decoration: none;
+	cursor: pointer;
+	transition: color 160ms ease, background-color 160ms ease;
+}
+
+.side-table-of-contents a::before {
+	content: counter(side-toc) ".";
+	color: #aaa39a;
+	text-align: right;
+	transition: color 160ms ease;
+}
+
+.side-table-of-contents a:hover,
+.side-table-of-contents a:focus-visible {
+	background: var(--accent-soft);
+	color: var(--accent);
+}
+
+.side-table-of-contents a:hover::before,
+.side-table-of-contents a:focus-visible::before {
+	color: var(--accent);
+}
+
+.article-body {
+	counter-reset: section;
+	width: 100%;
+	max-width: 720px;
+	margin: 0 auto;
+	font-size: 1rem;
+}
+
+.article-body > * {
+	max-width: 100%;
+}
+
+.article-body h2,
+.article-body h3,
+.article-body h4 {
+	color: #20201d;
+	letter-spacing: 0;
+	line-height: 1.32;
+	text-wrap: balance;
+}
+
+.article-body h2 {
+	counter-increment: section;
+	position: relative;
+	margin: 2.85rem 0 1rem;
+	padding: 0;
+	border: 0;
+	font-size: 1.55rem;
+	font-weight: 700;
+}
+
+.article-body h2:target {
+	color: var(--accent);
+}
+
+.article-body h2::before {
+	content: counter(section, cjk-ideographic) "、";
+	display: inline-block;
+	min-width: 2.35em;
+	margin-right: 0.2rem;
+	color: var(--accent);
+	font-weight: 500;
+}
+
+.article-body h3 {
+	margin: 2.1rem 0 0.72rem;
+	font-size: 1.25rem;
+	font-weight: 700;
+}
+
+.article-body h4 {
+	margin: 1.65rem 0 0.58rem;
+	font-size: 1.08rem;
+	font-weight: 700;
+}
+
+p {
+	margin: 0.9rem 0;
+}
+
+a {
+	color: var(--link);
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.18em;
+}
+
+[hidden] {
+	display: none !important;
+}
+
+.annotation-mark {
+	margin: 0 0.01em;
+	padding: 0.02em 0.08em 0.03em;
+	border-bottom: 1px solid rgba(199, 53, 43, 0.34);
+	background: rgba(199, 53, 43, 0.1);
+	cursor: pointer;
+	transition: background-color 160ms ease, box-shadow 160ms ease;
+}
+
+.annotation-mark:hover,
+.annotation-mark.is-active {
+	background: rgba(199, 53, 43, 0.16);
+	box-shadow: 0 0 0 2px rgba(199, 53, 43, 0.08);
+}
+
+.annotation-inline-disclosure {
+	display: none;
+}
+
+.annotation-popover {
+	position: absolute;
+	z-index: 30;
+	width: min(20rem, calc(100vw - 1.75rem));
+	padding: 0.5rem;
+	border: 1px solid rgba(92, 75, 56, 0.16);
+	border-radius: 10px;
+	background: rgba(255, 252, 246, 0.98);
+	box-shadow: 0 12px 30px rgba(60, 45, 30, 0.14);
+	backdrop-filter: blur(10px);
+}
+
+.annotation-popover::before {
+	content: "";
+	position: absolute;
+	top: -6px;
+	left: 1.2rem;
+	width: 10px;
+	height: 10px;
+	border-top: 1px solid rgba(92, 75, 56, 0.16);
+	border-left: 1px solid rgba(92, 75, 56, 0.16);
+	background: rgba(255, 252, 246, 0.98);
+	transform: rotate(45deg);
+}
+
+.annotation-popover-actions {
+	display: flex;
+	align-items: center;
+	margin-bottom: 0.42rem;
+}
+
+.annotation-popover button,
+.annotation-card button {
+	appearance: none;
+	border: 0;
+	border-radius: 5px;
+	background: transparent;
+	color: var(--ink);
+	font: inherit;
+	font-size: 0.78rem;
+	line-height: 1;
+	cursor: pointer;
+}
+
+.annotation-underline-button {
+	width: 100%;
+	padding: 0.5rem 0.68rem;
+	border: 1px solid rgba(199, 53, 43, 0.18) !important;
+	background: rgba(199, 53, 43, 0.08) !important;
+	color: var(--accent) !important;
+	font-weight: 700 !important;
+	text-align: center;
+}
+
+.annotation-popover button:hover,
+.annotation-popover button:focus-visible,
+.annotation-card button:hover,
+.annotation-card button:focus-visible {
+	background: var(--accent-soft);
+	color: var(--accent);
+	outline: none;
+}
+
+.annotation-note-row {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	gap: 0.4rem;
+	align-items: center;
+	padding: 0.28rem;
+	border: 1px solid rgba(216, 209, 198, 0.9);
+	border-radius: 8px;
+	background: rgba(251, 248, 241, 0.92);
+}
+
+.annotation-note-input {
+	width: 100%;
+	min-width: 0;
+	padding: 0.46rem 0.5rem;
+	border: 0;
+	border-radius: 6px;
+	background: transparent;
+	color: var(--ink);
+	font: inherit;
+	font-size: 0.8rem;
+	line-height: 1.2;
+}
+
+.annotation-note-row:focus-within {
+	border-color: rgba(199, 53, 43, 0.44);
+	box-shadow: 0 0 0 2px rgba(199, 53, 43, 0.08);
+}
+
+.annotation-note-input:focus {
+	outline: none;
+}
+
+.annotation-card textarea:focus {
+	border-color: rgba(199, 53, 43, 0.52);
+	outline: 2px solid rgba(199, 53, 43, 0.12);
+}
+
+.annotation-mini-save,
+.annotation-card-save {
+	padding: 0.42rem 0.58rem;
+	border-radius: 6px !important;
+	background: var(--accent) !important;
+	color: #fff !important;
+}
+
+.annotation-panel {
+	position: absolute;
+	top: 0;
+	right: max(1.25rem, calc(50% - 360px - 17rem));
+	width: 15.8rem;
+	z-index: 20;
+	padding-left: 0.8rem;
+	border-left: 1px solid var(--line-soft);
+	overflow: visible;
+}
+
+.annotation-panel-title {
+	display: none;
+}
+
+.annotation-list {
+	position: relative;
+	width: 100%;
+}
+
+.annotation-card {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	padding: 0;
+	border: 0;
+	border-radius: 10px;
+	background: transparent;
+	color: var(--ink);
+	font: inherit;
+	text-align: left;
+	box-shadow: none;
+	cursor: pointer;
+	transition-property: background-color, box-shadow;
+	transition-duration: 180ms;
+	transition-timing-function: ease-out;
+}
+
+.annotation-card:hover,
+.annotation-card.is-active {
+	background: transparent;
+	box-shadow: none;
+}
+
+.annotation-card.is-editing {
+	background: transparent;
+	box-shadow: none;
+}
+
+.annotation-card-body {
+	position: relative;
+	padding: 0.18rem 0.5rem 0.42rem 1.55rem;
+}
+
+.annotation-number {
+	position: absolute;
+	top: 0.18rem;
+	left: 0.12rem;
+	min-width: 1rem;
+	color: var(--accent);
+	font-size: 0.88rem;
+	font-weight: 700;
+	font-variant-numeric: tabular-nums;
+}
+
+.annotation-quote,
+.annotation-status {
+	margin: 0;
+}
+
+.annotation-quote {
+	margin: 0;
+	color: #625d54;
+	font-size: 0.78rem;
+	line-height: 1.46;
+	border-left: 2px solid rgba(199, 53, 43, 0.34);
+	background: rgba(199, 53, 43, 0.045);
+	padding: 0.36rem 0.48rem;
+	text-wrap: pretty;
+}
+
+.annotation-note {
+	margin: 0.62rem 0 0;
+	padding: 0;
+	border: 0;
+	color: var(--ink);
+	font-size: 0.86rem;
+	line-height: 1.52;
+	text-wrap: pretty;
+}
+
+.annotation-status {
+	margin-top: 0.45rem;
+	color: var(--muted);
+	font-size: 0.7rem;
+}
+
+.annotation-card-editor {
+	display: grid;
+	gap: 0.42rem;
+	margin-top: 0.86rem;
+	padding-top: 0.74rem;
+	border-top: 1px solid var(--line-soft);
+}
+
+.annotation-card textarea {
+	display: block;
+	width: 100%;
+	resize: vertical;
+	min-height: 4.5rem;
+	padding: 0.58rem 0.62rem;
+	border: 1px solid var(--line);
+	border-radius: 6px;
+	background: var(--paper);
+	color: var(--ink);
+	font: inherit;
+	font-size: 0.78rem;
+	line-height: 1.48;
+}
+
+.annotation-card-save {
+	font-size: 0.72rem !important;
+}
+
+.annotation-card-actions {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 0.38rem;
+	margin-top: 0.06rem;
+}
+
+.annotation-card-delete,
+.annotation-card-save {
+	min-width: auto;
+	min-height: 2.1rem;
+	padding: 0.36rem 0.58rem !important;
+	font-size: 0.72rem !important;
+	transition-property: background-color, border-color, box-shadow, color, scale;
+	transition-duration: 150ms;
+	transition-timing-function: ease-out;
+}
+
+.annotation-card-delete {
+	border-color: transparent !important;
+	background: transparent !important;
+	color: var(--accent) !important;
+	box-shadow: none !important;
+}
+
+.annotation-card .annotation-card-delete:hover,
+.annotation-card .annotation-card-delete:focus-visible {
+	background: rgba(199, 53, 43, 0.075) !important;
+	color: var(--accent) !important;
+	box-shadow: none !important;
+	outline: none;
+}
+
+.annotation-card .annotation-card-save:hover,
+.annotation-card .annotation-card-save:focus-visible {
+	background: #ae2e26 !important;
+	box-shadow: 0 2px 5px rgba(152, 43, 35, 0.22) !important;
+	outline: none;
+}
+
+.annotation-card-delete:active,
+.annotation-card-save:active {
+	scale: 0.96;
+}
+
+strong {
+	color: var(--accent);
+	font-weight: 700;
+}
+
+em {
+	color: var(--muted);
+}
+
+blockquote {
+	position: relative;
+	margin: 1.55rem 0;
+	padding: 0.95rem 1.15rem 0.95rem 1.25rem;
+	border: 0;
+	border-left: 3px solid var(--line);
+	border-radius: 6px;
+	background: var(--quote-bg);
+	color: #272622;
+}
+
+blockquote.quote-block {
+	color: #3c3932;
+}
+
+blockquote.callout-block {
+	border: 1px solid var(--line);
+	border-left: 4px solid var(--accent);
+	background: #f9f2eb;
+}
+
+blockquote.callout-highlight {
+	box-shadow: inset 0 0 0 1px rgba(199, 53, 43, 0.05);
+}
+
+blockquote.callout-conclusion {
+	padding: 1.05rem 1.25rem;
+	border: 1px solid #d9cdc0;
+	border-top: 3px solid var(--accent);
+	border-left-color: #d9cdc0;
+	background: var(--paper);
+	box-shadow: 0 10px 28px rgba(70, 48, 26, 0.06);
+}
+
+blockquote p:first-child {
+	margin-top: 0;
+}
+
+blockquote p:last-child {
+	margin-bottom: 0;
+}
+
+blockquote strong {
+	color: var(--accent);
+}
+
+blockquote.callout-block p:first-child strong:first-child {
+	display: inline-block;
+	margin-bottom: 0.25rem;
+	padding: 0.06rem 0.42rem;
+	border-radius: 999px;
+	background: var(--accent-soft);
+	color: var(--accent);
+	font-size: 0.78rem;
+	line-height: 1.45;
+}
+
+ul,
+ol {
+	margin: 0.9rem 0 1.05rem 1.35rem;
+	padding: 0;
+}
+
+li {
+	margin: 0.35rem 0;
+	padding-left: 0.25rem;
+}
+
+li::marker {
+	color: #151513;
+	font-weight: 600;
+}
+
+hr {
+	margin: 2.2rem 0;
+	border: 0;
+	border-top: 1px solid var(--line-soft);
+}
+
+.table-scroll {
+	max-width: 100%;
+	margin: 1.45rem 0;
+	border: 1px solid var(--line);
+	border-radius: 6px;
+	background: var(--paper);
+	overflow-x: auto;
+}
+
+table {
+	width: max-content;
+	min-width: 100%;
+	border-collapse: separate;
+	border-spacing: 0;
+	background: var(--paper);
+	font-size: 0.84rem;
+	line-height: 1.55;
+}
+
+thead {
+	background: transparent;
+}
+
+th {
+	background: #ebe6dc;
+	color: #4a463f;
+	font-weight: 700;
+	white-space: nowrap;
+}
+
+th,
+td {
+	padding: 0.55rem 0.66rem;
+	border: 0;
+	border-right: 1px solid var(--line);
+	border-bottom: 1px solid var(--line);
+	text-align: left;
+	vertical-align: top;
+}
+
+tr > :last-child {
+	border-right: 0;
+}
+
+tbody tr:last-child td {
+	border-bottom: 0;
+}
+
+tbody tr:nth-child(even) {
+	background: #f7f3ea;
+}
+
+tbody tr:hover {
+	background: #f4eadc;
+}
+
+pre,
+code {
+	font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+code {
+	padding: 0.08rem 0.28rem;
+	border-radius: 4px;
+	background: var(--code-bg);
+	font-size: 0.82em;
+}
+
+pre {
+	position: relative;
+	margin: 1.6rem 0;
+	padding: 2rem 1rem 1rem;
+	border: 1px solid var(--line);
+	border-left: 4px solid #bbb3a8;
+	border-radius: 6px;
+	background: var(--code-bg);
+	overflow-x: auto;
+	line-height: 1.5;
+}
+
+pre::before {
+	content: "代码 / 图示";
+	position: absolute;
+	top: 0.55rem;
+	left: 0.9rem;
+	color: var(--muted);
+	font-family: Georgia, "Times New Roman", "Noto Serif SC", "Songti SC", SimSun, serif;
+	font-size: 0.72rem;
+	font-weight: 700;
+	line-height: 1;
+}
+
+pre.code-figure::before {
+	content: attr(data-label);
+}
+
+pre.code-figure.ascii-figure {
+	border-left-color: var(--accent);
+	background: #f1ece3;
+}
+
+pre.code-figure.ascii-figure::before {
+	color: var(--accent);
+}
+
+pre code {
+	padding: 0;
+	background: transparent;
+	font-size: 0.78rem;
+}
+
+img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+	margin: 1.5rem auto;
+	outline: 1px solid rgba(0, 0, 0, 0.1);
+	outline-offset: -1px;
+}
+
+sup {
+	line-height: 0;
+}
+
+@media (min-width: 1280px) {
+	.side-table-of-contents {
+		display: block;
+		position: fixed;
+		top: 5rem;
+		left: max(1.25rem, calc(50% - 360px - 14.5rem));
+		right: auto;
+		width: 12.75rem;
+		max-height: calc(100vh - 6rem);
+		padding: 0.2rem 0.75rem 0.5rem 0;
+		border-right: 1px solid var(--line-soft);
+		border-left: 0;
+		background: transparent;
+		overflow: auto;
+	}
+}
+
+@media (min-width: 1024px) and (max-width: 1179px) {
+	.article-body {
+		max-width: 640px;
+	}
+
+	.annotation-panel {
+		right: max(1rem, calc(50% - 320px - 11.5rem));
+		width: 10.5rem;
+		padding-left: 0.58rem;
+	}
+
+	.annotation-card-body {
+		padding-right: 0.25rem;
+		padding-left: 1.28rem;
+	}
+
+	.annotation-number {
+		left: 0.06rem;
+		font-size: 0.78rem;
+	}
+
+	.annotation-quote {
+		font-size: 0.72rem;
+	}
+
+	.annotation-note {
+		font-size: 0.8rem;
+	}
+}
+
+@media (min-width: 1180px) and (max-width: 1359px) {
+	.article-body {
+		max-width: 680px;
+	}
+
+	.annotation-panel {
+		right: max(1rem, calc(50% - 340px - 13.5rem));
+		width: 12.5rem;
+		padding-left: 0.68rem;
+	}
+}
+
+@media (max-width: 1023px) {
+	.annotation-panel {
+		display: none !important;
+	}
+
+	.annotation-popover {
+		width: min(22rem, calc(100vw - 1.5rem));
+	}
+
+	.annotation-inline-disclosure {
+		display: inline;
+		margin-left: 0.22em;
+		vertical-align: baseline;
+	}
+
+	.annotation-inline-trigger {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.24rem;
+		min-height: 1.3rem;
+		padding: 0.12rem 0.28rem;
+		border: 0;
+		border-radius: 4px;
+		background: rgba(92, 75, 56, 0.055);
+		color: var(--muted);
+		font: inherit;
+		font-size: 0.64rem;
+		font-variant-numeric: tabular-nums;
+		line-height: 1;
+		vertical-align: 0.08em;
+		cursor: pointer;
+		transition-property: background-color, color, scale;
+		transition-duration: 150ms;
+		transition-timing-function: ease-out;
+	}
+
+	.annotation-inline-trigger:hover,
+	.annotation-inline-trigger:focus-visible,
+	.annotation-inline-trigger[aria-expanded="true"] {
+		background: rgba(199, 53, 43, 0.09);
+		color: var(--accent);
+		outline: none;
+	}
+
+	.annotation-inline-trigger:active {
+		scale: 0.96;
+	}
+
+	.annotation-inline-icon {
+		position: relative;
+		display: inline-block;
+		width: 0.62rem;
+		height: 0.48rem;
+		border: 1px solid currentColor;
+		border-radius: 2px;
+	}
+
+	.annotation-inline-icon::after {
+		content: "";
+		position: absolute;
+		bottom: -0.17rem;
+		left: 0.12rem;
+		width: 0.2rem;
+		height: 0.2rem;
+		border-bottom: 1px solid currentColor;
+		border-left: 1px solid currentColor;
+		background: transparent;
+		transform: skewY(-36deg);
+	}
+
+	.annotation-inline-content {
+		margin-left: 0.3em;
+		padding: 0.08em 0.34em 0.1em;
+		border-left: 1px solid rgba(199, 53, 43, 0.3);
+		background: rgba(199, 53, 43, 0.038);
+		color: var(--ink);
+		font-size: 0.78rem;
+		line-height: 1.52;
+		text-wrap: pretty;
+		vertical-align: baseline;
+	}
+
+	.annotation-inline-note {
+		margin: 0;
+	}
+}
+
+@media (max-width: 780px) {
+	html {
+		font-size: 16px;
+	}
+
+	.page {
+		padding: 1.8rem 1rem 3.2rem;
+	}
+
+	.article-hero {
+		margin-bottom: 1.9rem;
+		padding-top: 0.8rem;
+		padding-bottom: 1.55rem;
+	}
+
+	.article-hero h1 {
+		font-size: 1.75rem;
+	}
+
+	.article-deck {
+		font-size: 0.95rem;
+	}
+
+	.table-of-contents {
+		margin-bottom: 2.5rem;
+		padding: 1.1rem 1rem;
+	}
+
+	.table-of-contents ol {
+		grid-template-columns: 1fr;
+		gap: 0.45rem;
+	}
+
+	.article-body h2 {
+		margin-top: 2.45rem;
+		font-size: 1.35rem;
+	}
+
+	.article-body h2::before {
+		min-width: 0;
+		margin-right: 0.15rem;
+	}
+
+	blockquote {
+		padding: 0.85rem 0.95rem;
+	}
+
+	table {
+		font-size: 0.8rem;
+	}
+
+	.annotation-popover {
+		max-width: calc(100vw - 1.5rem);
+	}
+}
+
+@media print {
+	html,
+	body {
+		background: #fff;
+	}
+
+	.page {
+		width: 100%;
+		padding: 0;
+	}
+
+	.article-hero {
+		margin-inline: 0;
+		padding-inline: 0;
+	}
+
+	a {
+		color: inherit;
+	}
+
+	.annotation-popover,
+	.annotation-panel {
+		display: none !important;
+	}
+}</style>
+<style>#reader-controls {
+	position: fixed;
+	right: 1.4rem;
+	bottom: 1.4rem;
+	z-index: 40;
+	display: flex;
+	gap: 0.4rem;
+}
+
+.reader-control-button {
+	appearance: none;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.42rem;
+	min-height: 1.9rem;
+	padding: 0.34rem 0.82rem;
+	border: 1px solid var(--line, #d8d1c6);
+	border-radius: 999px;
+	background: var(--paper, #fbf8f1);
+	color: var(--muted, #77736a);
+	font-family: inherit;
+	font-size: 0.8rem;
+	font-weight: 500;
+	line-height: 1;
+	letter-spacing: 0.01em;
+	cursor: pointer;
+	opacity: 0.78;
+	box-shadow: 0 2px 10px rgba(60, 45, 30, 0.07);
+	transition: opacity 180ms ease, color 180ms ease, background-color 180ms ease,
+		border-color 180ms ease, box-shadow 180ms ease, transform 120ms ease;
+}
+
+.reader-control-button:hover,
+.reader-control-button:focus-visible {
+	opacity: 1;
+	color: var(--accent, #c7352b);
+	background: var(--accent-soft, #f8ede9);
+	border-color: var(--accent, #c7352b);
+	box-shadow: 0 5px 18px rgba(60, 45, 30, 0.12);
+	outline: none;
+}
+
+.reader-control-button:active {
+	transform: translateY(1px);
+}
+
+.reader-control-glyph {
+	display: inline-flex;
+	font-size: 0.9rem;
+	line-height: 1;
+	opacity: 0.85;
+}
+
+.reader-control-label {
+	white-space: nowrap;
+}
+
+.reader-control-copy.is-done {
+	opacity: 1;
+	color: #2f7a4b;
+	background: rgba(47, 122, 75, 0.1);
+	border-color: rgba(47, 122, 75, 0.42);
+}
+
+.reader-control-copy.is-empty {
+	opacity: 1;
+	color: var(--muted, #77736a);
+	background: var(--paper, #fbf8f1);
+}
+
+@media (max-width: 1023px) {
+	#reader-controls {
+		right: 0.95rem;
+		bottom: 0.95rem;
+	}
+}
+
+@media (max-width: 600px) {
+	.reader-control-label {
+		display: none;
+	}
+
+	.reader-control-button {
+		min-width: 1.9rem;
+		padding: 0.4rem;
+		justify-content: center;
+	}
+}
+
+@media print {
+	#reader-controls {
+		display: none !important;
+	}
+}</style>
+</head>
+<body class="style-clean">
+<main class="page">
+<header class="article-hero">
+<h1><span>值班日历功能开发设计文档</span></h1>
+
+<div class="hero-rule" aria-hidden="true"></div>
+</header>
+<nav class="table-of-contents" aria-label="目录">
+<h2>目录</h2>
+<ol>
+<li><a href="#1-概述">概述</a></li>
+<li><a href="#2-技术栈">技术栈</a></li>
+<li><a href="#3-需求描述">需求描述</a></li>
+<li><a href="#4-数据库设计">数据库设计</a></li>
+<li><a href="#5-后端设计">后端设计</a></li>
+<li><a href="#6-接口设计">接口设计</a></li>
+<li><a href="#7-前端设计">前端设计</a></li>
+<li><a href="#8-导入导出设计">导入导出设计</a></li>
+<li><a href="#9-接口权限与异常">接口权限与异常</a></li>
+<li><a href="#10-开发计划">开发计划</a></li>
+<li><a href="#11-注意事项">注意事项</a></li>
+<li><a href="#12-附录">附录</a></li>
+</ol>
+</nav>
+<aside class="side-table-of-contents" aria-label="章节目录">
+<div class="side-toc-title">目录</div>
+<ol>
+<li><a href="#1-概述">概述</a></li>
+<li><a href="#2-技术栈">技术栈</a></li>
+<li><a href="#3-需求描述">需求描述</a></li>
+<li><a href="#4-数据库设计">数据库设计</a></li>
+<li><a href="#5-后端设计">后端设计</a></li>
+<li><a href="#6-接口设计">接口设计</a></li>
+<li><a href="#7-前端设计">前端设计</a></li>
+<li><a href="#8-导入导出设计">导入导出设计</a></li>
+<li><a href="#9-接口权限与异常">接口权限与异常</a></li>
+<li><a href="#10-开发计划">开发计划</a></li>
+<li><a href="#11-注意事项">注意事项</a></li>
+<li><a href="#12-附录">附录</a></li>
+</ol>
+</aside>
+<article class="article-body">
+<h2 id="1-概述">概述</h2>
+<h3 id="11-背景">1.1 背景</h3>
+<p>为 <code>hinton-agent-mario-server</code> 项目新增一个值班日历模块，用于维护和管理日常值班安排。功能覆盖事项管理、值班地点管理、值班安排（日历视图）、值班导入/导出等。</p>
+<h3 id="12-范围">1.2 范围</h3>
+<ul>
+<li>后端：新增数据库表、RESTful 接口、业务逻辑实现。</li>
+<li>前端：新增值班日历页面、事项弹窗、值班弹窗、导入弹窗。</li>
+</ul>
+<h3 id="13-术语">1.3 术语</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>术语</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>事项</td>
+<td>值班所属的类别/主题，如"全部事项值班安排"，具有时间范围。</td>
+</tr>
+<tr>
+<td>值班</td>
+<td>某一天某个时间段内，指定部门/人员在指定地点执行的具体值班记录。</td>
+</tr>
+<tr>
+<td>班次类型</td>
+<td>现场值班（site）/ 远程值班（remote）。</td>
+</tr>
+<tr>
+<td>值班地点</td>
+<td>固定字典（详见 <code>DutyLocationEnum</code>），不再单独维护地点表，常见值：四期（PHASE_4）/ 六期（PHASE_6）/ 七期（PHASE_7）/ 老厂（OLD_FACTORY）。</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2 id="2-技术栈">技术栈</h2>
+<h3 id="21-后端">2.1 后端</h3>
+<ul>
+<li>Java 21</li>
+<li>Spring Boot 3.x（<code>gauss-boot-parent 3.1.7-PREVIEW</code>）</li>
+<li>MyBatis-Plus</li>
+<li>MySQL 8.x</li>
+<li>Redis</li>
+<li>Maven</li>
+<li>Lombok / MapStruct / Hutool / EasyExcel</li>
+</ul>
+<h3 id="22-前端依据-ui-截图推断">2.2 前端（依据 UI 截图推断）</h3>
+<ul>
+<li>Vue 3 + TypeScript</li>
+<li>Element Plus / Ant Design Vue（日历组件 + 表单弹窗）</li>
+<li>如项目有明确前端目录，按实际技术栈调整组件库。</li>
+</ul>
+<hr>
+<h2 id="3-需求描述">需求描述</h2>
+<h3 id="31-功能清单">3.1 功能清单</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>序号</th>
+<th>功能</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>事项管理</td>
+<td>新增/查看/编辑/删除值班事项；事项包含名称、开始日期、结束日期。</td>
+</tr>
+<tr>
+<td>2</td>
+<td>值班地点字典</td>
+<td>值班地点为固定字典（<code>DutyLocationEnum</code>），通过 <code>GET /duty/location/list</code> 获取下拉，无需维护地点表。</td>
+</tr>
+<tr>
+<td>3</td>
+<td>值班日历</td>
+<td>按月展示值班安排；支持按事项、月份筛选；可点击日期查看/编辑当天值班。</td>
+</tr>
+<tr>
+<td>4</td>
+<td>新增值班</td>
+<td>弹窗表单：事项、值班日期、时间段、班次类型、值班地点、值班部门、值班人员。</td>
+</tr>
+<tr>
+<td>5</td>
+<td>编辑值班</td>
+<td>仅创建人可编辑已保存的值班记录。</td>
+</tr>
+<tr>
+<td>6</td>
+<td>导入值班</td>
+<td>支持 CSV 导入：事项、日期、开始时间、结束时间、班次类型、地点、部门、人员。</td>
+</tr>
+<tr>
+<td>7</td>
+<td>导出值班</td>
+<td>支持导出当前筛选条件下的值班数据。</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="32-ui-说明">3.2 UI 说明</h3>
+<h4 id="321-值班日历主界面">3.2.1 值班日历主界面</h4>
+<ul>
+<li>顶部查询区：事项名称（下拉选择）、月份选择（如 <code>2026-08</code>）、查询/重置按钮。</li>
+<li>操作区：新增事项、新增值班、导入值班、导出值班按钮。</li>
+<li>统计区：显示"全部事项值班安排 共 X 条值班记录"。</li>
+<li>日历区：按月展示，左侧/顶部显示星期；每天卡片展示值班条目。</li>
+<li>图例：现场值班（site）蓝色、远程值班（remote）紫色。</li>
+<li>提示：点击日期网格新增，点击值班条目编辑。</li>
+</ul>
+<h4 id="322-新增事项弹窗">3.2.2 新增事项弹窗</h4>
+<ul>
+<li>事项名称（必填，最多 30 字）</li>
+<li>时间范围：开始日期 至 结束日期（必填）</li>
+<li>按钮：取消、确认</li>
+</ul>
+<h4 id="323-新增值班弹窗">3.2.3 新增值班弹窗</h4>
+<ul>
+<li>事项选择（必填，下拉）</li>
+<li>值班日期（必填，日期选择）</li>
+<li>时间段：开始时间 至 结束时间（必填，如 09:00 - 18:00）</li>
+<li>班次类型（必填）：现场值班 / 远程值班</li>
+<li>值班地点（必填，下拉）</li>
+<li>值班部门（必填，下拉，来源 <code>rev_department_config</code>）</li>
+<li>值班人员（必填，下拉/多选）</li>
+<li>按钮：取消、确认</li>
+</ul>
+<h4 id="324-导入值班弹窗">3.2.4 导入值班弹窗</h4>
+<ul>
+<li>CSV 文件上传区域（拖拽/点击上传）</li>
+<li>字段顺序说明：事项、日期、开始时间、结束时间、班次类型（site/remote）、值班地点、值班部门、值班人员（逗号分隔）</li>
+<li>按钮：取消、确认导入（显示解析条数）</li>
+</ul>
+<hr>
+<h2 id="4-数据库设计">数据库设计</h2>
+<h3 id="40-公共字段规范gauss-baseentity">4.0 公共字段规范（gauss <code>BaseEntity</code>）</h3>
+<p>所有新建表均继承 <code>gauss.boot.mybatis.entity.BaseEntity</code>，以下字段由框架统一维护，<strong>不得遗漏</strong>：</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>类型</th>
+<th style="text-align:center">必填</th>
+<th>默认值</th>
+<th>来源</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>bigint</td>
+<td style="text-align:center">是</td>
+<td>-</td>
+<td><code>@TableId(type = IdType.ASSIGN_ID)</code></td>
+<td>主键，雪花算法（与项目 <code>DepartmentConfig</code>/<code>AiRequestLog</code> 等实体一致）</td>
+</tr>
+<tr>
+<td>version</td>
+<td>int</td>
+<td style="text-align:center">是</td>
+<td>0</td>
+<td>gauss <code>BaseEntity</code>（<code>@Version</code> 乐观锁）</td>
+<td>版本号，由 <code>MetaObjectHandler</code> 自动填充 0</td>
+</tr>
+<tr>
+<td>create_by</td>
+<td>varchar(50)</td>
+<td style="text-align:center">否</td>
+<td>''</td>
+<td>gauss <code>BaseEntity</code></td>
+<td>创建人域账号，自动填充</td>
+</tr>
+<tr>
+<td>create_name</td>
+<td>varchar(50)</td>
+<td style="text-align:center">否</td>
+<td>''</td>
+<td>项目实体约定（如 <code>DepartmentConfig</code>、<code>AiRequestLog</code>）</td>
+<td>创建人姓名，自动填充</td>
+</tr>
+<tr>
+<td>create_time</td>
+<td>timestamp</td>
+<td style="text-align:center">否</td>
+<td>CURRENT_TIMESTAMP</td>
+<td>gauss <code>BaseEntity</code></td>
+<td>创建时间，自动填充</td>
+</tr>
+<tr>
+<td>update_by</td>
+<td>varchar(50)</td>
+<td style="text-align:center">否</td>
+<td>''</td>
+<td>gauss <code>BaseEntity</code></td>
+<td>更新人域账号，自动填充</td>
+</tr>
+<tr>
+<td>update_name</td>
+<td>varchar(50)</td>
+<td style="text-align:center">否</td>
+<td>''</td>
+<td>项目实体约定</td>
+<td>更新人姓名，自动填充</td>
+</tr>
+<tr>
+<td>update_time</td>
+<td>timestamp</td>
+<td style="text-align:center">否</td>
+<td>CURRENT_TIMESTAMP</td>
+<td>gauss <code>BaseEntity</code></td>
+<td>更新时间，自动填充</td>
+</tr>
+<tr>
+<td>is_deleted</td>
+<td>tinyint</td>
+<td style="text-align:center">否</td>
+<td>0</td>
+<td>gauss <code>BaseEntity</code>（<code>@TableLogic</code> 逻辑删除）</td>
+<td>是否删除 0-未删除 1-已删除</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="readable-blockquote quote-block">
+<p>说明：上述字段与 <code>.docs/表结构设计.md</code> 中既有表的公共字段（version / create_by / create_time / update_by / update_time / is_deleted，较新的 <code>pm_*</code> 表另含 create_name / update_name）保持一致；逻辑删除、乐观锁、审计字段由 gauss 框架自动处理，业务代码无需手动赋值。</p>
+</blockquote>
+<h3 id="41-新建表">4.1 新建表</h3>
+<h4 id="411-值班事项表-dutyitem">4.1.1 值班事项表 <code>duty_item</code></h4>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th style="text-align:center">序号</th>
+<th>字段名</th>
+<th>类型</th>
+<th style="text-align:center">是否必填</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td>id</td>
+<td>bigint</td>
+<td style="text-align:center">是</td>
+<td>-</td>
+<td>主键ID（<code>@TableId(type = IdType.ASSIGN_ID)</code>，雪花算法）</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td>item_name</td>
+<td>varchar(100)</td>
+<td style="text-align:center">是</td>
+<td>-</td>
+<td>事项名称</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td>start_date</td>
+<td>date</td>
+<td style="text-align:center">是</td>
+<td>-</td>
+<td>开始日期</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td>end_date</td>
+<td>date</td>
+<td style="text-align:center">是</td>
+<td>-</td>
+<td>结束日期</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td>version</td>
+<td>int</td>
+<td style="text-align:center">是</td>
+<td>0</td>
+<td>版本号（乐观锁）</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td>create_by</td>
+<td>varchar(50)</td>
+<td style="text-align:center">否</td>
+<td>''</td>
+<td>创建人域账号</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td>create_name</td>
+<td>varchar(50)</td>
+<td style="text-align:center">否</td>
+<td>''</td>
+<td>创建人姓名</td>
+</tr>
+<tr>
+<td style="text-align:center">8</td>
+<td>create_time</td>
+<td>timestamp</td>
+<td style="text-align:center">否</td>
+<td>CURRENT_TIMESTAMP</td>
+<td>创建时间</td>
+</tr>
+<tr>
+<td style="text-align:center">9</td>
+<td>update_by</td>
+<td>varchar(50)</td>
+<td style="text-align:center">否</td>
+<td>''</td>
+<td>更新人域账号</td>
+</tr>
+<tr>
+<td style="text-align:center">10</td>
+<td>update_name</td>
+<td>varchar(50)</td>
+<td style="text-align:center">否</td>
+<td>''</td>
+<td>更新人姓名</td>
+</tr>
+<tr>
+<td style="text-align:center">11</td>
+<td>update_time</td>
+<td>timestamp</td>
+<td style="text-align:center">否</td>
+<td>CURRENT_TIMESTAMP</td>
+<td>更新时间</td>
+</tr>
+<tr>
+<td style="text-align:center">12</td>
+<td>is_deleted</td>
+<td>tinyint</td>
+<td style="text-align:center">否</td>
+<td>0</td>
+<td>是否删除 0-未删除 1-已删除</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>索引</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>索引类型</th>
+<th>索引名称</th>
+<th>索引字段</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PRIMARY KEY</td>
+<td>PRIMARY</td>
+<td>(<code>id</code>)</td>
+</tr>
+<tr>
+<td>KEY</td>
+<td>idx_item_name</td>
+<td>(<code>item_name</code>)</td>
+</tr>
+<tr>
+<td>KEY</td>
+<td>idx_start_end_date</td>
+<td>(<code>start_date</code>,<code>end_date</code>)</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="412-值班表-dutyschedule">4.1.2 值班表 <code>duty_schedule</code></h4>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th style="text-align:center">序号</th>
+<th>字段名</th>
+<th>类型</th>
+<th style="text-align:center">是否必填</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td>id</td>
+<td>bigint</td>
+<td style="text-align:center">是</td>
+<td>-</td>
+<td>主键ID（<code>@TableId(type = IdType.ASSIGN_ID)</code>，雪花算法）</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td>item_id</td>
+<td>bigint</td>
+<td style="text-align:center">是</td>
+<td>-</td>
+<td>事项ID</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td>duty_date</td>
+<td>date</td>
+<td style="text-align:center">是</td>
+<td>-</td>
+<td>值班日期</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td>start_time</td>
+<td>varchar(20)</td>
+<td style="text-align:center">是</td>
+<td>-</td>
+<td>开始时间，原样保存（如 09:00）</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td>end_time</td>
+<td>varchar(20)</td>
+<td style="text-align:center">是</td>
+<td>-</td>
+<td>结束时间，原样保存（如 18:00）</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td>shift_type</td>
+<td>varchar(20)</td>
+<td style="text-align:center">是</td>
+<td>-</td>
+<td>班次类型：site-现场，remote-远程</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td>location_code</td>
+<td>varchar(50)</td>
+<td style="text-align:center">是</td>
+<td>-</td>
+<td>值班地点编码（参见 <code>DutyLocationEnum</code>：PHASE_4/PHASE_6/PHASE_7/OLD_FACTORY）</td>
+</tr>
+<tr>
+<td style="text-align:center">8</td>
+<td>location_name</td>
+<td>varchar(100)</td>
+<td style="text-align:center">否</td>
+<td>NULL</td>
+<td>值班地点名称（冗余，便于展示）</td>
+</tr>
+<tr>
+<td style="text-align:center">9</td>
+<td>department_id</td>
+<td>bigint</td>
+<td style="text-align:center">是</td>
+<td>-</td>
+<td>值班部门ID（关联 <code>rev_department_config</code>，同时记录部门名称冗余便于展示）</td>
+</tr>
+<tr>
+<td style="text-align:center">10</td>
+<td>department_name</td>
+<td>varchar(100)</td>
+<td style="text-align:center">否</td>
+<td>NULL</td>
+<td>值班部门名称（冗余，来源 <code>rev_department_config.department_name</code>）</td>
+</tr>
+<tr>
+<td style="text-align:center">11</td>
+<td>duty_persons</td>
+<td>varchar(500)</td>
+<td style="text-align:center">是</td>
+<td>-</td>
+<td>值班人员，多人以逗号分隔（原冗余字段，逻辑不变）</td>
+</tr>
+<tr>
+<td style="text-align:center">12</td>
+<td>duty_person_names</td>
+<td>varchar(1000)</td>
+<td style="text-align:center">否</td>
+<td>NULL</td>
+<td>值班人员名称，逗号分隔（由 <code>duty_schedule_person</code> 明细按排序拼接同步，便于列表/日历直接展示）</td>
+</tr>
+<tr>
+<td style="text-align:center">13</td>
+<td>version</td>
+<td>int</td>
+<td style="text-align:center">是</td>
+<td>0</td>
+<td>版本号（乐观锁）</td>
+</tr>
+<tr>
+<td style="text-align:center">14</td>
+<td>create_by</td>
+<td>varchar(50)</td>
+<td style="text-align:center">否</td>
+<td>''</td>
+<td>创建人域账号（权限依据：仅创建人可编辑）</td>
+</tr>
+<tr>
+<td style="text-align:center">15</td>
+<td>create_name</td>
+<td>varchar(50)</td>
+<td style="text-align:center">否</td>
+<td>''</td>
+<td>创建人姓名</td>
+</tr>
+<tr>
+<td style="text-align:center">16</td>
+<td>create_time</td>
+<td>timestamp</td>
+<td style="text-align:center">否</td>
+<td>CURRENT_TIMESTAMP</td>
+<td>创建时间</td>
+</tr>
+<tr>
+<td style="text-align:center">17</td>
+<td>update_by</td>
+<td>varchar(50)</td>
+<td style="text-align:center">否</td>
+<td>''</td>
+<td>更新人域账号</td>
+</tr>
+<tr>
+<td style="text-align:center">18</td>
+<td>update_name</td>
+<td>varchar(50)</td>
+<td style="text-align:center">否</td>
+<td>''</td>
+<td>更新人姓名</td>
+</tr>
+<tr>
+<td style="text-align:center">19</td>
+<td>update_time</td>
+<td>timestamp</td>
+<td style="text-align:center">否</td>
+<td>CURRENT_TIMESTAMP</td>
+<td>更新时间</td>
+</tr>
+<tr>
+<td style="text-align:center">20</td>
+<td>is_deleted</td>
+<td>tinyint</td>
+<td style="text-align:center">否</td>
+<td>0</td>
+<td>是否删除 0-未删除 1-已删除</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="readable-blockquote quote-block">
+<p>说明：<code>duty_persons</code> 与 <code>duty_person_names</code> 并存。前者保持原有读写逻辑不变（前端原样回传的字符串），
+后者由人员明细表规范化生成（去重、去空、按 <code>sort_order</code> 排序、逗号拼接），仅用于展示，业务校验不依赖该字段。</p>
+</blockquote>
+<p><strong>索引</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>索引类型</th>
+<th>索引名称</th>
+<th>索引字段</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PRIMARY KEY</td>
+<td>PRIMARY</td>
+<td>(<code>id</code>)</td>
+</tr>
+<tr>
+<td>KEY</td>
+<td>idx_item_id</td>
+<td>(<code>item_id</code>)</td>
+</tr>
+<tr>
+<td>KEY</td>
+<td>idx_duty_date</td>
+<td>(<code>duty_date</code>)</td>
+</tr>
+<tr>
+<td>KEY</td>
+<td>idx_department_id</td>
+<td>(<code>department_id</code>)</td>
+</tr>
+<tr>
+<td>KEY</td>
+<td>idx_item_date</td>
+<td>(<code>item_id</code>,<code>duty_date</code>)</td>
+</tr>
+<tr>
+<td>KEY</td>
+<td>idx_location_code</td>
+<td>(<code>location_code</code>)</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="413-值班人员明细表-dutyscheduleperson">4.1.3 值班人员明细表 <code>duty_schedule_person</code></h4>
+<blockquote class="readable-blockquote quote-block">
+<p>说明：值班人员在主表 <code>duty_schedule.duty_persons</code> 中以逗号分隔冗余存储，<strong>该字段保留、读写逻辑不变</strong>；
+明细表仅作为扩展存储，便于后续按人员维度查询/统计。两者在新增、编辑、导入时同步写入，删除值班时同步删除明细。</p>
+</blockquote>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th style="text-align:center">序号</th>
+<th>字段名</th>
+<th>类型</th>
+<th style="text-align:center">是否必填</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td>id</td>
+<td>bigint</td>
+<td style="text-align:center">是</td>
+<td>-</td>
+<td>主键ID（<code>@TableId(type = IdType.ASSIGN_ID)</code>，雪花算法）</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td>schedule_id</td>
+<td>bigint</td>
+<td style="text-align:center">是</td>
+<td>-</td>
+<td>值班ID（关联 <code>duty_schedule.id</code>）</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td>person_account</td>
+<td>varchar(50)</td>
+<td style="text-align:center">否</td>
+<td>NULL</td>
+<td>值班人员域账号（可选，便于后续扩展）</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td>person_name</td>
+<td>varchar(100)</td>
+<td style="text-align:center">是</td>
+<td>-</td>
+<td>值班人员姓名</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td>person_dept_name</td>
+<td>varchar(100)</td>
+<td style="text-align:center">否</td>
+<td>NULL</td>
+<td>值班人员所属部门（冗余，便于扩展）</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td>sort_order</td>
+<td>int</td>
+<td style="text-align:center">否</td>
+<td>0</td>
+<td>排序（按写入顺序）</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td>version</td>
+<td>int</td>
+<td style="text-align:center">是</td>
+<td>0</td>
+<td>版本号（乐观锁）</td>
+</tr>
+<tr>
+<td style="text-align:center">8</td>
+<td>create_by</td>
+<td>varchar(50)</td>
+<td style="text-align:center">否</td>
+<td>''</td>
+<td>创建人域账号</td>
+</tr>
+<tr>
+<td style="text-align:center">9</td>
+<td>create_name</td>
+<td>varchar(50)</td>
+<td style="text-align:center">否</td>
+<td>''</td>
+<td>创建人姓名</td>
+</tr>
+<tr>
+<td style="text-align:center">10</td>
+<td>create_time</td>
+<td>timestamp</td>
+<td style="text-align:center">否</td>
+<td>CURRENT_TIMESTAMP</td>
+<td>创建时间</td>
+</tr>
+<tr>
+<td style="text-align:center">11</td>
+<td>update_by</td>
+<td>varchar(50)</td>
+<td style="text-align:center">否</td>
+<td>''</td>
+<td>更新人域账号</td>
+</tr>
+<tr>
+<td style="text-align:center">12</td>
+<td>update_name</td>
+<td>varchar(50)</td>
+<td style="text-align:center">否</td>
+<td>''</td>
+<td>更新人姓名</td>
+</tr>
+<tr>
+<td style="text-align:center">13</td>
+<td>update_time</td>
+<td>timestamp</td>
+<td style="text-align:center">否</td>
+<td>CURRENT_TIMESTAMP</td>
+<td>更新时间</td>
+</tr>
+<tr>
+<td style="text-align:center">14</td>
+<td>is_deleted</td>
+<td>tinyint</td>
+<td style="text-align:center">否</td>
+<td>0</td>
+<td>是否删除 0-未删除 1-已删除</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>索引</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>索引类型</th>
+<th>索引名称</th>
+<th>索引字段</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PRIMARY KEY</td>
+<td>PRIMARY</td>
+<td>(<code>id</code>)</td>
+</tr>
+<tr>
+<td>KEY</td>
+<td>idx_schedule_id</td>
+<td>(<code>schedule_id</code>)</td>
+</tr>
+<tr>
+<td>KEY</td>
+<td>idx_person_account</td>
+<td>(<code>person_account</code>)</td>
+</tr>
+<tr>
+<td>KEY</td>
+<td>idx_person_name</td>
+<td>(<code>person_name</code>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>同步规则</strong></p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>处理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>新增/编辑值班</td>
+<td>主表保存后先逻辑删除该值班旧明细，再按 <code>personList</code>（可选）或 <code>duty_persons</code> 拆分批量写入；随后将明细姓名拼接回写主表 <code>duty_person_names</code></td>
+</tr>
+<tr>
+<td>删除值班</td>
+<td>先逻辑删除主表记录，再逻辑删除其人员明细</td>
+</tr>
+<tr>
+<td>CSV 导入</td>
+<td>批量保存主表后，逐条按 <code>duty_persons</code> 拆分写入明细并回写 <code>duty_person_names</code></td>
+</tr>
+<tr>
+<td>值班详情</td>
+<td>在 <code>DutyScheduleResponse.persons</code> 中返回人员明细（主表 <code>dutyPersons</code> 不变）</td>
+</tr>
+<tr>
+<td>日历/列表展示</td>
+<td>直接使用主表 <code>duty_person_names</code>，无需 join 人员明细表</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="42-依赖现有表">4.2 依赖现有表</h3>
+<h4 id="421-部门表-revdepartmentconfig">4.2.1 部门表 <code>rev_department_config</code></h4>
+<ul>
+<li>用于值班部门下拉选择。</li>
+<li>关键字段：<code>id</code>, <code>department_code</code>, <code>department_name</code>。</li>
+<li>接口复用：<code>/department-config/getListByCondition</code>。</li>
+</ul>
+<h4 id="422-用户来源">4.2.2 用户来源</h4>
+<ul>
+<li>值班人员下拉建议复用现有用户查询接口（如 <code>tineco-basic-client</code> 或项目内已有 <code>UserClient</code>）。</li>
+<li>如无统一用户表，可暂用文本输入或 FE 通过 <code>UserClient</code> 获取人员列表。</li>
+</ul>
+<hr>
+<h2 id="5-后端设计">后端设计</h2>
+<h3 id="51-包结构">5.1 包结构</h3>
+<p>按现有项目风格，在 <code>hinton-agent-mario-server-service</code> 模块下新增：</p>
+<pre class="code-figure ascii-figure" data-label="ASCII 图"><code>src/main/java/com/tineco/application/
+├── controller/duty
+│   └── DutyController.java
+├── service/duty
+│   ├── IDutyItemService.java
+│   ├── IDutyScheduleService.java
+│   ├── IDutySchedulePersonService.java   # 值班人员明细
+│   └── impl/duty
+│       ├── DutyItemServiceImpl.java
+│       ├── DutyScheduleServiceImpl.java
+│       └── DutySchedulePersonServiceImpl.java
+├── mapper/duty
+│   ├── DutyItemMapper.java
+│   ├── DutyScheduleMapper.java
+│   └── DutySchedulePersonMapper.java
+├── entity/duty
+│   ├── DutyItem.java
+│   ├── DutySchedule.java
+│   └── DutySchedulePerson.java
+├── enums/duty
+│   ├── DutyLocationEnum.java   # 值班地点字典
+│   └── ShiftTypeEnum.java      # 班次类型
+├── vo/duty
+│   ├── DutyItemVO.java
+│   ├── DutyItemQueryVO.java
+│   ├── DutyScheduleVO.java
+│   ├── DutyScheduleQueryVO.java
+│   ├── DutySchedulePersonVO.java
+│   └── DutyScheduleImportVO.java
+└── dto/response/duty
+    ├── DutyItemResponse.java
+    ├── DutyScheduleResponse.java
+    ├── DutySchedulePersonResponse.java
+    ├── DutyScheduleExportResponse.java
+    └── DutyCalendarResponse.java
+
+src/main/resources/mapper/duty/
+├── DutyItemMapper.xml
+├── DutyScheduleMapper.xml
+└── DutySchedulePersonMapper.xml
+</code></pre>
+<blockquote class="readable-blockquote quote-block">
+<p>备注：值班地点为固定字典枚举 <code>DutyLocationEnum</code>（PHASE_4 / PHASE_6 / PHASE_7 / OLD_FACTORY），不再维护地点表，因此实体/Mapper/Service/Controller 中删除了 <code>DutyLocation*</code> 相关文件。</p>
+</blockquote>
+<h3 id="52-实体类示例">5.2 实体类示例</h3>
+<p>所有实体统一继承 gauss 框架 <code>BaseEntity</code>（已自带 <code>id / version / create_by / create_name / create_time / update_by / update_name / update_time / is_deleted</code> 等字段及自动填充逻辑），业务类只需声明业务字段：</p>
+<pre class="code-figure" data-label="代码"><code class="language-java">@Data
+@Accessors(chain = true)
+@EqualsAndHashCode(callSuper = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@TableName("duty_item")
+public class DutyItem extends BaseEntity {
+    @TableId(value = "id", type = IdType.ASSIGN_ID)
+    private Long id;
+    private String itemName;
+    private LocalDate startDate;
+    private LocalDate endDate;
+}
+</code></pre>
+<pre class="code-figure" data-label="代码"><code class="language-java">@Data
+@Accessors(chain = true)
+@EqualsAndHashCode(callSuper = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@TableName("duty_schedule")
+public class DutySchedule extends BaseEntity {
+    @TableId(value = "id", type = IdType.ASSIGN_ID)
+    private Long id;
+    private Long itemId;
+    private LocalDate dutyDate;
+    private String startTime;   // 原样保存，如 09:00
+    private String endTime;     // 原样保存，如 18:00
+    private String shiftType;
+    private String locationCode;   // 字典编码
+    private String locationName;   // 冗余
+    private Long departmentId;
+    private String departmentName;
+    private String dutyPersons;
+}
+</code></pre>
+<blockquote class="readable-blockquote quote-block">
+<p>说明：</p>
+<ul>
+<li><code>BaseEntity</code> 来自 <code>gauss.boot.mybatis.entity.BaseEntity</code>，框架已处理 <code>version</code>（乐观锁）、<code>is_deleted</code>（逻辑删除）及审计字段的自动填充，业务代码无需手动赋值。</li>
+<li><code>id</code> 采用 <code>IdType.ASSIGN_ID</code>（雪花算法），实体字段类型用 <code>Long</code>，与 <code>DepartmentConfig</code>/<code>AiRequestLog</code> 等现有实体保持一致。</li>
+<li>仅在需要展示创建人姓名时补充 <code>createName</code>/<code>updateName</code> 字段（<code>@TableField(fill = FieldFill.INSERT / INSERT_UPDATE)</code>），其余审计字段由父类提供。</li>
+</ul>
+</blockquote>
+<h3 id="53-权限控制">5.3 权限控制</h3>
+<h4 id="531-创建人判定">5.3.1 创建人判定</h4>
+<ul>
+<li>值班表 <code>duty_schedule.create_by</code> 记录当前登录人的域账号。</li>
+<li>编辑/删除接口中校验：<pre class="code-figure" data-label="代码"><code class="language-java">GaussUser currentUser = UserUtils.getGaussUser();
+if (!Objects.equals(entity.getCreateBy(), currentUser.getUsername())) {
+    throw new BusinessException("只有创建人可编辑/删除该值班记录");
+}
+</code></pre>
+</li>
+</ul>
+<h4 id="532-管理员例外">5.3.2 管理员例外</h4>
+<ul>
+<li>如需管理员可编辑所有记录，可加入角色判断：<pre class="code-figure" data-label="代码"><code class="language-java">if (!isAdmin(currentUser) &amp;&amp; !Objects.equals(entity.getCreateBy(), currentUser.getUsername())) {
+    throw new BusinessException("只有创建人可编辑");
+}
+</code></pre>
+</li>
+</ul>
+<h3 id="54-核心业务逻辑">5.4 核心业务逻辑</h3>
+<h4 id="541-日历查询">5.4.1 日历查询</h4>
+<ul>
+<li>入参：<code>itemId</code>（可选）、<code>month</code>（格式 <code>yyyy-MM</code>，必填）。</li>
+<li>计算月份起止日期，查询 <code>duty_schedule</code>。</li>
+<li>返回按日期分组的数据结构，便于前端日历渲染。</li>
+</ul>
+<h4 id="542-新增值班">5.4.2 新增值班</h4>
+<ul>
+<li>校验时间：<code>start_time &lt; end_time</code>。</li>
+<li>校验班次类型在 <code>ShiftTypeEnum</code> 内、地点编码在 <code>DutyLocationEnum</code> 内、部门存在且未删除。</li>
+<li>保存人员字符串（逗号分隔）到主表 <code>duty_persons</code>（原字段逻辑保持不变）。</li>
+<li>同步写入 <code>duty_schedule_person</code> 明细：可选入参 <code>personList</code> 优先，否则按 <code>duty_persons</code> 逗号拆分。</li>
+<li>明细写入后将姓名按排序拼接回写主表 <code>duty_person_names</code>，供列表/日历直接展示。</li>
+</ul>
+<h4 id="543-编辑值班">5.4.3 编辑值班</h4>
+<ul>
+<li>仅允许创建人编辑。</li>
+<li>更新时重新填充 <code>update_by/update_name/update_time</code>。</li>
+<li>人员明细先逻辑删除后重建（主表 <code>duty_persons</code> 仍按原逻辑覆盖更新）。</li>
+</ul>
+<h4 id="544-导入值班">5.4.4 导入值班</h4>
+<ul>
+<li>解析 CSV，按模板字段顺序校验。</li>
+<li>事项、地点（字典）、部门名称映射为数据库 ID/编码。</li>
+<li>校验失败返回错误明细，成功返回导入数量。</li>
+<li>主表批量保存后，逐条同步写入值班人员明细并回写 <code>duty_person_names</code>。</li>
+</ul>
+<hr>
+<h2 id="6-接口设计">接口设计</h2>
+<h3 id="61-基础路径">6.1 基础路径</h3>
+<pre class="code-figure" data-label="代码"><code>/hinton-agent-mario-server/duty
+</code></pre>
+<h3 id="62-事项管理接口">6.2 事项管理接口</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>路径</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td><code>/duty/item/pageList</code></td>
+<td>事项分页列表</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/duty/item/getListByCondition</code></td>
+<td>事项下拉列表</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/duty/item/getDetail</code></td>
+<td>事项详情</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/duty/item/addOrUpdate</code></td>
+<td>新增/编辑事项</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/duty/item/delete</code></td>
+<td>删除事项</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="63-值班地点字典接口">6.3 值班地点字典接口</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>路径</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>/duty/location/list</code></td>
+<td>值班地点字典下拉（固定字典，参见 <code>DutyLocationEnum</code>）</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="64-值班安排接口">6.4 值班安排接口</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>路径</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td><code>/duty/schedule/calendar</code></td>
+<td>按月查询日历数据</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/duty/schedule/addOrUpdate</code></td>
+<td>新增/编辑值班</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/duty/schedule/getDetail</code></td>
+<td>值班详情</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/duty/schedule/delete</code></td>
+<td>删除值班（仅创建人）</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/duty/schedule/persons</code></td>
+<td>值班人员明细列表（<code>scheduleId</code>）</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/duty/schedule/import</code></td>
+<td>CSV 导入值班</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/duty/schedule/export</code></td>
+<td>导出值班</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="65-关键接口说明">6.5 关键接口说明</h3>
+<h4 id="651-日历查询">6.5.1 日历查询</h4>
+<p><strong>请求</strong></p>
+<pre class="code-figure" data-label="代码"><code class="language-json">{
+  "itemId": "123",
+  "month": "2026-08"
+}
+</code></pre>
+<p><strong>响应</strong></p>
+<pre class="code-figure" data-label="代码"><code class="language-json">{
+  "total": 22,
+  "items": {
+    "2026-08-01": [
+      {
+        "id": "1",
+        "itemId": "123",
+        "itemName": "全部事项值班安排",
+        "dutyDate": "2026-08-01",
+        "startTime": "09:00",
+        "endTime": "18:00",
+        "shiftType": "site",
+        "shiftTypeName": "现场值班",
+        "locationCode": "PHASE_4",
+        "locationName": "四期",
+        "departmentId": "20",
+        "departmentName": "供应链智能部",
+        "dutyPersons": "陈晨，郑十，黄勇",
+        "dutyPersonNames": "陈晨,郑十,黄勇",
+        "persons": [
+          { "id": "1", "scheduleId": "1", "personAccount": "chenchen", "personName": "陈晨", "sortOrder": 0 }
+        ],
+        "createBy": "zhangsan"
+      }
+    ]
+  }
+}
+</code></pre>
+<h4 id="652-新增编辑值班">6.5.2 新增/编辑值班</h4>
+<p><strong>请求</strong></p>
+<pre class="code-figure" data-label="代码"><code class="language-json">{
+  "id": null,
+  "itemId": "123",
+  "dutyDate": "2026-08-01",
+  "startTime": "09:00",
+  "endTime": "18:00",
+  "shiftType": "site",
+  "locationCode": "PHASE_4",
+  "departmentId": "20",
+  "personList": [
+    { "personAccount": "chenchen", "personName": "陈晨" },
+    { "personAccount": "zhengshi", "personName": "郑十" },
+    { "personAccount": "huangyong", "personName": "黄勇" }
+  ]
+}
+</code></pre>
+<blockquote class="readable-blockquote quote-block">
+<p>值班人员以对象数组传入，每项必须包含域账号 <code>personAccount</code> 与姓名 <code>personName</code>；主表冗余字段 <code>dutyPersons</code> 由后端按姓名拼接生成。</p>
+</blockquote>
+<hr>
+<h2 id="7-前端设计">前端设计</h2>
+<h3 id="71-页面路由">7.1 页面路由</h3>
+<p>建议路径：<code>/duty/calendar</code></p>
+<h3 id="72-组件划分">7.2 组件划分</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>组件</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DutyCalendar.vue</code></td>
+<td>值班日历主页面，含查询区、日历展示。</td>
+</tr>
+<tr>
+<td><code>DutyItemDialog.vue</code></td>
+<td>新增/编辑事项弹窗。</td>
+</tr>
+<tr>
+<td><code>DutyScheduleDialog.vue</code></td>
+<td>新增/编辑值班弹窗。</td>
+</tr>
+<tr>
+<td><code>DutyImportDialog.vue</code></td>
+<td>CSV 导入弹窗。</td>
+</tr>
+<tr>
+<td><s><code>DutyLocationManage.vue</code></s></td>
+<td>已废弃（地点为字典枚举，无管理页面）。</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="73-日历渲染">7.3 日历渲染</h3>
+<ul>
+<li>使用 Element Plus <code>el-calendar</code> 或自定义表格渲染。</li>
+<li>每天单元格内按时间段排序展示值班条目。</li>
+<li>现场值班用蓝色标签，远程值班用紫色标签。</li>
+<li>点击日期：打开新增值班弹窗，日期回显。</li>
+<li>点击条目：打开编辑弹窗，回显数据并校验创建人权限（FE 可根据 <code>createBy</code> 与当前用户对比控制按钮显示，最终校验在后端）。</li>
+</ul>
+<h3 id="74-下拉数据来源">7.4 下拉数据来源</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>下拉</th>
+<th>接口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>事项</td>
+<td><code>/duty/item/getListByCondition</code></td>
+</tr>
+<tr>
+<td>值班地点</td>
+<td><code>/duty/location/list</code></td>
+</tr>
+<tr>
+<td>值班部门</td>
+<td><code>/department-config/getListByCondition</code></td>
+</tr>
+<tr>
+<td>值班人员</td>
+<td>现有用户查询接口（如 <code>/user/getListByCondition</code> 或本地员工数据源）</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2 id="8-导入导出设计">导入导出设计</h2>
+<h3 id="81-csv-导入模板">8.1 CSV 导入模板</h3>
+<p>字段顺序：</p>
+<pre class="code-figure" data-label="代码"><code>事项,日期,开始时间,结束时间,班次类型(site/remote),值班地点,值班部门,值班人员
+</code></pre>
+<p>示例：</p>
+<pre class="code-figure" data-label="代码"><code class="language-csv">全部事项值班安排,2026-08-01,09:00,18:00,site,四期,供应链智能部,陈晨,郑十,黄勇
+</code></pre>
+<blockquote class="readable-blockquote quote-block">
+<p>注：截图说明中"值班人员（逗号分隔）"，即人员列内部用逗号分隔。</p>
+</blockquote>
+<h3 id="82-导入校验">8.2 导入校验</h3>
+<ul>
+<li>必填字段缺失 → 返回行号及错误信息。</li>
+<li>日期/时间格式错误 → 明确提示。</li>
+<li>事项/部门名称不存在 → 返回未匹配明细。</li>
+<li>地点只能使用 <code>DutyLocationEnum</code> 中的字典值（四期/六期/七期/老厂），非法值返回错误。</li>
+<li>班次类型非法 → 仅允许 <code>site</code> / <code>remote</code>。</li>
+</ul>
+<h3 id="83-导出">8.3 导出</h3>
+<ul>
+<li>导出字段与导入模板一致。</li>
+<li>支持按当前筛选条件（事项、月份）导出。</li>
+<li>使用 EasyExcel 实现，文件名如 <code>duty_schedule_202608.xlsx</code>。</li>
+</ul>
+<hr>
+<h2 id="9-接口权限与异常">接口权限与异常</h2>
+<h3 id="91-统一返回">9.1 统一返回</h3>
+<p>沿用项目 <code>gauss.boot.common.dto.response.Result</code> 统一返回结构。</p>
+<h3 id="92-异常处理">9.2 异常处理</h3>
+<ul>
+<li><code>BusinessException("只有创建人可编辑该值班记录")</code></li>
+<li><code>BusinessException("值班地点非法，请使用字典编码：PHASE_4 / PHASE_6 / PHASE_7 / OLD_FACTORY")</code></li>
+<li><code>BusinessException("事项不存在或已删除")</code></li>
+<li><code>BusinessException("导入数据校验失败：第 X 行...")</code></li>
+</ul>
+<hr>
+<h2 id="10-开发计划">开发计划</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>内容</th>
+<th>预计工期</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>数据库建表（事项、值班；地点改为字典枚举，不再建地点表）</td>
+<td>0.5 天</td>
+</tr>
+<tr>
+<td>2</td>
+<td>后端 Entity/Mapper/Service/Controller（含枚举）开发</td>
+<td>2 天</td>
+</tr>
+<tr>
+<td>3</td>
+<td>后端导入导出、权限校验</td>
+<td>1 天</td>
+</tr>
+<tr>
+<td>4</td>
+<td>前端日历页面、弹窗开发</td>
+<td>3 天</td>
+</tr>
+<tr>
+<td>5</td>
+<td>联调、测试、修复</td>
+<td>1.5 天</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2 id="11-注意事项">注意事项</h2>
+<ol>
+<li><strong>创建人唯一可编辑</strong>：值班表必须记录 <code>create_by</code>，编辑/删除时严格校验，防止越权。</li>
+<li><strong>事项时间范围约束</strong>：建议校验值班日期是否在事项 <code>start_date</code> 与 <code>end_date</code> 范围内（可选，按业务确定）。</li>
+<li><strong>部门、人员名称缓存</strong>：日历查询中频繁需要名称展示，建议通过 join 查询或缓存避免 N+1（地点采用字典枚举，无需缓存）。</li>
+<li><strong>不允许跨天</strong>：值班时间段以 <code>varchar</code> 原样存储（前端传什么存什么，后端不格式化），新增/编辑与 CSV 导入均强制校验 <code>end_time &gt; start_time</code>；跨天班次（如 <code>20:00-08:00</code>）需拆分为两条值班记录。</li>
+<li><strong>导入幂等</strong>：若同一事项、日期、时间、部门重复导入，可覆盖或提示重复，按业务确定。</li>
+<li><strong>删除影响</strong>：删除事项前应校验是否已被值班记录引用，避免数据悬空；地点为字典枚举，无需维护。</li>
+</ol>
+<hr>
+<h2 id="12-附录">附录</h2>
+<h3 id="121-建表-sql">12.1 建表 SQL</h3>
+<pre class="code-figure" data-label="代码"><code class="language-sql">-- 值班事项表
+CREATE TABLE `duty_item` (
+    `id` bigint NOT NULL COMMENT '主键ID（ASSIGN_ID 雪花算法）',
+    `item_name` varchar(100) NOT NULL COMMENT '事项名称',
+    `start_date` date NOT NULL COMMENT '开始日期',
+    `end_date` date NOT NULL COMMENT '结束日期',
+    `version` int NOT NULL DEFAULT '0' COMMENT '版本号（乐观锁）',
+    `create_by` varchar(50) DEFAULT '' COMMENT '创建人域账号',
+    `create_name` varchar(50) DEFAULT '' COMMENT '创建人姓名',
+    `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_by` varchar(50) DEFAULT '' COMMENT '更新人域账号',
+    `update_name` varchar(50) DEFAULT '' COMMENT '更新人姓名',
+    `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `is_deleted` tinyint NOT NULL DEFAULT '0' COMMENT '是否删除 0-否 1-是',
+    PRIMARY KEY (`id`),
+    KEY `idx_item_name` (`item_name`),
+    KEY `idx_start_end_date` (`start_date`,`end_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='值班事项表';
+
+-- 值班表
+CREATE TABLE `duty_schedule` (
+    `id` bigint NOT NULL COMMENT '主键ID（ASSIGN_ID 雪花算法）',
+    `item_id` bigint NOT NULL COMMENT '事项ID',
+    `duty_date` date NOT NULL COMMENT '值班日期',
+    `start_time` varchar(20) NOT NULL COMMENT '开始时间（原样保存，如 09:00）',
+    `end_time` varchar(20) NOT NULL COMMENT '结束时间（原样保存，如 18:00）',
+    `shift_type` varchar(20) NOT NULL COMMENT '班次类型：site-现场，remote-远程',
+    `location_code` varchar(50) NOT NULL COMMENT '值班地点编码（字典：DutyLocationEnum：PHASE_4/PHASE_6/PHASE_7/OLD_FACTORY）',
+    `location_name` varchar(100) DEFAULT NULL COMMENT '值班地点名称（冗余，便于展示）',
+    `department_id` bigint NOT NULL COMMENT '值班部门ID（关联 rev_department_config.id）',
+    `department_name` varchar(100) DEFAULT NULL COMMENT '值班部门名称（冗余，来源 rev_department_config.department_name）',
+    `duty_persons` varchar(500) NOT NULL COMMENT '值班人员，逗号分隔（冗余保留，逻辑不变）',
+    `duty_person_names` varchar(1000) DEFAULT NULL COMMENT '值班人员名称，逗号分隔（由值班人员明细同步，便于展示）',
+    `version` int NOT NULL DEFAULT '0' COMMENT '版本号（乐观锁）',
+    `create_by` varchar(50) DEFAULT '' COMMENT '创建人域账号（权限依据：仅创建人可编辑）',
+    `create_name` varchar(50) DEFAULT '' COMMENT '创建人姓名',
+    `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_by` varchar(50) DEFAULT '' COMMENT '更新人域账号',
+    `update_name` varchar(50) DEFAULT '' COMMENT '更新人姓名',
+    `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `is_deleted` tinyint NOT NULL DEFAULT '0' COMMENT '是否删除 0-否 1-是',
+    PRIMARY KEY (`id`),
+    KEY `idx_item_id` (`item_id`),
+    KEY `idx_duty_date` (`duty_date`),
+    KEY `idx_department_id` (`department_id`),
+    KEY `idx_item_date` (`item_id`,`duty_date`),
+    KEY `idx_location_code` (`location_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='值班表';
+
+-- 值班人员明细表
+CREATE TABLE `duty_schedule_person` (
+    `id` bigint NOT NULL COMMENT '主键ID（ASSIGN_ID 雪花算法）',
+    `schedule_id` bigint NOT NULL COMMENT '值班ID（关联 duty_schedule.id）',
+    `person_account` varchar(50) DEFAULT NULL COMMENT '值班人员域账号（可选，便于后续扩展）',
+    `person_name` varchar(100) NOT NULL COMMENT '值班人员姓名',
+    `person_dept_name` varchar(100) DEFAULT NULL COMMENT '值班人员所属部门（冗余，便于扩展）',
+    `sort_order` int NOT NULL DEFAULT '0' COMMENT '排序',
+    `version` int NOT NULL DEFAULT '0' COMMENT '版本号（乐观锁）',
+    `create_by` varchar(50) DEFAULT '' COMMENT '创建人域账号',
+    `create_name` varchar(50) DEFAULT '' COMMENT '创建人姓名',
+    `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_by` varchar(50) DEFAULT '' COMMENT '更新人域账号',
+    `update_name` varchar(50) DEFAULT '' COMMENT '更新人姓名',
+    `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `is_deleted` tinyint NOT NULL DEFAULT '0' COMMENT '是否删除 0-否 1-是',
+    PRIMARY KEY (`id`),
+    KEY `idx_schedule_id` (`schedule_id`),
+    KEY `idx_person_account` (`person_account`),
+    KEY `idx_person_name` (`person_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='值班人员明细表';
+</code></pre>
+<h3 id="122-枚举定义">12.2 枚举定义</h3>
+<pre class="code-figure" data-label="代码"><code class="language-java">public enum ShiftTypeEnum {
+    SITE("site", "现场值班"),
+    REMOTE("remote", "远程值班");
+
+    private final String code;
+    private final String desc;
+    // constructor / getter
+}
+
+public enum DutyLocationEnum {
+    PHASE_4("PHASE_4", "四期"),
+    PHASE_6("PHASE_6", "六期"),
+    PHASE_7("PHASE_7", "七期"),
+    OLD_FACTORY("OLD_FACTORY", "老厂");
+
+    private final String code;
+    private final String desc;
+    // constructor / getter
+}
+</code></pre>
+</article>
+</main>
+<div id="reader-controls" aria-label="阅读工具" data-copied-text="已复制  条" data-empty-text="暂无划线" data-failed-text="复制失败" data-note-label="备注"><button type="button" class="reader-control-button reader-control-copy" data-action="copy-highlights" title="复制所有划线" aria-label="复制所有划线"><span class="reader-control-glyph" aria-hidden="true">⧉</span><span class="reader-control-label">复制所有划线</span></button></div>
+<script type="application/json" id="notes-to-html-pages-config">{"sourcePath":"data/添可项目/海豚/2026年/0827值班日历需求/值班日历开发设计文档.md","syncAnnotationsToSource":true,"text":{"annotationToolbarUnderline":"划线","annotationInlinePlaceholder":"这里可以写备注...","annotationInlineSave":"保存","annotationCardPlaceholder":"添加批注...","annotationComposerSave":"保存","annotationDelete":"删除","annotationPanelTitle":"批注","annotationQuoteLabel":"原文","annotationNoteLabel":"批注","annotationSyncDisabled":"仅保存在当前页面"}}</script>
+<script type="application/json" id="notes-to-html-pages-annotations">[]</script>
+<script>(() => {
+	"use strict";
+
+	const config = readJson("notes-to-html-pages-config", {});
+	const savedAnnotations = readJson("notes-to-html-pages-annotations", []);
+	const text = Object.assign(
+		{
+			annotationToolbarUnderline: "Underline",
+			annotationInlinePlaceholder: "Write a note here...",
+			annotationInlineSave: "Save note",
+			annotationComposerSave: "Save",
+			annotationDelete: "Delete",
+			annotationPanelTitle: "Annotations",
+			annotationCardPlaceholder: "Add a note...",
+			annotationSyncDisabled: "Saved in this page only"
+		},
+		config.text || {}
+	);
+	const article = document.querySelector(".article-body");
+	if (!article) return;
+
+	const state = {
+		range: null,
+		annotations: []
+	};
+	const popover = createPopover();
+	const panel = createPanel();
+
+	document.body.append(popover, panel);
+	window.addEventListener("resize", () => {
+		scheduleAnnotationLayout();
+		if (!usesInlineAnnotations()) {
+			closeInlineAnnotations();
+		}
+	});
+	if (document.fonts && document.fonts.ready) {
+		document.fonts.ready.then(scheduleAnnotationLayout);
+		}
+	document.addEventListener("mouseup", (event) => {
+		if (isInsideAnnotationUi(event.target)) {
+			return;
+		}
+		window.setTimeout(updateSelectionUi, 0);
+	});
+	document.addEventListener("keyup", (event) => {
+		if (event.key === "Escape") {
+			hidePopover();
+			return;
+		}
+		if (isEditableTarget(event.target)) {
+			return;
+		}
+		window.setTimeout(updateSelectionUi, 0);
+	});
+	document.addEventListener("mousedown", (event) => {
+		const target = event.target;
+		if (popover.contains(target) || isEditableTarget(target)) {
+			return;
+		}
+		cancelAnnotationEditors();
+		if (target instanceof Node && !article.contains(target) && !panel.contains(target)) {
+			hidePopover();
+		}
+	});
+
+	for (const annotation of Array.isArray(savedAnnotations) ? savedAnnotations : []) {
+		if (isAnnotation(annotation)) {
+			addAnnotation(annotation, true);
+		}
+	}
+	updatePanelVisibility();
+	scheduleAnnotationLayout();
+
+	function readJson(id, fallback) {
+		const element = document.getElementById(id);
+		if (!element || !element.textContent) return fallback;
+		try {
+			return JSON.parse(element.textContent);
+		} catch (_error) {
+			return fallback;
+		}
+	}
+
+	function isInsideAnnotationUi(target) {
+		return target instanceof Node && (popover.contains(target) || panel.contains(target));
+	}
+
+	function isEditableTarget(target) {
+		return target instanceof Element && Boolean(target.closest("input, textarea, button"));
+	}
+
+	function createPopover() {
+		const element = document.createElement("div");
+		element.className = "annotation-popover";
+		element.hidden = true;
+
+		const actions = document.createElement("div");
+		actions.className = "annotation-popover-actions";
+
+		const underline = document.createElement("button");
+		underline.type = "button";
+		underline.className = "annotation-underline-button";
+		underline.textContent = text.annotationToolbarUnderline;
+		underline.addEventListener("click", () => saveCurrentAnnotation(""));
+		actions.append(underline);
+
+		const noteRow = document.createElement("div");
+		noteRow.className = "annotation-note-row";
+
+		const input = document.createElement("input");
+		input.type = "text";
+		input.className = "annotation-note-input";
+		input.placeholder = text.annotationInlinePlaceholder;
+		input.setAttribute("aria-label", text.annotationInlinePlaceholder);
+		input.addEventListener("keydown", (event) => {
+			if (event.key === "Enter") {
+				event.preventDefault();
+				saveCurrentAnnotation(input.value);
+			}
+		});
+
+		const save = document.createElement("button");
+		save.type = "button";
+		save.className = "annotation-mini-save";
+		save.textContent = text.annotationInlineSave;
+		save.addEventListener("click", () => saveCurrentAnnotation(input.value));
+
+		noteRow.append(input, save);
+		element.append(actions, noteRow);
+		return element;
+	}
+
+	function createPanel() {
+		const element = document.createElement("aside");
+		element.className = "annotation-panel";
+		element.hidden = true;
+
+		const title = document.createElement("div");
+		title.className = "annotation-panel-title";
+		title.textContent = text.annotationPanelTitle;
+
+		const list = document.createElement("div");
+		list.className = "annotation-list";
+
+		element.append(title, list);
+		return element;
+	}
+
+	function updateSelectionUi() {
+		const selection = window.getSelection();
+		if (!selection || selection.rangeCount === 0 || selection.isCollapsed) {
+			hidePopover();
+			return;
+		}
+
+		const range = selection.getRangeAt(0);
+		const selectedText = compactText(range.toString());
+		if (!selectedText || !article.contains(range.startContainer) || !article.contains(range.endContainer)) {
+			hidePopover();
+			return;
+		}
+
+		const rect = getRangeAnchorRect(range);
+		if (!rect) {
+			hidePopover();
+			return;
+		}
+
+		state.range = range.cloneRange();
+		positionPopover(rect);
+		const input = popover.querySelector(".annotation-note-input");
+		if (input) input.value = "";
+		popover.hidden = false;
+	}
+
+	function getRangeAnchorRect(range) {
+		const rects = Array.from(range.getClientRects()).filter((rect) => rect.width && rect.height);
+		return rects[rects.length - 1] || null;
+	}
+
+	function positionPopover(rect) {
+		popover.style.left = "0px";
+		popover.style.top = "0px";
+		const width = popover.offsetWidth || 280;
+		const left = Math.min(
+			window.scrollX + window.innerWidth - width - 14,
+			Math.max(14 + window.scrollX, window.scrollX + rect.left)
+		);
+		const top = window.scrollY + rect.bottom + 8;
+		popover.style.left = left + "px";
+		popover.style.top = top + "px";
+	}
+
+	function hidePopover() {
+		popover.hidden = true;
+	}
+
+	function saveCurrentAnnotation(note) {
+		if (!state.range) return;
+
+		const selectedText = compactText(state.range.toString());
+		if (!selectedText) return;
+
+		const annotation = {
+			id: "ntoh-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 8),
+			selectedText,
+			note: compactText(note),
+			createdAt: new Date().toISOString(),
+			sourcePath: typeof config.sourcePath === "string" ? config.sourcePath : ""
+		};
+
+		addAnnotation(annotation, false);
+		hidePopover();
+		const selection = window.getSelection();
+		if (selection) selection.removeAllRanges();
+		state.range = null;
+	}
+
+	function addAnnotation(annotation, fromSaved) {
+		const normalized = {
+			id: String(annotation.id || ""),
+			selectedText: compactText(String(annotation.selectedText || "")),
+			note: compactText(String(annotation.note || "")),
+			createdAt: String(annotation.createdAt || new Date().toISOString()),
+			sourcePath: String(annotation.sourcePath || config.sourcePath || "")
+		};
+		if (!normalized.id || !normalized.selectedText) return;
+
+		const marked = markAnnotation(normalized, fromSaved);
+		state.annotations.push(normalized);
+		const annotationIndex = state.annotations.length;
+		renderAnnotationCard(normalized, annotationIndex, marked);
+		renderInlineAnnotation(normalized, annotationIndex, marked);
+		updatePanelVisibility();
+		scheduleAnnotationLayout();
+
+		if (!fromSaved) {
+			syncAnnotation(normalized);
+		}
+	}
+
+	function markAnnotation(annotation, fromSaved) {
+		const range = fromSaved ? findTextRange(article, annotation.selectedText) : state.range;
+		if (!range) return false;
+		return wrapRangeWithMarks(range, annotation);
+	}
+
+	function wrapRangeWithMarks(range, annotation) {
+		const nodes = getTextNodesInRange(range);
+		if (nodes.length === 0) return false;
+
+		for (const item of nodes.reverse()) {
+			const mark = createMark(annotation);
+			const segmentRange = document.createRange();
+			try {
+				segmentRange.setStart(item.node, item.start);
+				segmentRange.setEnd(item.node, item.end);
+				segmentRange.surroundContents(mark);
+			} catch (_error) {
+				continue;
+			}
+		}
+
+		return true;
+	}
+
+	function getTextNodesInRange(range) {
+		const walker = document.createTreeWalker(article, NodeFilter.SHOW_TEXT, {
+			acceptNode(node) {
+				if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+				if (node.parentElement && node.parentElement.closest(".annotation-inline-disclosure")) {
+					return NodeFilter.FILTER_REJECT;
+				}
+				try {
+					return range.intersectsNode(node) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+				} catch (_error) {
+					return NodeFilter.FILTER_REJECT;
+				}
+			}
+		});
+		const nodes = [];
+		while (walker.nextNode()) {
+			const node = walker.currentNode;
+			const length = node.nodeValue ? node.nodeValue.length : 0;
+			let start = node === range.startContainer ? range.startOffset : 0;
+			let end = node === range.endContainer ? range.endOffset : length;
+			start = Math.max(0, Math.min(start, length));
+			end = Math.max(0, Math.min(end, length));
+			if (start < end) {
+				nodes.push({ node, start, end });
+			}
+		}
+		return nodes;
+	}
+
+	function createMark(annotation) {
+		const mark = document.createElement("mark");
+		mark.className = "annotation-mark";
+		mark.dataset.annotationId = annotation.id;
+		if (annotation.note) mark.title = annotation.note;
+		mark.addEventListener("click", () => {
+			if (usesInlineAnnotations()) {
+				toggleInlineAnnotation(annotation.id);
+				return;
+			}
+			openAnnotationEditor(annotation.id);
+		});
+		mark.addEventListener("contextmenu", (event) => {
+			event.preventDefault();
+			removeAnnotation(annotation);
+		});
+		return mark;
+	}
+
+	function usesInlineAnnotations() {
+		return window.matchMedia("(max-width: 1023px)").matches;
+	}
+
+	function findTextRange(root, quote) {
+		const needle = compactText(quote);
+		if (!needle) return null;
+
+		const map = [];
+		let normalized = "";
+		let lastWasSpace = false;
+		const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+
+		while (walker.nextNode()) {
+			const node = walker.currentNode;
+			if (node.parentElement && node.parentElement.closest(".annotation-inline-disclosure")) {
+				continue;
+			}
+			const value = node.nodeValue || "";
+			for (let index = 0; index < value.length; index += 1) {
+				const character = value[index];
+				if (/\s/.test(character)) {
+					if (!lastWasSpace) {
+						normalized += " ";
+						map.push({ node, offset: index });
+						lastWasSpace = true;
+					}
+				} else {
+					normalized += character;
+					map.push({ node, offset: index });
+					lastWasSpace = false;
+				}
+			}
+		}
+
+		const startIndex = normalized.indexOf(needle);
+		if (startIndex < 0) return null;
+		const endIndex = startIndex + needle.length - 1;
+		const startPoint = map[startIndex];
+		const endPoint = map[endIndex];
+		if (!startPoint || !endPoint) return null;
+
+		const range = document.createRange();
+		range.setStart(startPoint.node, startPoint.offset);
+		range.setEnd(endPoint.node, endPoint.offset + 1);
+		return range;
+	}
+
+	function renderAnnotationCard(annotation, index, marked) {
+		const list = panel.querySelector(".annotation-list");
+		if (!list) return;
+
+		const card = document.createElement("div");
+		card.tabIndex = 0;
+		card.className = "annotation-card";
+		card.classList.toggle("has-note", Boolean(annotation.note));
+		card.dataset.annotationId = annotation.id;
+		card.addEventListener("click", (event) => {
+			const target = event.target;
+			if (target instanceof Element && target.closest("textarea, button")) return;
+			openAnnotationEditor(annotation.id);
+		});
+		card.addEventListener("keydown", (event) => {
+			const target = event.target;
+			if (target instanceof Element && target.closest("textarea, button")) return;
+			if (event.key === "Enter" || event.key === " ") {
+				event.preventDefault();
+				openAnnotationEditor(annotation.id);
+			}
+		});
+		card.addEventListener("contextmenu", (event) => {
+			event.preventDefault();
+			removeAnnotation(annotation);
+		});
+
+		const number = document.createElement("span");
+		number.className = "annotation-number";
+		number.textContent = String(index);
+
+		const quote = document.createElement("p");
+		quote.className = "annotation-quote";
+		quote.textContent = annotation.selectedText;
+
+		const body = document.createElement("div");
+		body.className = "annotation-card-body";
+
+		const note = document.createElement("p");
+		note.className = "annotation-note";
+		note.textContent = annotation.note;
+		note.hidden = !annotation.note;
+
+		const editor = document.createElement("div");
+		editor.className = "annotation-card-editor";
+		editor.hidden = true;
+
+		const textarea = document.createElement("textarea");
+		textarea.rows = 3;
+		textarea.placeholder = text.annotationCardPlaceholder;
+		textarea.setAttribute("aria-label", text.annotationCardPlaceholder);
+		textarea.value = annotation.note;
+
+		const save = document.createElement("button");
+		save.type = "button";
+		save.className = "annotation-card-save";
+		save.textContent = text.annotationComposerSave;
+		save.addEventListener("click", () => {
+			annotation.note = compactText(textarea.value);
+			note.textContent = annotation.note;
+			note.hidden = !annotation.note;
+			card.classList.toggle("has-note", Boolean(annotation.note));
+			syncAnnotation(annotation);
+			updateMarkTitles(annotation);
+			editor.hidden = true;
+			card.classList.remove("is-editing");
+			scheduleAnnotationLayout();
+		});
+
+		const remove = document.createElement("button");
+		remove.type = "button";
+		remove.className = "annotation-card-delete";
+		remove.textContent = text.annotationDelete;
+		remove.addEventListener("click", () => removeAnnotation(annotation));
+
+		const actions = document.createElement("div");
+		actions.className = "annotation-card-actions";
+		actions.append(remove, save);
+
+		textarea.addEventListener("keydown", (event) => {
+			if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
+				event.preventDefault();
+				save.click();
+			}
+			if (event.key === "Escape") {
+				event.preventDefault();
+				cancelAnnotationEditors();
+			}
+		});
+
+		editor.append(textarea, actions);
+		body.append(number, quote, note, editor);
+		card.append(body);
+
+		if ((!config.syncAnnotationsToSource || !annotation.sourcePath) && !marked) {
+			const status = document.createElement("div");
+			status.className = "annotation-status";
+			status.textContent = text.annotationSyncDisabled;
+			body.append(status);
+		}
+
+		list.append(card);
+	}
+
+	function renderInlineAnnotation(annotation, index, marked) {
+		if (!marked || !annotation.note) return;
+		if (
+			document.querySelector(
+				'.annotation-inline-disclosure[data-annotation-id="' + cssEscape(annotation.id) + '"]'
+			)
+		) {
+			return;
+		}
+		const marks = Array.from(
+			document.querySelectorAll('.annotation-mark[data-annotation-id="' + cssEscape(annotation.id) + '"]')
+		);
+		const lastMark = marks[marks.length - 1];
+		if (!lastMark) return;
+
+		const disclosure = document.createElement("span");
+		disclosure.className = "annotation-inline-disclosure";
+		disclosure.dataset.annotationId = annotation.id;
+
+		const trigger = document.createElement("button");
+		trigger.type = "button";
+		trigger.className = "annotation-inline-trigger";
+		trigger.setAttribute("aria-expanded", "false");
+		trigger.setAttribute("aria-label", text.annotationPanelTitle + " " + index);
+
+		const icon = document.createElement("span");
+		icon.className = "annotation-inline-icon";
+		icon.setAttribute("aria-hidden", "true");
+
+		const count = document.createElement("span");
+		count.className = "annotation-inline-count";
+		count.textContent = String(index);
+
+		const content = document.createElement("span");
+		content.className = "annotation-inline-content";
+		content.hidden = true;
+
+		const note = document.createElement("span");
+		note.className = "annotation-inline-note";
+		note.textContent = annotation.note;
+		content.append(note);
+
+		trigger.append(icon, count);
+		trigger.addEventListener("click", (event) => {
+			event.preventDefault();
+			toggleInlineAnnotation(annotation.id);
+		});
+		disclosure.append(trigger, content);
+
+		const paragraphEnd = findParagraphEnd(lastMark);
+		if (paragraphEnd && paragraphEnd.node) {
+			const range = document.createRange();
+			range.setStart(paragraphEnd.node, paragraphEnd.offset);
+			range.collapse(true);
+			range.insertNode(disclosure);
+			return;
+		}
+
+		lastMark.insertAdjacentElement("afterend", disclosure);
+	}
+
+	function findParagraphEnd(lastMark) {
+		const block = lastMark.closest("p, li, blockquote");
+		if (!block) return null;
+
+		const walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT, {
+			acceptNode(node) {
+				return node.parentElement && node.parentElement.closest(".annotation-inline-disclosure")
+					? NodeFilter.FILTER_REJECT
+					: NodeFilter.FILTER_ACCEPT;
+			}
+		});
+		const nodes = [];
+		while (walker.nextNode()) {
+			nodes.push(walker.currentNode);
+		}
+
+		const lastNode = nodes[nodes.length - 1];
+		if (!lastNode || !lastNode.nodeValue) return null;
+		return {
+			node: lastNode,
+			offset: lastNode.nodeValue.length
+		};
+	}
+
+	function toggleInlineAnnotation(annotationId) {
+		const disclosure = document.querySelector(
+			'.annotation-inline-disclosure[data-annotation-id="' + cssEscape(annotationId) + '"]'
+		);
+		if (!disclosure) return;
+		const content = disclosure.querySelector(".annotation-inline-content");
+		const trigger = disclosure.querySelector(".annotation-inline-trigger");
+		if (!content || !trigger) return;
+
+		const shouldOpen = content.hidden;
+		closeInlineAnnotations(disclosure);
+		content.hidden = !shouldOpen;
+		trigger.setAttribute("aria-expanded", String(shouldOpen));
+		if (shouldOpen) {
+			activateAnnotation(annotationId, false);
+		}
+	}
+
+	function closeInlineAnnotations(exceptDisclosure) {
+		document.querySelectorAll(".annotation-inline-content:not([hidden])").forEach((content) => {
+			const disclosure = content.closest(".annotation-inline-disclosure");
+			if (disclosure === exceptDisclosure) return;
+			content.hidden = true;
+			const trigger = disclosure ? disclosure.querySelector(".annotation-inline-trigger") : null;
+			if (trigger) trigger.setAttribute("aria-expanded", "false");
+		});
+	}
+
+	function removeAnnotation(annotation) {
+		hidePopover();
+		removeAnnotationMarks(annotation.id);
+		state.annotations = state.annotations.filter((item) => item.id !== annotation.id);
+		document
+			.querySelectorAll('.annotation-inline-disclosure[data-annotation-id="' + cssEscape(annotation.id) + '"]')
+			.forEach((disclosure) => disclosure.remove());
+		const card = panel.querySelector('.annotation-card[data-annotation-id="' + cssEscape(annotation.id) + '"]');
+		if (card) card.remove();
+		updateAnnotationNumbers();
+		updatePanelVisibility();
+		syncAnnotationDeletion(annotation);
+		scheduleAnnotationLayout();
+	}
+
+	function removeAnnotationMarks(annotationId) {
+		document
+			.querySelectorAll('.annotation-mark[data-annotation-id="' + cssEscape(annotationId) + '"]')
+			.forEach((mark) => {
+				const parent = mark.parentNode;
+				mark.replaceWith(...Array.from(mark.childNodes));
+				if (parent && typeof parent.normalize === "function") {
+					parent.normalize();
+				}
+			});
+	}
+
+	function syncAnnotation(annotation) {
+		if (!config.syncAnnotationsToSource || !annotation.sourcePath || !window.parent || window.parent === window) {
+			return;
+		}
+
+		window.parent.postMessage(
+			{
+				plugin: "notes-to-html-pages",
+				type: "annotation-created",
+				annotation
+			},
+			"*"
+		);
+	}
+
+	function syncAnnotationDeletion(annotation) {
+		if (!config.syncAnnotationsToSource || !annotation.sourcePath || !window.parent || window.parent === window) {
+			return;
+		}
+
+		window.parent.postMessage(
+			{
+				plugin: "notes-to-html-pages",
+				type: "annotation-deleted",
+				annotationId: annotation.id,
+				sourcePath: annotation.sourcePath
+			},
+			"*"
+		);
+	}
+
+	function scheduleAnnotationLayout() {
+		window.requestAnimationFrame(positionAnnotationCards);
+	}
+
+	function positionAnnotationCards() {
+		const cards = Array.from(panel.querySelectorAll(".annotation-card"));
+		if (window.innerWidth < 1024) {
+			cards.forEach((card) => {
+				card.style.top = "";
+			});
+			const list = panel.querySelector(".annotation-list");
+			if (list) list.style.height = "";
+			return;
+		}
+
+		const list = panel.querySelector(".annotation-list");
+		if (!list) return;
+		const cardsWithAnchors = cards
+			.map((card) => {
+				const id = card.dataset.annotationId || "";
+				const mark = document.querySelector('.annotation-mark[data-annotation-id="' + cssEscape(id) + '"]');
+				const fallbackTop = article.getBoundingClientRect().top + window.scrollY;
+				const anchorTop = mark
+					? mark.getBoundingClientRect().top + window.scrollY + 12
+					: Number(card.dataset.annotationTop || fallbackTop);
+				card.dataset.annotationTop = String(anchorTop);
+				return { card, anchorTop };
+			})
+			.sort((first, second) => first.anchorTop - second.anchorTop);
+
+		let nextTop = 0;
+		for (const item of cardsWithAnchors) {
+			const top = Math.max(item.anchorTop, nextTop);
+			item.card.style.top = Math.round(top) + "px";
+			nextTop = top + item.card.offsetHeight + 10;
+		}
+		list.style.height = Math.ceil(nextTop) + "px";
+	}
+
+	function updateMarkTitles(annotation) {
+		document
+			.querySelectorAll('.annotation-mark[data-annotation-id="' + cssEscape(annotation.id) + '"]')
+			.forEach((mark) => {
+				if (annotation.note) {
+					mark.setAttribute("title", annotation.note);
+				} else {
+					mark.removeAttribute("title");
+				}
+			});
+		syncInlineAnnotation(annotation);
+	}
+
+	function syncInlineAnnotation(annotation) {
+		const selector =
+			'.annotation-inline-disclosure[data-annotation-id="' + cssEscape(annotation.id) + '"]';
+		const disclosure = document.querySelector(selector);
+		if (!annotation.note) {
+			if (disclosure) disclosure.remove();
+			return;
+		}
+
+		if (!disclosure) {
+			const index = state.annotations.findIndex((item) => item.id === annotation.id);
+			const hasMark = Boolean(
+				document.querySelector('.annotation-mark[data-annotation-id="' + cssEscape(annotation.id) + '"]')
+			);
+			renderInlineAnnotation(annotation, index + 1, hasMark);
+			return;
+		}
+
+		const inlineNote = disclosure.querySelector(".annotation-inline-note");
+		if (inlineNote) inlineNote.textContent = annotation.note;
+	}
+
+	function updateAnnotationNumbers() {
+		state.annotations.forEach((annotation, index) => {
+			const number = panel.querySelector(
+				'.annotation-card[data-annotation-id="' + cssEscape(annotation.id) + '"] .annotation-number'
+			);
+			if (number) number.textContent = String(index + 1);
+			const count = document.querySelector(
+				'.annotation-inline-disclosure[data-annotation-id="' + cssEscape(annotation.id) + '"] .annotation-inline-count'
+			);
+			if (count) count.textContent = String(index + 1);
+		});
+	}
+
+	function activateAnnotation(id, shouldScroll = true) {
+		const marks = document.querySelectorAll('.annotation-mark[data-annotation-id="' + cssEscape(id) + '"]');
+		document.querySelectorAll(".annotation-card.is-active, .annotation-mark.is-active").forEach((element) => {
+			element.classList.remove("is-active");
+		});
+		const card = document.querySelector('.annotation-card[data-annotation-id="' + cssEscape(id) + '"]');
+		if (card) card.classList.add("is-active");
+		marks.forEach((mark) => mark.classList.add("is-active"));
+		const firstMark = marks[0];
+		if (shouldScroll && firstMark) {
+			firstMark.scrollIntoView({ block: "center", behavior: "smooth" });
+		}
+	}
+
+	function openAnnotationEditor(id) {
+		const card = document.querySelector('.annotation-card[data-annotation-id="' + cssEscape(id) + '"]');
+		if (!card) return;
+		activateAnnotation(id, false);
+		cancelAnnotationEditors(card);
+		const editor = card.querySelector(".annotation-card-editor");
+		const textarea = card.querySelector("textarea");
+		if (editor) editor.hidden = false;
+		card.classList.add("is-editing");
+		if (textarea) {
+			textarea.focus({ preventScroll: true });
+			textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+		}
+		scheduleAnnotationLayout();
+	}
+
+	function cancelAnnotationEditors(exceptCard) {
+		let changed = false;
+		panel.querySelectorAll(".annotation-card.is-editing").forEach((card) => {
+			if (card === exceptCard) return;
+			const editor = card.querySelector(".annotation-card-editor");
+			const textarea = card.querySelector("textarea");
+			const note = card.querySelector(".annotation-note");
+			if (textarea) {
+				textarea.value = note && !note.hidden ? note.textContent || "" : "";
+			}
+			if (editor) editor.hidden = true;
+			card.classList.remove("is-editing");
+			changed = true;
+		});
+		if (changed) scheduleAnnotationLayout();
+	}
+
+	function updatePanelVisibility() {
+		panel.hidden = state.annotations.length === 0;
+	}
+
+	function compactText(value) {
+		return String(value || "").replace(/\s+/g, " ").trim();
+	}
+
+	function formatDate(value) {
+		const date = new Date(value);
+		if (Number.isNaN(date.getTime())) return value;
+		const pad = (part) => String(part).padStart(2, "0");
+		return pad(date.getMonth() + 1) + "-" + pad(date.getDate()) + " " + pad(date.getHours()) + ":" + pad(date.getMinutes());
+	}
+
+	function cssEscape(value) {
+		if (window.CSS && typeof window.CSS.escape === "function") {
+			return window.CSS.escape(value);
+		}
+		return String(value).replace(/"/g, "\\22 ");
+	}
+
+	function isAnnotation(value) {
+		return (
+			value &&
+			typeof value === "object" &&
+			typeof value.id === "string" &&
+			typeof value.selectedText === "string"
+		);
+	}
+})();</script>
+<script>(() => {
+	"use strict";
+
+	var controls = document.getElementById("reader-controls");
+	if (!controls) return;
+
+	function gatherHighlights() {
+		var seen = {};
+		var order = [];
+		var marks = document.querySelectorAll(".annotation-mark");
+		for (var i = 0; i < marks.length; i++) {
+			var id = marks[i].getAttribute("data-annotation-id") || ("_" + i);
+			if (!Object.prototype.hasOwnProperty.call(seen, id)) { seen[id] = ""; order.push(id); }
+			seen[id] += marks[i].textContent || "";
+		}
+		var notes = {};
+		var cards = document.querySelectorAll(".annotation-card");
+		for (var j = 0; j < cards.length; j++) {
+			var cid = cards[j].getAttribute("data-annotation-id");
+			if (!cid) continue;
+			var noteEl = cards[j].querySelector(".annotation-note");
+			var noteText = noteEl ? (noteEl.textContent || "").trim() : "";
+			if (noteText) notes[cid] = noteText;
+		}
+		var noteLabel = controls.getAttribute("data-note-label") || "Note";
+		var lines = [];
+		for (var k = 0; k < order.length; k++) {
+			var oid = order[k];
+			var quote = (seen[oid] || "").replace(/\s+/g, " ").trim();
+			if (!quote) continue;
+			var block = (k + 1) + ". " + quote;
+			if (notes[oid]) block += "\n   " + noteLabel + "： " + notes[oid];
+			lines.push(block);
+		}
+		return lines;
+	}
+
+	function flash(button, cls, message) {
+		var labelEl = button.querySelector(".reader-control-label");
+		var original = labelEl ? labelEl.textContent : null;
+		button.classList.add(cls);
+		if (labelEl && message != null) labelEl.textContent = message;
+		window.setTimeout(function () {
+			button.classList.remove(cls);
+			if (labelEl && original != null) labelEl.textContent = original;
+		}, 1600);
+	}
+
+	function fallbackCopy(text) {
+		try {
+			var ta = document.createElement("textarea");
+			ta.value = text;
+			ta.style.position = "fixed";
+			ta.style.opacity = "0";
+			document.body.appendChild(ta);
+			ta.focus();
+			ta.select();
+			var ok = document.execCommand("copy");
+			document.body.removeChild(ta);
+			return ok;
+		} catch (e) { return false; }
+	}
+
+	function copyText(text) {
+		if (navigator.clipboard && navigator.clipboard.writeText) {
+			return navigator.clipboard.writeText(text);
+		}
+		return new Promise(function (resolve, reject) {
+			fallbackCopy(text) ? resolve() : reject(new Error("copy failed"));
+		});
+	}
+
+	function onCopy(button) {
+		var lines = gatherHighlights();
+		if (!lines.length) {
+			flash(button, "is-empty", controls.getAttribute("data-empty-text"));
+			return;
+		}
+		var text = lines.join("\n\n");
+		var doneText = (controls.getAttribute("data-copied-text") || "{count}").replace("{count}", String(lines.length));
+		copyText(text).then(function () {
+			flash(button, "is-done", doneText);
+		}).catch(function () {
+			if (fallbackCopy(text)) flash(button, "is-done", doneText);
+			else flash(button, "is-empty", controls.getAttribute("data-failed-text"));
+		});
+	}
+
+	controls.addEventListener("click", function (event) {
+		var target = event.target instanceof Element ? event.target.closest("[data-action]") : null;
+		if (!target) return;
+		if (target.getAttribute("data-action") === "copy-highlights") onCopy(target);
+	});
+})();</script><!--N2HP_LIGHTBOX_START--><style>.n2hp-lightbox{position:fixed;inset:0;background:rgba(15,15,20,.88);display:none;align-items:center;justify-content:center;z-index:2147483647;cursor:zoom-out}.n2hp-lightbox.open{display:flex}.n2hp-lightbox img{max-width:94vw;max-height:94vh;box-shadow:0 8px 50px rgba(0,0,0,.6);cursor:default;background:#fff;border-radius:4px}.n2hp-lightbox .n2hp-close{position:absolute;top:14px;right:20px;color:#fff;font-size:34px;line-height:1;cursor:pointer;opacity:.8}.n2hp-lightbox .n2hp-close:hover{opacity:1}.n2hp-lightbox .n2hp-cap{position:absolute;left:0;right:0;bottom:14px;text-align:center;color:#cfcfd8;font-size:13px;padding:0 20px;word-break:break-all}.n2hp-zoomable{cursor:zoom-in}</style><script>(function(){function isContentImage(img){if(!img||img.tagName!=="IMG"||!img.getAttribute("src"))return false;if(img.closest&&img.closest("#n2hp-lightbox"))return false;var p=img;while(p&&p!==document.body){if(p.classList){var c=p.className||"";if(typeof c==="string"&&/(sidebar|graph|reader-control|callout|avatar|icon|logo)/i.test(c))return false;}p=p.parentElement;}return true;}function init(){if(document.getElementById("n2hp-lightbox"))return;var lb=document.createElement("div");lb.id="n2hp-lightbox";lb.className="n2hp-lightbox";lb.innerHTML='<span class="n2hp-close" aria-label="close">&#215;</span><img alt=""><div class="n2hp-cap"></div>';document.body.appendChild(lb);var limg=lb.querySelector("img");var cap=lb.querySelector(".n2hp-cap");function closeLb(){lb.classList.remove("open");}lb.addEventListener("click",function(e){if(e.target===lb||(e.target.classList&&e.target.classList.contains("n2hp-close")))closeLb();});document.addEventListener("keydown",function(e){if(e.key==="Escape")closeLb();});document.addEventListener("click",function(e){var t=e.target;if(t&&t.tagName==="IMG"&&isContentImage(t)){e.preventDefault();e.stopPropagation();limg.src=t.currentSrc||t.src;limg.alt=t.alt||"";cap.textContent=t.alt||"";lb.classList.add("open");}},true);}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();})();</script><!--N2HP_LIGHTBOX_END-->
+</body>
+</html>
