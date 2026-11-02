@@ -115,6 +115,19 @@
   .toast .t-title { font-weight: 700; margin-bottom: 4px; color: var(--up); }
   .toast .t-body { color: var(--text); line-height: 1.5; }
   @keyframes slideIn { from { transform: translateX(24px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+  /* 监控日志 */
+  .collapsible { cursor: pointer; user-select: none; }
+  .caret { color: var(--text-dim); margin-left: 6px; font-size: 12px; }
+  .collapsed { display: none; }
+  .log-item { padding: 8px 4px; border-bottom: 1px solid var(--border); font-size: 13px; display: flex; gap: 12px; align-items: flex-start; }
+  .log-item:last-child { border-bottom: none; }
+  .log-time { color: var(--text-dim); font-family: ui-monospace, monospace; font-size: 12px; white-space: nowrap; flex: 0 0 auto; padding-top: 2px; }
+  .log-lines { flex: 1 1 auto; min-width: 0; }
+  .log-line { padding: 1px 0; line-height: 1.5; }
+  .log-normal { color: var(--text-dim); }
+  .log-alert { color: var(--up); }
+  .log-err { color: var(--warn); }
+  .log-empty { color: var(--text-dim); padding: 8px 4px; }
 </style>
 </head>
 <body>
@@ -163,6 +176,14 @@
       </tbody>
     </table>
     <div class="status" id="status"></div>
+  </div>
+
+  <!-- 监控日志 -->
+  <div class="panel">
+    <div class="panel-title collapsible" id="logHeader">③ 监控日志 <span class="caret" id="logCaret">▸</span></div>
+    <div id="logBody" class="collapsed">
+      <div id="logList"><div class="log-empty">暂无监控日志</div></div>
+    </div>
   </div>
 
   <div id="toastWrap"></div>
@@ -375,33 +396,49 @@
 
   async function monitorTick() {
     const configs = getConfigs();
+    const lines = [];   // 每只股票一条日志
     for (const c of configs) {
       const secid = TYPE_PREFIX[c.type] + "." + c.code;
       try {
         const resp = await fetch(API + secid, { method: "GET" });
         const json = await resp.json();
-        if (json.rc !== 0 || !json.data) continue;
+        if (json.rc !== 0 || !json.data) {
+          lines.push({ code: c.code, text: `${c.code} 接口返回异常`, err: true });
+          continue;
+        }
         const d = json.data;
         const price = num(d.f43);
         const name = d.f58;
+        const base = `${name}(${c.code}) 现价 ${price.toFixed(2)}，`;
 
-        let msg = null;
         if (!isNaN(c.upper) && price > c.upper) {
-          msg = `${name}(${c.code}) 现价 ${price.toFixed(2)} 已突破上限 ${c.upper}`;
-        } else if (!isNaN(c.lower) && price < c.lower) {
-          msg = `${name}(${c.code}) 现价 ${price.toFixed(2)} 已跌破下限 ${c.lower}`;
-        }
-
-        if (msg) {
-          if (!alertedSet.has(c.code)) {     // 同一越界只提醒一次，回到区间后解除
+          lines.push({ text: base + `突破上限 ${c.upper}`, alert: true });
+          if (!alertedSet.has(c.code)) {   // 同一越界只提醒一次，回到区间后解除
             alertedSet.add(c.code);
-            notify("大A监控预警", msg);
+            notify("大A监控预警", `${name}(${c.code}) 现价 ${price.toFixed(2)} 已突破上限 ${c.upper}`);
+          }
+        } else if (!isNaN(c.lower) && price < c.lower) {
+          lines.push({ text: base + `跌破下限 ${c.lower}`, alert: true });
+          if (!alertedSet.has(c.code)) {
+            alertedSet.add(c.code);
+            notify("大A监控预警", `${name}(${c.code}) 现价 ${price.toFixed(2)} 已跌破下限 ${c.lower}`);
           }
         } else {
+          lines.push({ text: base + "无异动", alert: false });
           alertedSet.delete(c.code);
         }
-      } catch (e) { /* 单只失败忽略，继续下一只 */ }
+      } catch (e) {
+        lines.push({ code: c.code, text: `${c.code} 请求失败`, err: true });
+      }
     }
+
+    // 记录监控日志（每次轮询一条，保留最近 10 条）
+    const time = new Date().toLocaleTimeString("zh-CN", { hour12: false });
+    const body = lines.map(l => {
+      const cls = l.err ? "log-err" : (l.alert ? "log-alert" : "log-normal");
+      return `<div class="log-line ${cls}">${escapeHtml(l.text)}</div>`;
+    }).join("");
+    addLog(`<div class="log-time">${time}</div><div class="log-lines">${body}</div>`);
   }
 
   function notify(title, body) {
@@ -433,6 +470,30 @@
   }
 
   // 测试通知 / 新标签页打开按钮已移除
+
+  // ---- 监控日志 ----
+  const logList = document.getElementById("logList");
+  const MAX_LOGS = 10;
+
+  function addLog(innerHtml) {
+    const empty = logList.querySelector(".log-empty");
+    if (empty) empty.remove();
+    const item = document.createElement("div");
+    item.className = "log-item";
+    item.innerHTML = innerHtml;
+    logList.insertBefore(item, logList.firstChild); // 最新在上
+    while (logList.children.length > MAX_LOGS) {
+      logList.removeChild(logList.lastChild);
+    }
+  }
+
+  // 日志折叠 / 展开（默认折叠）
+  document.getElementById("logHeader").addEventListener("click", () => {
+    const body = document.getElementById("logBody");
+    const caret = document.getElementById("logCaret");
+    const collapsed = body.classList.toggle("collapsed");
+    caret.textContent = collapsed ? "▸" : "▾";
+  });
 </script>
 </body>
 </html>
