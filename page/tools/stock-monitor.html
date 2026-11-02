@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>大A监控面板</title>
+<style>
+  :root {
+    --bg: #0f1419;
+    --panel: #1a212b;
+    --panel-2: #222c38;
+    --border: #2c3a4a;
+    --text: #e6edf3;
+    --text-dim: #8b98a5;
+    --accent: #2f81f7;
+    --accent-hover: #4a92ff;
+    --up: #f5465c;      /* 涨=红 */
+    --down: #2ec27e;    /* 跌=绿 */
+    --warn: #e3b341;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 24px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+  }
+  h1 { font-size: 20px; margin: 0 0 16px; }
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 20px;
+  }
+  .panel-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  table { width: 100%; border-collapse: collapse; }
+  th, td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  th {
+    color: var(--text-dim);
+    font-weight: 600;
+    font-size: 13px;
+    background: var(--panel-2);
+  }
+  td input, td select {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 6px;
+    padding: 7px 9px;
+    font-size: 13px;
+    outline: none;
+  }
+  td input:focus, td select:focus { border-color: var(--accent); }
+  .btn {
+    border: none;
+    border-radius: 7px;
+    padding: 9px 16px;
+    font-size: 13px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background .15s, opacity .15s;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-ghost { background: transparent; color: var(--text-dim); border: 1px solid var(--border); }
+  .btn-ghost:hover { color: var(--text); border-color: var(--text-dim); }
+  .btn-danger { background: transparent; color: var(--up); border: 1px solid var(--up); padding: 5px 10px; }
+  .btn-danger:hover { background: rgba(245,70,92,.12); }
+  .toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+  .toolbar .spacer { flex: 1; }
+  .status {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 12px;
+    min-height: 18px;
+  }
+  .status .ok { color: var(--down); }
+  .status .err { color: var(--up); }
+  .num { font-variant-numeric: tabular-nums; }
+  .up { color: var(--up); }
+  .down { color: var(--down); }
+  .name { font-weight: 600; }
+  .code { color: var(--text-dim); font-family: ui-monospace, monospace; }
+  .badge {
+    display: inline-block; padding: 2px 8px; border-radius: 4px;
+    font-size: 12px; background: var(--panel-2); color: var(--text-dim);
+  }
+  /* 页面内醒目弹窗（兜底提示，保证可见） */
+  #toastWrap {
+    position: fixed; top: 16px; right: 16px; z-index: 9999;
+    display: flex; flex-direction: column; gap: 10px;
+    pointer-events: none;
+  }
+  .toast {
+    background: #2a1d22; border: 1px solid var(--up); border-left: 4px solid var(--up);
+    border-radius: 8px; padding: 12px 14px; min-width: 260px; max-width: 340px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.45);
+    animation: slideIn .25s ease; font-size: 13px; pointer-events: auto;
+  }
+  .toast .t-title { font-weight: 700; margin-bottom: 4px; color: var(--up); }
+  .toast .t-body { color: var(--text); line-height: 1.5; }
+  @keyframes slideIn { from { transform: translateX(24px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+</style>
+</head>
+<body>
+  <h1>大A监控面板</h1>
+
+  <!-- 配置表格 -->
+  <div class="panel">
+    <div class="panel-title">① 监控配置</div>
+    <div class="toolbar">
+      <button class="btn btn-ghost" id="addBtn">+ 添加行</button>
+      <button class="btn btn-primary" id="queryBtn">开始查询</button>
+      <button class="btn btn-ghost" id="monitorBtn">开始监控</button>
+      <div class="spacer"></div>
+      <span class="badge" id="rowCount">0 行</span>
+    </div>
+    <table id="configTable">
+      <thead>
+        <tr>
+          <th style="width:22%">代码</th>
+          <th style="width:18%">类型</th>
+          <th style="width:18%">上限</th>
+          <th style="width:18%">下限</th>
+          <th style="width:24%">操作</th>
+        </tr>
+      </thead>
+      <tbody id="configBody"><!-- rows injected here --></tbody>
+    </table>
+  </div>
+
+  <!-- 查询结果 -->
+  <div class="panel">
+    <div class="panel-title">② 行情结果</div>
+    <table id="resultTable">
+      <thead>
+        <tr>
+          <th style="width:20%">名称</th>
+          <th style="width:14%">代码</th>
+          <th style="width:16%">昨日收盘</th>
+          <th style="width:16%">现价</th>
+          <th style="width:17%">涨跌额</th>
+          <th style="width:17%">涨跌幅</th>
+        </tr>
+      </thead>
+      <tbody id="resultBody">
+        <tr><td colspan="6" style="text-align:center;color:var(--text-dim)">暂无数据，点击「开始查询」</td></tr>
+      </tbody>
+    </table>
+    <div class="status" id="status"></div>
+  </div>
+
+  <div id="toastWrap"></div>
+
+<script>
+  const TYPE_PREFIX = { "沪": "1", "深": "0" };
+  const API = "https://push2.eastmoney.com/api/qt/stock/get?fields=f43,f57,f58,f60,f169,f170&secid=";
+
+  const configBody = document.getElementById("configBody");
+  const resultBody = document.getElementById("resultBody");
+  const statusEl   = document.getElementById("status");
+  const rowCountEl = document.getElementById("rowCount");
+
+  // ---- 配置表：增删行 ----
+  function addRow(code = "", type = "深", up = "", low = "") {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><input class="c-code" value="${code}" placeholder="如 000568" /></td>
+      <td>
+        <select class="c-type">
+          <option value="沪" ${type === "沪" ? "selected" : ""}>沪</option>
+          <option value="深" ${type === "深" ? "selected" : ""}>深</option>
+        </select>
+      </td>
+      <td><input class="c-up" type="number" step="0.01" value="${up}" placeholder="上限价" /></td>
+      <td><input class="c-low" type="number" step="0.01" value="${low}" placeholder="下限价" /></td>
+      <td><button class="btn btn-danger delBtn">删除</button></td>`;
+    tr.querySelector(".delBtn").addEventListener("click", () => {
+      tr.remove();
+      updateRowCount();
+    });
+    configBody.appendChild(tr);
+    updateRowCount();
+  }
+
+  function updateRowCount() {
+    const n = configBody.querySelectorAll("tr").length;
+    rowCountEl.textContent = n + " 行";
+  }
+
+  document.getElementById("addBtn").addEventListener("click", () => addRow());
+
+  // 默认示例行（泸州老窖 深交所）
+  addRow("000568", "深", "", "");
+
+  // ---- 开始查询 ----
+  document.getElementById("queryBtn").addEventListener("click", startQuery);
+
+  async function startQuery() {
+    const rows = [...configBody.querySelectorAll("tr")];
+    if (rows.length === 0) {
+      setStatus("请先添加至少一行配置。", "err");
+      return;
+    }
+
+    statusEl.textContent = "正在查询...";
+    const results = [];
+    let failed = 0;
+
+    // 并发请求（也可改为顺序，用 for...of）
+    await Promise.all(rows.map(async (tr) => {
+      const code = tr.querySelector(".c-code").value.trim();
+      const type = tr.querySelector(".c-type").value;
+      if (!code) return;
+      const secid = TYPE_PREFIX[type] + "." + code;
+      try {
+        const resp = await fetch(API + secid, { method: "GET" });
+        const json = await resp.json();
+        if (json.rc !== 0 || !json.data) {
+          failed++;
+          results.push({ code, type, error: "接口返回异常 (rc=" + json.rc + ")" });
+          return;
+        }
+        const d = json.data;
+        results.push({
+          name:  d.f58,
+          code:  d.f57,
+          prevClose: num(d.f60),   // 昨日收盘
+          price: num(d.f43),       // 现价
+          change: num(d.f169),     // 涨跌额
+          changePct: num(d.f170)   // 涨跌幅(%)
+        });
+      } catch (e) {
+        failed++;
+        results.push({ code, type, error: "请求失败：" + e.message });
+      }
+    }));
+
+    renderResults(results);
+    const ok = results.filter(r => !r.error).length;
+    setStatus(`查询完成：成功 ${ok} 条，失败 ${failed} 条。`, failed ? "err" : "ok");
+  }
+
+  // 东方财富行情字段为「分/百分比×100」，统一除以 100 还原
+  function num(v) {
+    return v == null ? null : v / 100;
+  }
+
+  function fmt(v, digits = 2) {
+    if (v == null) return "--";
+    return v.toFixed(digits);
+  }
+
+  function renderResults(results) {
+    if (results.length === 0) {
+      resultBody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--text-dim)">无有效数据</td></tr>`;
+      return;
+    }
+    resultBody.innerHTML = results.map(r => {
+      if (r.error) {
+        return `<tr><td class="name">--</td><td class="code">${r.code}</td>
+          <td colspan="4" class="down">${r.error}</td></tr>`;
+      }
+      const up = r.change > 0, down = r.change < 0;
+      const cls = up ? "up" : (down ? "down" : "");
+      const sign = up ? "+" : "";
+      const pctSign = up ? "+" : "";
+      return `<tr>
+        <td class="name">${r.name}</td>
+        <td class="code">${r.code}</td>
+        <td class="num">${fmt(r.prevClose)}</td>
+        <td class="num">${fmt(r.price)}</td>
+        <td class="num ${cls}">${sign}${fmt(r.change)}</td>
+        <td class="num ${cls}">${pctSign}${fmt(r.changePct)}%</td>
+      </tr>`;
+    }).join("");
+  }
+
+  function setStatus(msg, kind) {
+    statusEl.innerHTML = kind ? `<span class="${kind}">${msg}</span>` : msg;
+  }
+
+  // ---- 开始监控 / 停止监控 ----
+  // 在浏览器内直接跑定时任务：每 1 分钟轮询行情，越界触发系统通知
+  let monitorTimer = null;
+  const alertedSet = new Set(); // 已预警的代码，避免每分钟重复弹窗；回到区间内自动解除
+
+  const monitorBtn = document.getElementById("monitorBtn");
+
+  monitorBtn.addEventListener("click", async () => {
+    if (monitorTimer) { stopMonitor(); return; }   // 正在监控 → 停止
+
+    // 环境检测：预览 iframe 内浏览器通常会禁用/拦截通知 API
+    if (window.self !== window.top) {
+      setStatus("提示：当前在预览框内运行，浏览器通常会拦截系统通知。建议在新标签页或直接双击打开本文件，以获得真实弹窗。", "err");
+    }
+
+    // 请求系统通知权限（Windows 上即原生 toast）
+    if (!("Notification" in window)) {
+      setStatus("当前环境不支持系统通知，越界时将仅在页面内提示。", "err");
+    } else if (Notification.permission === "default") {
+      try {
+        const p = await Notification.requestPermission();
+        if (p !== "granted") {
+          setStatus("通知权限未授予，越界时将仅在页面内提示。可在浏览器地址栏允许通知后重试。", "err");
+        }
+      } catch (e) {
+        setStatus("无法请求通知权限（可能被预览环境拦截），越界时仅页面内提示。", "err");
+      }
+    } else if (Notification.permission === "denied") {
+      setStatus("通知权限已被拒绝，请在浏览器设置中允许本站点通知，否则越界时仅页面内提示。", "err");
+    }
+
+    const configs = getConfigs();
+    if (configs.length === 0) {
+      setStatus("请先添加至少一行配置再开始监控。", "err");
+      return;
+    }
+    // 校验上限/下限必填（不能为空）
+    const invalid = configs.filter(c => isNaN(c.upper) || isNaN(c.lower));
+    if (invalid.length > 0) {
+      const codes = invalid.map(c => c.code || "(空代码)").join("、");
+      setStatus(`以下行未填写上限或下限，请补全后再开始监控：${codes}`, "err");
+      return;
+    }
+    startMonitor();
+    if (Notification.permission === "granted") {
+      setStatus("监控已启动，每 1 分钟检查行情；越界时将弹出系统通知。", "ok");
+    } else {
+      setStatus("监控已启动，每 1 分钟检查行情（后台运行）；通知权限未开，越界时仅页面内提示。", "ok");
+    }
+  });
+
+  function getConfigs() {
+    return [...configBody.querySelectorAll("tr")].map(tr => ({
+      code:  tr.querySelector(".c-code").value.trim(),
+      type:  tr.querySelector(".c-type").value,
+      upper: parseFloat(tr.querySelector(".c-up").value),
+      lower: parseFloat(tr.querySelector(".c-low").value)
+    })).filter(c => c.code);
+  }
+
+  function startMonitor() {
+    monitorBtn.textContent = "停止监控";
+    monitorBtn.classList.remove("btn-ghost");
+    monitorBtn.classList.add("btn-primary");
+    monitorTick();                                   // 立即检查一次
+    monitorTimer = setInterval(monitorTick, 60 * 1000);
+  }
+
+  function stopMonitor() {
+    clearInterval(monitorTimer);
+    monitorTimer = null;
+    alertedSet.clear();
+    monitorBtn.textContent = "开始监控";
+    monitorBtn.classList.add("btn-ghost");
+    monitorBtn.classList.remove("btn-primary");
+    setStatus("监控已停止。", "ok");
+  }
+
+  async function monitorTick() {
+    const configs = getConfigs();
+    for (const c of configs) {
+      const secid = TYPE_PREFIX[c.type] + "." + c.code;
+      try {
+        const resp = await fetch(API + secid, { method: "GET" });
+        const json = await resp.json();
+        if (json.rc !== 0 || !json.data) continue;
+        const d = json.data;
+        const price = num(d.f43);
+        const name = d.f58;
+
+        let msg = null;
+        if (!isNaN(c.upper) && price > c.upper) {
+          msg = `${name}(${c.code}) 现价 ${price.toFixed(2)} 已突破上限 ${c.upper}`;
+        } else if (!isNaN(c.lower) && price < c.lower) {
+          msg = `${name}(${c.code}) 现价 ${price.toFixed(2)} 已跌破下限 ${c.lower}`;
+        }
+
+        if (msg) {
+          if (!alertedSet.has(c.code)) {     // 同一越界只提醒一次，回到区间后解除
+            alertedSet.add(c.code);
+            notify("大A监控预警", msg);
+          }
+        } else {
+          alertedSet.delete(c.code);
+        }
+      } catch (e) { /* 单只失败忽略，继续下一只 */ }
+    }
+  }
+
+  function notify(title, body) {
+    // 尝试系统通知（Windows 原生 toast），需顶层标签页 + 已授权
+    let osOk = false;
+    if ("Notification" in window && Notification.permission === "granted") {
+      try { new Notification(title, { body }); osOk = true; } catch (e) {}
+    }
+    // 兜底：页面内始终弹出醒目提示，保证可见
+    showToast(title, body);
+  }
+
+  function showToast(title, body) {
+    const wrap = document.getElementById("toastWrap");
+    const el = document.createElement("div");
+    el.className = "toast";
+    el.innerHTML = `<div class="t-title">${escapeHtml(title)}</div><div class="t-body">${escapeHtml(body)}</div>`;
+    wrap.appendChild(el);
+    setTimeout(() => {
+      el.style.transition = "opacity .3s";
+      el.style.opacity = "0";
+      setTimeout(() => el.remove(), 300);
+    }, 6000);
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
+
+  // 测试通知 / 新标签页打开按钮已移除
+</script>
+</body>
+</html>
