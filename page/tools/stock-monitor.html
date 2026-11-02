@@ -6,17 +6,17 @@
 <title>大A监控面板</title>
 <style>
   :root {
-    --bg: #0f1419;
-    --panel: #1a212b;
-    --panel-2: #222c38;
-    --border: #2c3a4a;
-    --text: #e6edf3;
-    --text-dim: #8b98a5;
-    --accent: #2f81f7;
-    --accent-hover: #4a92ff;
-    --up: #f5465c;      /* 涨=红 */
-    --down: #2ec27e;    /* 跌=绿 */
-    --warn: #e3b341;
+    --bg: #f4f6f9;
+    --panel: #ffffff;
+    --panel-2: #eef1f6;
+    --border: #d9dee6;
+    --text: #1c232b;
+    --text-dim: #67727f;
+    --accent: #2f6fed;
+    --accent-hover: #1f5ed6;
+    --up: #e03244;      /* 涨=红 */
+    --down: #15925a;    /* 跌=绿 */
+    --warn: #b7791f;
   }
   * { box-sizing: border-box; }
   body {
@@ -107,9 +107,9 @@
     pointer-events: none;
   }
   .toast {
-    background: #2a1d22; border: 1px solid var(--up); border-left: 4px solid var(--up);
+    background: #ffffff; border: 1px solid var(--border); border-left: 4px solid var(--up);
     border-radius: 8px; padding: 12px 14px; min-width: 260px; max-width: 340px;
-    box-shadow: 0 8px 24px rgba(0,0,0,.45);
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
     animation: slideIn .25s ease; font-size: 13px; pointer-events: auto;
   }
   .toast .t-title { font-weight: 700; margin-bottom: 4px; color: var(--up); }
