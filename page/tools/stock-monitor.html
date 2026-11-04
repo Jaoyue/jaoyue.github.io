@@ -100,6 +100,24 @@
     display: inline-block; padding: 2px 8px; border-radius: 4px;
     font-size: 12px; background: var(--panel-2); color: var(--text-dim);
   }
+  /* 选择栏复选框 */
+  #configTable th:first-child, #configTable td:first-child { text-align: center; }
+  #configTable input[type="checkbox"] {
+    -webkit-appearance: none; appearance: none;
+    width: 16px; height: 16px; padding: 0; margin: 0;
+    vertical-align: middle; cursor: pointer;
+    border: 1.5px solid #c4cad1; border-radius: 3px;
+    background: #fff; position: relative;
+  }
+  #configTable input[type="checkbox"]:checked {
+    background: #eef1f4; border-color: #c4cad1;
+  }
+  #configTable input[type="checkbox"]:checked::after {
+    content: ""; position: absolute;
+    left: 5px; top: 1px; width: 4px; height: 8px;
+    border: solid #9aa6b2; border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
   /* 页面内醒目弹窗（兜底提示，保证可见） */
   #toastWrap {
     position: fixed; top: 16px; right: 16px; z-index: 9999;
@@ -136,20 +154,22 @@
   <!-- 配置表格 -->
   <div class="panel">
     <div class="panel-title">① 监控配置</div>
-    <div class="toolbar">
-      <button class="btn btn-ghost" id="addBtn">+ 添加行</button>
-      <button class="btn btn-primary" id="queryBtn">开始查询</button>
+    <div class="toolbar" id="mainToolbar">
+      <button class="btn btn-ghost" id="addBtn" title="添加行">+</button>
+      <button class="btn btn-primary" id="queryBtn">查询</button>
       <button class="btn btn-ghost" id="monitorBtn">开始监控</button>
+      <button class="btn btn-ghost" id="expandBtn" title="展开/收起板块">▶</button>
       <div class="spacer"></div>
       <span class="badge" id="rowCount">0 行</span>
     </div>
     <table id="configTable">
       <thead>
         <tr>
-          <th style="width:22%">代码</th>
-          <th style="width:18%">类型</th>
-          <th style="width:18%">上限</th>
-          <th style="width:18%">下限</th>
+          <th style="width:6%;text-align:center"><input type="checkbox" id="selAll" checked title="全选/取消" /></th>
+          <th style="width:20%">代码</th>
+          <th style="width:16%">类型</th>
+          <th style="width:17%">上限</th>
+          <th style="width:17%">下限</th>
           <th style="width:24%">操作</th>
         </tr>
       </thead>
@@ -199,8 +219,11 @@
 
   // ---- 配置表：增删行 ----
   function addRow(code = "", type = "深", up = "", low = "") {
+    const selAll = document.getElementById("selAll");
+    const defSel = selAll ? selAll.checked : true;
     const tr = document.createElement("tr");
     tr.innerHTML = `
+      <td style="text-align:center"><input type="checkbox" class="c-sel" ${defSel ? "checked" : ""} /></td>
       <td><input class="c-code" value="${code}" placeholder="如 000568" /></td>
       <td>
         <select class="c-type">
@@ -214,15 +237,32 @@
     tr.querySelector(".delBtn").addEventListener("click", () => {
       tr.remove();
       updateRowCount();
+      syncSelAll();
     });
+    tr.querySelector(".c-sel").addEventListener("change", syncSelAll);
     configBody.appendChild(tr);
     updateRowCount();
+    syncSelAll();
   }
 
   function updateRowCount() {
-    const n = configBody.querySelectorAll("tr").length;
-    rowCountEl.textContent = n + " 行";
+    const all = configBody.querySelectorAll("tr");
+    const sel = configBody.querySelectorAll(".c-sel:checked").length;
+    rowCountEl.textContent = `已选 ${sel} / 共 ${all.length}`;
   }
+
+  // 全选/取消 + 单选时同步表头状态
+  function syncSelAll() {
+    const boxes = [...configBody.querySelectorAll(".c-sel")];
+    const selAll = document.getElementById("selAll");
+    if (!selAll) return;
+    selAll.checked = boxes.length > 0 && boxes.every(b => b.checked);
+    selAll.indeterminate = boxes.some(b => b.checked) && !selAll.checked;
+  }
+  document.getElementById("selAll").addEventListener("change", e => {
+    configBody.querySelectorAll(".c-sel").forEach(b => b.checked = e.target.checked);
+    updateRowCount();
+  });
 
   document.getElementById("addBtn").addEventListener("click", () => addRow());
 
@@ -240,41 +280,147 @@
     }
 
     statusEl.textContent = "正在查询...";
-    const results = [];
-    let failed = 0;
-
-    // 并发请求（也可改为顺序，用 for...of）
-    await Promise.all(rows.map(async (tr) => {
+    // 用 Promise.all 并按输入顺序返回，保证结果与配置表顺序一致
+    const results = await Promise.all(rows.map(async (tr) => {
       const code = tr.querySelector(".c-code").value.trim();
       const type = tr.querySelector(".c-type").value;
-      if (!code) return;
+      if (!code) return null;
       const secid = TYPE_PREFIX[type] + "." + code;
       try {
         const resp = await fetch(API + secid, { method: "GET" });
         const json = await resp.json();
         if (json.rc !== 0 || !json.data) {
-          failed++;
-          results.push({ code, type, error: "接口返回异常 (rc=" + json.rc + ")" });
-          return;
+          return { code, type, error: "接口返回异常 (rc=" + json.rc + ")" };
         }
         const d = json.data;
-        results.push({
+        return {
           name:  d.f58,
           code:  d.f57,
           prevClose: num(d.f60),   // 昨日收盘
           price: num(d.f43),       // 现价
           change: num(d.f169),     // 涨跌额
           changePct: num(d.f170)   // 涨跌幅(%)
-        });
+        };
       } catch (e) {
-        failed++;
-        results.push({ code, type, error: "请求失败：" + e.message });
+        return { code, type, error: "请求失败：" + e.message };
+      }
+    }));
+
+    const valid = results.filter(r => r !== null);
+    renderResults(valid);
+    const ok = valid.filter(r => !r.error).length;
+    const failed = valid.length - ok;
+    setStatus(`查询完成：成功 ${ok} 条，失败 ${failed} 条。`, failed ? "err" : "ok");
+  }
+
+  // 按给定的完整 secid 列表（已是「前缀.代码」格式）依次查询，顺序与入参一致
+  async function querySecids(secids) {
+    statusEl.textContent = "正在查询...";
+    const results = await Promise.all(secids.map(async (secid) => {
+      try {
+        const resp = await fetch(API + secid, { method: "GET" });
+        const json = await resp.json();
+        if (json.rc !== 0 || !json.data) {
+          return { code: secid.split(".").pop(), error: "接口返回异常" };
+        }
+        const d = json.data;
+        return {
+          name:  d.f58,
+          code:  d.f57,
+          prevClose: num(d.f60),
+          price: num(d.f43),
+          change: num(d.f169),
+          changePct: num(d.f170)
+        };
+      } catch (e) {
+        return { code: secid, error: "请求失败：" + e.message };
       }
     }));
 
     renderResults(results);
     const ok = results.filter(r => !r.error).length;
+    const failed = results.length - ok;
     setStatus(`查询完成：成功 ${ok} 条，失败 ${failed} 条。`, failed ? "err" : "ok");
+  }
+
+  // ---- 板块展开（点击「▶」按钮）----
+  const CAT_API = "https://api.npoint.io/62aec48433d948eb2ce9";
+  const toolbar = document.getElementById("mainToolbar");
+  const expandBtn = document.getElementById("expandBtn");
+  let expanded = false;
+
+  expandBtn.addEventListener("click", async () => {
+    // 已展开 → 收起：移除板块按钮与配置按钮，箭头复位
+    if (expanded) {
+      toolbar.querySelectorAll(".cat-btn, .config-btn").forEach(b => b.remove());
+      expanded = false;
+      expandBtn.textContent = "▶";
+      return;
+    }
+    // 未展开 → 标记展开并翻转箭头
+    expanded = true;
+    expandBtn.textContent = "◀";
+    // 重新加载板块列表，按钮插入到「开始监控」与「扩展」之间
+    try {
+      const resp = await fetch(CAT_API + "?t=" + Date.now(), { method: "GET", cache: "no-store" });
+      if (!expanded) return;   // 加载期间已收起，则放弃
+      const data = await resp.json();
+      toolbar.querySelectorAll(".cat-btn").forEach(b => b.remove());
+      buildCatButtons(data);
+    } catch (e) {
+      if (!expanded) return;
+      setStatus("板块列表加载失败：" + e.message, "err");
+    }
+    if (!expanded) return;
+    addConfigButton();   // 无论加载成功与否都出现，且在板块按钮之后
+  });
+
+  // 配置按钮：始终出现在「板块按钮」与「扩展」之间，点击跳转 npoint 文档
+  function addConfigButton() {
+    toolbar.querySelectorAll(".config-btn").forEach(b => b.remove());
+    const btn = document.createElement("button");
+    btn.className = "btn btn-ghost config-btn";
+    btn.textContent = "配置";
+    btn.addEventListener("click", () => {
+      window.open("https://www.npoint.io/docs/62aec48433d948eb2ce9", "_blank");
+    });
+    toolbar.insertBefore(btn, expandBtn);
+  }
+
+
+  function buildCatButtons(data) {
+    // 兼容两种返回格式：
+    //   1) 数组  [{ "name": "...", "codes": "..." }, ...]（推荐，顺序可控）
+    //   2) 对象  { "板块名": "codes字符串", ... }（旧格式，按键顺序）
+    let items = [];
+    if (Array.isArray(data)) {
+      items = data.map(it => ({ name: it && it.name, codes: it && it.codes }));
+    } else if (data && typeof data === "object") {
+      items = Object.keys(data).map(k => ({ name: k, codes: data[k] }));
+    }
+    if (items.length === 0) {
+      setStatus("板块列表为空。", "err");
+      return;
+    }
+    // 按数组/对象顺序生成按钮：name 为按钮文字，codes 为该板块的 secid 列表
+    items.forEach(item => {
+      const name = item.name ? String(item.name) : "";
+      const codes = item.codes ? String(item.codes) : "";
+      if (!name) return;
+      const btn = document.createElement("button");
+      btn.className = "btn btn-ghost cat-btn";
+      btn.textContent = name;
+      btn.addEventListener("click", () => {
+        const secids = codes.split(",").map(s => s.trim()).filter(Boolean);
+        if (secids.length === 0) {
+          setStatus(`「${name}」板块无标的。`, "err");
+          return;
+        }
+        querySecids(secids);
+      });
+      // 插在「扩展」按钮之前，即「开始监控」与「扩展」之间
+      toolbar.insertBefore(btn, expandBtn);
+    });
   }
 
   // 东方财富行情字段为「分/百分比×100」，统一除以 100 还原
@@ -326,6 +472,12 @@
   monitorBtn.addEventListener("click", async () => {
     if (monitorTimer) { stopMonitor(); return; }   // 正在监控 → 停止
 
+    // 先校验：必须勾选至少一行
+    if (getSelectedRows().length === 0) {
+      setStatus("请先勾选要监控的行，再点击开始监控。", "err");
+      return;
+    }
+
     // 环境检测：预览 iframe 内浏览器通常会禁用/拦截通知 API
     if (window.self !== window.top) {
       setStatus("提示：当前在预览框内运行，浏览器通常会拦截系统通知。建议在新标签页或直接双击打开本文件，以获得真实弹窗。", "err");
@@ -349,7 +501,7 @@
 
     const configs = getConfigs();
     if (configs.length === 0) {
-      setStatus("请先添加至少一行配置再开始监控。", "err");
+      setStatus("勾选的行中缺少代码，请补全后再开始监控。", "err");
       return;
     }
     // 校验上限/下限必填（不能为空）
@@ -367,8 +519,15 @@
     }
   });
 
+  function getSelectedRows() {
+    return [...configBody.querySelectorAll("tr")].filter(tr => {
+      const cb = tr.querySelector(".c-sel");
+      return cb && cb.checked;
+    });
+  }
+
   function getConfigs() {
-    return [...configBody.querySelectorAll("tr")].map(tr => ({
+    return getSelectedRows().map(tr => ({
       code:  tr.querySelector(".c-code").value.trim(),
       type:  tr.querySelector(".c-type").value,
       upper: parseFloat(tr.querySelector(".c-up").value),
