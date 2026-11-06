@@ -4,8 +4,8 @@
 <script>(function(){try{if(localStorage.getItem('wiki_auth'))return;}catch(e){}document.documentElement.style.visibility='hidden';})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>我的 Wiki</title>
-<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHJlY3Qgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiByeD0iNiIgZmlsbD0iI2ZmN2EwMCIvPjx0ZXh0IHg9IjEyIiB5PSIxNyIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5KPC90ZXh0Pjwvc3ZnPg==" type="image/svg+xml">
+<title>wiki</title>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjMgOCA0OCAzMSI+PHBhdGggZD0iTTQgMzggQzUgMjcgOCAxNCAxMyAxMCBDMTYgOCAxNyAxNSAxOS41IDE5IEMyMSAyMSAyMi41IDIxIDI0IDE5LjUgQzI4IDE1IDMxIDE2IDM1IDE5IEMzOSAyMiA0MyAyNiA0NyAzMCBDNDguNSAzMiA0OS41IDM1IDUwIDM4IFoiIGZpbGw9IiNjOTdhM2MiLz48L3N2Zz4=" type="image/svg+xml">
 <style>*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
 body{background:#f0f2f5;height:100vh;overflow:hidden;display:flex}
 main{display:flex;flex:1;width:100%;overflow:hidden}
@@ -61,7 +61,7 @@ main{display:flex;flex:1;width:100%;overflow:hidden}
 <div class="sidebar-header"><div class="brand-left">
 <a href="../../index.html" id="homeBtn" class="home-btn" title="返回首页">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></a>
-<h2 id="sidebarTitle">我的 Wiki</h2></div>
+<h2 id="sidebarTitle">wiki</h2></div>
 <button id="toggleSidebarWidth"><span id="toggleIcon">&#9664;</span></button></div>
 <div class="wiki-search-wrap"><div class="search-row"><input id="wikiSearch" type="text" placeholder="搜索文档…" autocomplete="off"><button id="collapseAll" class="home-btn" title="合上所有菜单" aria-label="合上所有菜单">&#8863;</button></div></div>
 <nav class="menu-container"><ul id="tree" class="tree">
@@ -109,7 +109,7 @@ function iconFor(t){ var m={'Linux':'🐧','业务问题':'💼','分享':'📤'
 function expandAncestors(a){ var li=a.closest('li.file'); while(li){ var p=li.parentElement&&li.parentElement.closest('li.folder'); if(!p) break; p.classList.add('expanded'); li=p; } }
 window.selectSrc=function(src){ if(!src) return; var a=findLinkBySrc(src); if(a){ sel(a); expandAncestors(a); } else { F.removeAttribute('srcdoc'); F.src=safeSrc(src); } };
 function showHome(){
-  var title=(DATA&&DATA.title)||'我的 Wiki';
+  var title=(DATA&&DATA.title)||'wiki';
   var cards=(DATA&&DATA.menu||[]).map(function(n){
     var c=countLeaves(n), ic=iconFor(n.title), fs=firstSrc(n);
     var arg="'"+String(fs).replace(/'/g,"\\'")+"'";

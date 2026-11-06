@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>jaoyue · 技术博客</title>
-  <meta name="description" content="jaoyue 的个人博客，记录技术笔记、开发心得与实用工具。">
+  <title>南巍山</title>
+  <meta name="description" content="南巍山 的个人博客，记录技术笔记、开发心得与实用工具。">
   <!-- 内嵌 SVG 作为标签页图标，无外部依赖 -->
-  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHJlY3Qgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiByeD0iNiIgZmlsbD0iI2ZmN2EwMCIvPjx0ZXh0IHg9IjEyIiB5PSIxNyIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5KPC90ZXh0Pjwvc3ZnPg==">
+  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjMgOCA0OCAzMSI+PHBhdGggZD0iTTQgMzggQzUgMjcgOCAxNCAxMyAxMCBDMTYgOCAxNyAxNSAxOS41IDE5IEMyMSAyMSAyMi41IDIxIDI0IDE5LjUgQzI4IDE1IDMxIDE2IDM1IDE5IEMzOSAyMiA0MyAyNiA0NyAzMCBDNDguNSAzMiA0OS41IDM1IDUwIDM4IFoiIGZpbGw9IiNjOTdhM2MiLz48L3N2Zz4=">
 
   <style>
     :root {
@@ -76,17 +76,17 @@
     }
 
     .brand .logo {
-      width: 32px;
-      height: 32px;
+      width: 40px;
+      height: 40px;
       border-radius: 8px;
-      background: linear-gradient(135deg, #ff7a00, #ff9d3c);
-      color: #fff;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      color: #8c7b6b;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 800;
-      font-size: 16px;
     }
+    .brand .logo svg { width: 28px; height: 28px; display: block; }
 
     .nav-links {
       display: flex;
@@ -134,19 +134,17 @@
     }
 
     .avatar {
-      width: 112px;
-      height: 112px;
+      width: 148px;
+      height: 148px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.18);
-      border: 3px solid rgba(255, 255, 255, 0.45);
+      background: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 44px;
-      font-weight: 800;
       flex-shrink: 0;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     }
+    .avatar svg { width: 116px; height: 116px; display: block; }
 
     .hero-text h1 {
       font-size: 32px;
@@ -392,8 +390,8 @@
   <header class="navbar">
     <div class="navbar-inner">
       <a href="index.html" class="brand">
-        <span class="logo">J</span>
-        <span>jaoyue</span>
+        <span class="logo"><svg viewBox="3 8 48 31" aria-hidden="true"><path d="M4 38 C5 27 8 14 13 10 C16 8 17 15 19.5 19 C21 21 22.5 21 24 19.5 C28 15 31 16 35 19 C39 22 43 26 47 30 C48.5 32 49.5 35 50 38 Z" fill="#c97a3c"/></svg></span>
+        <span>南巍山</span>
       </a>
       <button class="nav-toggle" id="navToggle" aria-label="菜单">≡</button>
       <ul class="nav-links" id="navLinks">
@@ -408,9 +406,9 @@
   <!-- Hero 个人介绍 -->
   <section class="hero">
     <div class="hero-inner">
-      <div class="avatar">J</div>
+      <div class="avatar"><svg viewBox="3 8 48 31" aria-hidden="true"><path d="M4 38 C5 27 8 14 13 10 C16 8 17 15 19.5 19 C21 21 22.5 21 24 19.5 C28 15 31 16 35 19 C39 22 43 26 47 30 C48.5 32 49.5 35 50 38 Z" fill="#c97a3c"/></svg></div>
       <div class="hero-text">
-        <h1>你好，我是 jaoyue 👋</h1>
+        <h1>你好，我是 南巍山 👋</h1>
         <div class="role">Java 开发工程师 · 苏州</div>
         <p class="bio">
           这里记录我的技术笔记、开发心得与踩坑经验，也会分享一些平时顺手写的效率工具。
@@ -502,7 +500,7 @@
   <!-- 页脚 -->
   <footer class="footer">
     <div class="footer-inner">
-      <span>© 2026 jaoyue. Built with GitHub Pages.</span>
+      <span>© 2026 南巍山. Built with GitHub Pages.</span>
       <div class="footer-links">
         <a href="index.html">首页</a>
         <a href="page/tools/index.html">工具</a>
